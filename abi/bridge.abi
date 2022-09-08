@@ -1,0 +1,103 @@
+{
+    "methods": {
+        "initialize": {
+            "argument": "bridge.initialize_arguments",
+            "return": "bridge.initialize_result",
+            "description": "Initialize contract",
+            "entry_point": "0x470ebe82",
+            "read-only": false
+        },
+        "get_validators": {
+            "argument": "bridge.get_validators_arguments",
+            "return": "bridge.repeated_addresses",
+            "description": "Get validators",
+            "entry_point": "0x50068f92",
+            "read-only": true
+        },
+        "get_supported_tokens": {
+            "argument": "bridge.get_supported_tokens_arguments",
+            "return": "bridge.repeated_addresses",
+            "description": "Get supported tokens",
+            "entry_point": "0xc8e36f04",
+            "read-only": true
+        },
+        "get_supported_wrapped_tokens": {
+            "argument": "bridge.get_supported_wrapped_tokens_arguments",
+            "return": "bridge.repeated_addresses",
+            "description": "Get supported wrapped tokens",
+            "entry_point": "0x2f540a24",
+            "read-only": true
+        },
+        "get_metadata": {
+            "argument": "bridge.get_metadata_arguments",
+            "return": "bridge.metadata_object",
+            "description": "Get metadata",
+            "entry_point": "0xfcf7a68f",
+            "read-only": true
+        },
+        "set_pause": {
+            "argument": "bridge.set_pause_arguments",
+            "return": "bridge.set_pause_result",
+            "description": "Pause/Unpause bridge",
+            "entry_point": "0x39a2c4e4",
+            "read-only": false
+        },
+        "transfer_tokens": {
+            "argument": "bridge.transfer_tokens_arguments",
+            "return": "bridge.transfer_tokens_result",
+            "description": "Transfer tokens",
+            "entry_point": "0x1d2e4ff3",
+            "read-only": false
+        },
+        "complete_transfer": {
+            "argument": "bridge.complete_transfer_arguments",
+            "return": "bridge.complete_transfer_result",
+            "description": "Complete a bridge transfer",
+            "entry_point": "0x4d4d3ef9",
+            "read-only": false
+        },
+        "add_validator": {
+            "argument": "bridge.add_validator_arguments",
+            "return": "bridge.add_validator_result",
+            "description": "Add a new validator",
+            "entry_point": "0xfc15f1be",
+            "read-only": false
+        },
+        "remove_validator": {
+            "argument": "bridge.remove_validator_arguments",
+            "return": "bridge.remove_validator_result",
+            "description": "Remove an existing validator",
+            "entry_point": "0xff61ff26",
+            "read-only": false
+        },
+        "add_supported_token": {
+            "argument": "bridge.add_supported_token_arguments",
+            "return": "bridge.add_supported_token_result",
+            "description": "Add support for a new token",
+            "entry_point": "0xc5ce0923",
+            "read-only": false
+        },
+        "remove_supported_token": {
+            "argument": "bridge.remove_supported_token_arguments",
+            "return": "bridge.remove_supported_token_result",
+            "description": "Remove an existing supported token",
+            "entry_point": "0x2d3a597e",
+            "read-only": false
+        },
+        "add_supported_wrapped_token": {
+            "argument": "bridge.add_supported_wrapped_token_arguments",
+            "return": "bridge.add_supported_wrapped_token_result",
+            "description": "Add support for a new wrapped token",
+            "entry_point": "0x5457c617",
+            "read-only": false
+        },
+        "remove_supported_wrapped_token": {
+            "argument": "bridge.remove_supported_wrapped_token_arguments",
+            "return": "bridge.remove_supported_wrapped_token_result",
+            "description": "Remove an existing supported token",
+            "entry_point": "0x927c7515",
+            "read-only": false
+        }
+    },
+    "types": "CtwWChthc3NlbWJseS9wcm90by9icmlkZ2UucHJvdG8SBmJyaWRnZRoUa29pbm9zL29wdGlvbnMucHJvdG8iSwoUaW5pdGlhbGl6ZV9hcmd1bWVudHMSMwoSaW5pdGlhbF92YWxpZGF0b3JzGAEgAygMQgSAtRgGUhFpbml0aWFsVmFsaWRhdG9ycyITChFpbml0aWFsaXplX3Jlc3VsdCJqChhnZXRfdmFsaWRhdG9yc19hcmd1bWVudHMSGgoFc3RhcnQYASABKAxCBIC1GAZSBXN0YXJ0EhQKBWxpbWl0GAIgASgFUgVsaW1pdBIcCglkaXJlY3Rpb24YAyABKAVSCWRpcmVjdGlvbiJwCh5nZXRfc3VwcG9ydGVkX3Rva2Vuc19hcmd1bWVudHMSGgoFc3RhcnQYASABKAxCBIC1GAZSBXN0YXJ0EhQKBWxpbWl0GAIgASgFUgVsaW1pdBIcCglkaXJlY3Rpb24YAyABKA1SCWRpcmVjdGlvbiJ4CiZnZXRfc3VwcG9ydGVkX3dyYXBwZWRfdG9rZW5zX2FyZ3VtZW50cxIaCgVzdGFydBgBIAEoDEIEgLUYBlIFc3RhcnQSFAoFbGltaXQYAiABKAVSBWxpbWl0EhwKCWRpcmVjdGlvbhgDIAEoDVIJZGlyZWN0aW9uIjgKEnJlcGVhdGVkX2FkZHJlc3NlcxIiCglhZGRyZXNzZXMYASADKAxCBIC1GAZSCWFkZHJlc3NlcyIYChZnZXRfbWV0YWRhdGFfYXJndW1lbnRzIksKE3NldF9wYXVzZV9hcmd1bWVudHMSHgoKc2lnbmF0dXJlcxgBIAMoDFIKc2lnbmF0dXJlcxIUCgVwYXVzZRgCIAEoCFIFcGF1c2UiEgoQc2V0X3BhdXNlX3Jlc3VsdCKHAQoZdHJhbnNmZXJfdG9rZW5zX2FyZ3VtZW50cxIYCgRmcm9tGAEgASgMQgSAtRgGUgRmcm9tEhoKBXRva2VuGAIgASgMQgSAtRgFUgV0b2tlbhIWCgZhbW91bnQYAyABKARSBmFtb3VudBIcCglyZWNpcGllbnQYBCABKAlSCXJlY2lwaWVudCIYChZ0cmFuc2Zlcl90b2tlbnNfcmVzdWx0IroBChtjb21wbGV0ZV90cmFuc2Zlcl9hcmd1bWVudHMSKwoOdHJhbnNhY3Rpb25faWQYASABKAxCBIC1GARSDXRyYW5zYWN0aW9uSWQSGgoFdG9rZW4YAiABKAxCBIC1GAVSBXRva2VuEhwKCXJlY2lwaWVudBgDIAEoDFIJcmVjaXBpZW50EhQKBXZhbHVlGAQgASgEUgV2YWx1ZRIeCgpzaWduYXR1cmVzGAYgAygMUgpzaWduYXR1cmVzIhoKGGNvbXBsZXRlX3RyYW5zZmVyX3Jlc3VsdCJdChdhZGRfdmFsaWRhdG9yX2FyZ3VtZW50cxIeCgpzaWduYXR1cmVzGAEgAygMUgpzaWduYXR1cmVzEiIKCXZhbGlkYXRvchgCIAEoDEIEgLUYBlIJdmFsaWRhdG9yIhYKFGFkZF92YWxpZGF0b3JfcmVzdWx0ImAKGnJlbW92ZV92YWxpZGF0b3JfYXJndW1lbnRzEh4KCnNpZ25hdHVyZXMYASADKAxSCnNpZ25hdHVyZXMSIgoJdmFsaWRhdG9yGAIgASgMQgSAtRgGUgl2YWxpZGF0b3IiGQoXcmVtb3ZlX3ZhbGlkYXRvcl9yZXN1bHQiWwodYWRkX3N1cHBvcnRlZF90b2tlbl9hcmd1bWVudHMSHgoKc2lnbmF0dXJlcxgBIAMoDFIKc2lnbmF0dXJlcxIaCgV0b2tlbhgCIAEoDEIEgLUYBVIFdG9rZW4iHAoaYWRkX3N1cHBvcnRlZF90b2tlbl9yZXN1bHQiXgogcmVtb3ZlX3N1cHBvcnRlZF90b2tlbl9hcmd1bWVudHMSHgoKc2lnbmF0dXJlcxgBIAMoDFIKc2lnbmF0dXJlcxIaCgV0b2tlbhgCIAEoDEIEgLUYBVIFdG9rZW4iHwodcmVtb3ZlX3N1cHBvcnRlZF90b2tlbl9yZXN1bHQiYwolYWRkX3N1cHBvcnRlZF93cmFwcGVkX3Rva2VuX2FyZ3VtZW50cxIeCgpzaWduYXR1cmVzGAEgAygMUgpzaWduYXR1cmVzEhoKBXRva2VuGAIgASgMQgSAtRgFUgV0b2tlbiIkCiJhZGRfc3VwcG9ydGVkX3dyYXBwZWRfdG9rZW5fcmVzdWx0ImYKKHJlbW92ZV9zdXBwb3J0ZWRfd3JhcHBlZF90b2tlbl9hcmd1bWVudHMSHgoKc2lnbmF0dXJlcxgBIAMoDFIKc2lnbmF0dXJlcxIaCgV0b2tlbhgCIAEoDEIEgLUYBVIFdG9rZW4iJwolcmVtb3ZlX3N1cHBvcnRlZF93cmFwcGVkX3Rva2VuX3Jlc3VsdCKDAQoVdHJhbnNmZXJfdG9rZW5zX2V2ZW50EhgKBGZyb20YASABKAxCBIC1GAZSBGZyb20SGgoFdG9rZW4YAiABKAxCBIC1GAVSBXRva2VuEhYKBmFtb3VudBgDIAEoBFIGYW1vdW50EhwKCXJlY2lwaWVudBgEIAEoCVIJcmVjaXBpZW50IpQBChZhZGRfcmVtb3ZlX2FjdGlvbl9oYXNoEikKBmFjdGlvbhgBIAEoDjIRLmJyaWRnZS5hY3Rpb25faWRSBmFjdGlvbhIYCgdhZGRyZXNzGAIgASgMUgdhZGRyZXNzEhQKBW5vbmNlGAMgASgEUgVub25jZRIfCgtjb250cmFjdF9pZBgEIAEoDFIKY29udHJhY3RJZCKPAQoVc2V0X3BhdXNlX2FjdGlvbl9oYXNoEikKBmFjdGlvbhgBIAEoDjIRLmJyaWRnZS5hY3Rpb25faWRSBmFjdGlvbhIUCgVwYXVzZRgCIAEoCFIFcGF1c2USFAoFbm9uY2UYAyABKARSBW5vbmNlEh8KC2NvbnRyYWN0X2lkGAQgASgMUgpjb250cmFjdElkItcBChZjb21wbGV0ZV90cmFuc2Zlcl9oYXNoEikKBmFjdGlvbhgBIAEoDjIRLmJyaWRnZS5hY3Rpb25faWRSBmFjdGlvbhIlCg50cmFuc2FjdGlvbl9pZBgCIAEoDFINdHJhbnNhY3Rpb25JZBIUCgV0b2tlbhgDIAEoDFIFdG9rZW4SHAoJcmVjaXBpZW50GAQgASgMUglyZWNpcGllbnQSFgoGYW1vdW50GAUgASgEUgZhbW91bnQSHwoLY29udHJhY3RfaWQYBiABKAxSCmNvbnRyYWN0SWQibgoPbWV0YWRhdGFfb2JqZWN0EiAKC2luaXRpYWxpemVkGAEgASgIUgtpbml0aWFsaXplZBIUCgVub25jZRgCIAEoBFIFbm9uY2USIwoNbmJfdmFsaWRhdG9ycxgDIAEoDVIMbmJWYWxpZGF0b3JzIhIKEHZhbGlkYXRvcl9vYmplY3QiFgoUd3JhcHBlZF90b2tlbl9vYmplY3QiDgoMdG9rZW5fb2JqZWN0KukBCglhY3Rpb25faWQSEwoPcmVzZXJ2ZWRfYWN0aW9uEAASEQoNYWRkX3ZhbGlkYXRvchABEhQKEHJlbW92ZV92YWxpZGF0b3IQAhIXChNhZGRfc3VwcG9ydGVkX3Rva2VuEAMSGgoWcmVtb3ZlX3N1cHBvcnRlZF90b2tlbhAEEh8KG2FkZF9zdXBwb3J0ZWRfd3JhcHBlZF90b2tlbhAFEiIKHnJlbW92ZV9zdXBwb3J0ZWRfd3JhcHBlZF90b2tlbhAGEg0KCXNldF9wYXVzZRAHEhUKEWNvbXBsZXRlX3RyYW5zZmVyEAhiBnByb3RvMw=="
+}

@@ -1,0 +1,211 @@
+syntax = "proto3";
+
+package bridge;
+
+import "koinos/options.proto"; 
+
+// Entrypoints
+
+// @description Initialize contract
+// @read-only false
+message initialize_arguments {
+  repeated bytes initial_validators = 1 [(koinos.btype) = ADDRESS];
+}
+
+message initialize_result {
+}
+
+// @description Get validators
+// @read-only true
+// @result repeated_addresses
+message get_validators_arguments {
+  bytes start = 1 [(koinos.btype) = ADDRESS];
+  int32 limit = 2;
+  int32 direction = 3;
+}
+
+// @description Get supported tokens
+// @read-only true
+// @result repeated_addresses
+message get_supported_tokens_arguments {
+  bytes start = 1 [(koinos.btype) = ADDRESS];
+  int32 limit = 2;
+  uint32 direction = 3;
+}
+
+// @description Get supported wrapped tokens
+// @read-only true
+// @result repeated_addresses
+message get_supported_wrapped_tokens_arguments {
+  bytes start = 1 [(koinos.btype) = ADDRESS];
+  int32 limit = 2;
+  uint32 direction = 3;
+}
+
+message repeated_addresses {
+  repeated bytes addresses = 1 [(koinos.btype) = ADDRESS];
+}
+
+// @description Get metadata
+// @read-only true
+// @result metadata_object
+message get_metadata_arguments {
+}
+
+// @description Pause/Unpause bridge
+// @read-only false
+message set_pause_arguments {
+  repeated bytes signatures = 1;
+  bool pause = 2;
+}
+
+message set_pause_result {
+}
+
+// @description Transfer tokens
+// @read-only false
+message transfer_tokens_arguments {
+  bytes from = 1 [(koinos.btype) = ADDRESS];
+  bytes token = 2 [(koinos.btype) = CONTRACT_ID];
+  uint64 amount = 3;
+  string recipient = 4;
+}
+
+message transfer_tokens_result {
+}
+
+// @description Complete a bridge transfer
+// @read-only false
+message complete_transfer_arguments {
+  bytes transaction_id = 1 [(koinos.btype) = TRANSACTION_ID];
+  bytes token = 2 [(koinos.btype) = CONTRACT_ID];
+  bytes recipient = 3;
+  uint64 value = 4;
+  repeated bytes signatures = 6;
+}
+
+message complete_transfer_result {
+}
+
+// @description Add a new validator
+// @read-only false
+message add_validator_arguments {
+  repeated bytes signatures = 1;
+  bytes validator = 2 [(koinos.btype) = ADDRESS];
+}
+
+message add_validator_result {
+}
+
+// @description Remove an existing validator
+// @read-only false
+message remove_validator_arguments {
+  repeated bytes signatures = 1;
+  bytes validator = 2 [(koinos.btype) = ADDRESS];
+}
+
+message remove_validator_result {
+}
+
+// @description Add support for a new token
+// @read-only false
+message add_supported_token_arguments {
+  repeated bytes signatures = 1;
+  bytes token = 2 [(koinos.btype) = CONTRACT_ID];
+}
+
+message add_supported_token_result {
+}
+
+// @description Remove an existing supported token
+// @read-only false
+message remove_supported_token_arguments {
+  repeated bytes signatures = 1;
+  bytes token = 2 [(koinos.btype) = CONTRACT_ID];
+}
+
+message remove_supported_token_result {
+}
+
+// @description Add support for a new wrapped token
+// @read-only false
+message add_supported_wrapped_token_arguments {
+  repeated bytes signatures = 1;
+  bytes token = 2 [(koinos.btype) = CONTRACT_ID];
+}
+
+message add_supported_wrapped_token_result {
+}
+
+// @description Remove an existing supported token
+// @read-only false
+message remove_supported_wrapped_token_arguments {
+  repeated bytes signatures = 1;
+  bytes token = 2 [(koinos.btype) = CONTRACT_ID];
+}
+
+message remove_supported_wrapped_token_result {
+}
+
+// Events
+message transfer_tokens_event {
+  bytes from = 1 [(koinos.btype) = ADDRESS];
+  bytes token = 2 [(koinos.btype) = CONTRACT_ID];
+  uint64 amount = 3;
+  string recipient = 4;
+}
+
+enum action_id {
+  reserved_action = 0;
+  add_validator = 1;
+  remove_validator = 2;
+  add_supported_token = 3;
+  remove_supported_token = 4;
+  add_supported_wrapped_token = 5;
+  remove_supported_wrapped_token = 6;
+  set_pause = 7;
+  complete_transfer = 8;
+}
+
+// Objects
+message add_remove_action_hash {
+  action_id action = 1;
+  bytes address = 2;
+  uint64 nonce = 3;
+  bytes contract_id = 4;
+}
+
+message set_pause_action_hash {
+  action_id action = 1;
+  bool pause = 2;
+  uint64 nonce = 3;
+  bytes contract_id = 4;
+}
+
+message complete_transfer_hash {
+  action_id action = 1;
+  bytes transaction_id = 2;
+  bytes token = 3;
+  bytes recipient = 4;
+  uint64 amount = 5;
+  bytes contract_id = 6;
+}
+
+message metadata_object {
+  bool initialized = 1; 
+  uint64 nonce = 2;
+  uint32 nb_validators = 3;
+}
+
+// use an object to possibly store metadata later on
+message validator_object {
+  
+}
+
+message wrapped_token_object {
+  
+}
+
+message token_object {
+  
+}
