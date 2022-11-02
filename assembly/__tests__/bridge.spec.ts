@@ -1,4 +1,4 @@
-import { MockVM, Base58, Arrays, StringBytes, System, Base64 } from "@koinos/sdk-as";
+import { MockVM, Base58, Arrays, StringBytes, System, Base64, chain } from "@koinos/sdk-as";
 import { Bridge } from "../Bridge";
 import { bridge } from "../proto/bridge";
 
@@ -36,6 +36,8 @@ describe('bridge', () => {
   beforeEach(() => {
     MockVM.reset();
     MockVM.setContractId(CONTRACT_ID);
+    // we don't set any block_time in the head info so that we don't need to set an expiration in our tests
+    MockVM.setHeadInfo(new chain.head_info());
   });
 
   it('should initialize bridge', () => {
@@ -69,7 +71,7 @@ describe('bridge', () => {
 
       b.initialize(initArgs);
     }).toThrow();
-    
+
     expect(MockVM.getErrorMessage()).toStrictEqual('Validators required');
 
     // not unique validators
@@ -104,6 +106,7 @@ describe('bridge', () => {
   });
 
   it('should add support for token', () => {
+    MockVM.setHeadInfo(new chain.head_info(null, 123456));
     const b = new Bridge();
     let initArgs = new bridge.initialize_arguments(validatorsAddrBytes);
 
@@ -122,7 +125,7 @@ describe('bridge', () => {
 
     const tokenAddr = Base58.decode('19JntSm8pSNETT9aHTwAUHC5RMoaSmgZPJ');
 
-    const addTokenArgs = new bridge.add_supported_token_arguments(signatures, tokenAddr);
+    const addTokenArgs = new bridge.add_supported_token_arguments(signatures, tokenAddr, 123457);
     b.add_supported_token(addTokenArgs);
 
     const getTokenArgs = new bridge.get_supported_tokens_arguments(tokenAddr);
@@ -244,6 +247,29 @@ describe('bridge', () => {
     }).toThrow();
 
     expect(MockVM.getErrorMessage()).toStrictEqual('Token already exists');
+
+    expect(() => {
+      MockVM.setHeadInfo(new chain.head_info(null, 123456));
+      const b = new Bridge();
+
+      const signatures = convertSigsToBytes([
+        'H5lFRpLkZXaoaWf0gc2kcOKSPxVv3UKTboBNAnM3q6RwNgJ4pYtYnfujKr+vf1y1NPGe3Dt0IPEEV9zyoxJQaB8=',
+        'ID9TrPaRw+/9jFPBKLcnE3/PH3gELjgg6xK+dOfkQQroG50wxOXi6aQDBSQoZFLCyPH7FrdR2pQLxv6lFCqi22w=',
+        'IIYmnE/temidt3AxWc2J6hssaNQJJBfOXKWtLV8lNV1+PXk9eaK3tuGh5JgCq5xEd7qcUi4aybl7E6bqDIDItIU=',
+        'IOXq8mIS6ZmyuoT7ARA27z1L2eWVBP0rNI5KmjK9hLlmHRv9U7N7Ut15vWxpzKA56aT55q7svckSdRMHmOguhT4=',
+        'H3NzUiI5CpOc0+EttyIfLumxmFhR7wsMP5zYlkM25tDxLarRTLv6trdBWQC3g3pCafnEwzk+9sWqoLlWH4xLY8Q=',
+        'H4KMreDNVxSP8G6Q6r7QWCnXdjE29E4V3bHStnBcecpNSwacxDrsX8s+xQkZM1w/BiGFwD3/k7IwWqlEHkmEWxI=',
+        'IJOAvfUnuxkFEDOJKa4sbPWmsSBY3HXcqyJO7J1pZUowNdURN+ZABAzUEnmj2xir8tZrIFJjO0Y6KyMDVkoCkyc=',
+        'H6+Nq3s17Vu3LfRCst301d6YhYfUXnY8UGcQaXiLj6W0aWaKb2lgBXcjpZa8enb25kjGtu+s91tc1TbkfprAH50='
+      ]);
+
+      const tokenAddr = Base58.decode('19JntSm8pSNETT9aHTwAUHC5RMoaSmgZPJ');
+      const addTokenArgs = new bridge.add_supported_token_arguments(signatures, tokenAddr);
+
+      b.add_supported_token(addTokenArgs);
+    }).toThrow();
+
+    expect(MockVM.getErrorMessage()).toStrictEqual('Expired signatures');
   });
 
   it('should add support for wrapped token', () => {

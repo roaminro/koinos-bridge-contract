@@ -57,6 +57,7 @@ message get_metadata_arguments {
 message set_pause_arguments {
   repeated bytes signatures = 1;
   bool pause = 2;
+  uint64 expiration = 3 [jstype = JS_STRING];
 }
 
 message set_pause_result {
@@ -67,7 +68,7 @@ message set_pause_result {
 message transfer_tokens_arguments {
   bytes from = 1 [(koinos.btype) = ADDRESS];
   bytes token = 2 [(koinos.btype) = CONTRACT_ID];
-  uint64 amount = 3;
+  uint64 amount = 3 [jstype = JS_STRING];
   string recipient = 4;
 }
 
@@ -80,8 +81,9 @@ message complete_transfer_arguments {
   bytes transaction_id = 1 [(koinos.btype) = TRANSACTION_ID];
   bytes token = 2 [(koinos.btype) = CONTRACT_ID];
   bytes recipient = 3;
-  uint64 value = 4;
+  uint64 value = 4 [jstype = JS_STRING];
   repeated bytes signatures = 6;
+  uint64 expiration = 7 [jstype = JS_STRING];
 }
 
 message complete_transfer_result {
@@ -92,6 +94,7 @@ message complete_transfer_result {
 message add_validator_arguments {
   repeated bytes signatures = 1;
   bytes validator = 2 [(koinos.btype) = ADDRESS];
+  uint64 expiration = 3 [jstype = JS_STRING];
 }
 
 message add_validator_result {
@@ -102,6 +105,7 @@ message add_validator_result {
 message remove_validator_arguments {
   repeated bytes signatures = 1;
   bytes validator = 2 [(koinos.btype) = ADDRESS];
+  uint64 expiration = 3 [jstype = JS_STRING];
 }
 
 message remove_validator_result {
@@ -112,6 +116,7 @@ message remove_validator_result {
 message add_supported_token_arguments {
   repeated bytes signatures = 1;
   bytes token = 2 [(koinos.btype) = CONTRACT_ID];
+  uint64 expiration = 3 [jstype = JS_STRING];
 }
 
 message add_supported_token_result {
@@ -122,6 +127,7 @@ message add_supported_token_result {
 message remove_supported_token_arguments {
   repeated bytes signatures = 1;
   bytes token = 2 [(koinos.btype) = CONTRACT_ID];
+  uint64 expiration = 3 [jstype = JS_STRING];
 }
 
 message remove_supported_token_result {
@@ -132,6 +138,7 @@ message remove_supported_token_result {
 message add_supported_wrapped_token_arguments {
   repeated bytes signatures = 1;
   bytes token = 2 [(koinos.btype) = CONTRACT_ID];
+  uint64 expiration = 3 [jstype = JS_STRING];
 }
 
 message add_supported_wrapped_token_result {
@@ -142,6 +149,7 @@ message add_supported_wrapped_token_result {
 message remove_supported_wrapped_token_arguments {
   repeated bytes signatures = 1;
   bytes token = 2 [(koinos.btype) = CONTRACT_ID];
+  uint64 expiration = 3 [jstype = JS_STRING];
 }
 
 message remove_supported_wrapped_token_result {
@@ -151,8 +159,9 @@ message remove_supported_wrapped_token_result {
 message transfer_tokens_event {
   bytes from = 1 [(koinos.btype) = ADDRESS];
   bytes token = 2 [(koinos.btype) = CONTRACT_ID];
-  uint64 amount = 3;
+  uint64 amount = 3 [jstype = JS_STRING];
   string recipient = 4;
+  uint64 blocktime = 5 [jstype = JS_STRING];
 }
 
 enum action_id {
@@ -193,7 +202,7 @@ message complete_transfer_hash {
 
 message metadata_object {
   bool initialized = 1; 
-  uint64 nonce = 2;
+  uint64 nonce = 2 [jstype = JS_STRING];
   uint32 nb_validators = 3;
 }
 

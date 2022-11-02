@@ -332,6 +332,11 @@ export namespace bridge {
         writer.uint32(16);
         writer.bool(message.pause);
       }
+
+      if (message.expiration != 0) {
+        writer.uint32(24);
+        writer.uint64(message.expiration);
+      }
     }
 
     static decode(reader: Reader, length: i32): set_pause_arguments {
@@ -349,6 +354,10 @@ export namespace bridge {
             message.pause = reader.bool();
             break;
 
+          case 3:
+            message.expiration = reader.uint64();
+            break;
+
           default:
             reader.skipType(tag & 7);
             break;
@@ -360,10 +369,16 @@ export namespace bridge {
 
     signatures: Array<Uint8Array>;
     pause: bool;
+    expiration: u64;
 
-    constructor(signatures: Array<Uint8Array> = [], pause: bool = false) {
+    constructor(
+      signatures: Array<Uint8Array> = [],
+      pause: bool = false,
+      expiration: u64 = 0
+    ) {
       this.signatures = signatures;
       this.pause = pause;
+      this.expiration = expiration;
     }
   }
 
@@ -521,6 +536,11 @@ export namespace bridge {
           writer.bytes(unique_name_signatures[i]);
         }
       }
+
+      if (message.expiration != 0) {
+        writer.uint32(56);
+        writer.uint64(message.expiration);
+      }
     }
 
     static decode(reader: Reader, length: i32): complete_transfer_arguments {
@@ -550,6 +570,10 @@ export namespace bridge {
             message.signatures.push(reader.bytes());
             break;
 
+          case 7:
+            message.expiration = reader.uint64();
+            break;
+
           default:
             reader.skipType(tag & 7);
             break;
@@ -564,19 +588,22 @@ export namespace bridge {
     recipient: Uint8Array | null;
     value: u64;
     signatures: Array<Uint8Array>;
+    expiration: u64;
 
     constructor(
       transaction_id: Uint8Array | null = null,
       token: Uint8Array | null = null,
       recipient: Uint8Array | null = null,
       value: u64 = 0,
-      signatures: Array<Uint8Array> = []
+      signatures: Array<Uint8Array> = [],
+      expiration: u64 = 0
     ) {
       this.transaction_id = transaction_id;
       this.token = token;
       this.recipient = recipient;
       this.value = value;
       this.signatures = signatures;
+      this.expiration = expiration;
     }
   }
 
@@ -618,6 +645,11 @@ export namespace bridge {
         writer.uint32(18);
         writer.bytes(unique_name_validator);
       }
+
+      if (message.expiration != 0) {
+        writer.uint32(24);
+        writer.uint64(message.expiration);
+      }
     }
 
     static decode(reader: Reader, length: i32): add_validator_arguments {
@@ -635,6 +667,10 @@ export namespace bridge {
             message.validator = reader.bytes();
             break;
 
+          case 3:
+            message.expiration = reader.uint64();
+            break;
+
           default:
             reader.skipType(tag & 7);
             break;
@@ -646,13 +682,16 @@ export namespace bridge {
 
     signatures: Array<Uint8Array>;
     validator: Uint8Array | null;
+    expiration: u64;
 
     constructor(
       signatures: Array<Uint8Array> = [],
-      validator: Uint8Array | null = null
+      validator: Uint8Array | null = null,
+      expiration: u64 = 0
     ) {
       this.signatures = signatures;
       this.validator = validator;
+      this.expiration = expiration;
     }
   }
 
@@ -694,6 +733,11 @@ export namespace bridge {
         writer.uint32(18);
         writer.bytes(unique_name_validator);
       }
+
+      if (message.expiration != 0) {
+        writer.uint32(24);
+        writer.uint64(message.expiration);
+      }
     }
 
     static decode(reader: Reader, length: i32): remove_validator_arguments {
@@ -711,6 +755,10 @@ export namespace bridge {
             message.validator = reader.bytes();
             break;
 
+          case 3:
+            message.expiration = reader.uint64();
+            break;
+
           default:
             reader.skipType(tag & 7);
             break;
@@ -722,13 +770,16 @@ export namespace bridge {
 
     signatures: Array<Uint8Array>;
     validator: Uint8Array | null;
+    expiration: u64;
 
     constructor(
       signatures: Array<Uint8Array> = [],
-      validator: Uint8Array | null = null
+      validator: Uint8Array | null = null,
+      expiration: u64 = 0
     ) {
       this.signatures = signatures;
       this.validator = validator;
+      this.expiration = expiration;
     }
   }
 
@@ -773,6 +824,11 @@ export namespace bridge {
         writer.uint32(18);
         writer.bytes(unique_name_token);
       }
+
+      if (message.expiration != 0) {
+        writer.uint32(24);
+        writer.uint64(message.expiration);
+      }
     }
 
     static decode(reader: Reader, length: i32): add_supported_token_arguments {
@@ -790,6 +846,10 @@ export namespace bridge {
             message.token = reader.bytes();
             break;
 
+          case 3:
+            message.expiration = reader.uint64();
+            break;
+
           default:
             reader.skipType(tag & 7);
             break;
@@ -801,13 +861,16 @@ export namespace bridge {
 
     signatures: Array<Uint8Array>;
     token: Uint8Array | null;
+    expiration: u64;
 
     constructor(
       signatures: Array<Uint8Array> = [],
-      token: Uint8Array | null = null
+      token: Uint8Array | null = null,
+      expiration: u64 = 0
     ) {
       this.signatures = signatures;
       this.token = token;
+      this.expiration = expiration;
     }
   }
 
@@ -852,6 +915,11 @@ export namespace bridge {
         writer.uint32(18);
         writer.bytes(unique_name_token);
       }
+
+      if (message.expiration != 0) {
+        writer.uint32(24);
+        writer.uint64(message.expiration);
+      }
     }
 
     static decode(
@@ -872,6 +940,10 @@ export namespace bridge {
             message.token = reader.bytes();
             break;
 
+          case 3:
+            message.expiration = reader.uint64();
+            break;
+
           default:
             reader.skipType(tag & 7);
             break;
@@ -883,13 +955,16 @@ export namespace bridge {
 
     signatures: Array<Uint8Array>;
     token: Uint8Array | null;
+    expiration: u64;
 
     constructor(
       signatures: Array<Uint8Array> = [],
-      token: Uint8Array | null = null
+      token: Uint8Array | null = null,
+      expiration: u64 = 0
     ) {
       this.signatures = signatures;
       this.token = token;
+      this.expiration = expiration;
     }
   }
 
@@ -937,6 +1012,11 @@ export namespace bridge {
         writer.uint32(18);
         writer.bytes(unique_name_token);
       }
+
+      if (message.expiration != 0) {
+        writer.uint32(24);
+        writer.uint64(message.expiration);
+      }
     }
 
     static decode(
@@ -957,6 +1037,10 @@ export namespace bridge {
             message.token = reader.bytes();
             break;
 
+          case 3:
+            message.expiration = reader.uint64();
+            break;
+
           default:
             reader.skipType(tag & 7);
             break;
@@ -968,13 +1052,16 @@ export namespace bridge {
 
     signatures: Array<Uint8Array>;
     token: Uint8Array | null;
+    expiration: u64;
 
     constructor(
       signatures: Array<Uint8Array> = [],
-      token: Uint8Array | null = null
+      token: Uint8Array | null = null,
+      expiration: u64 = 0
     ) {
       this.signatures = signatures;
       this.token = token;
+      this.expiration = expiration;
     }
   }
 
@@ -1025,6 +1112,11 @@ export namespace bridge {
         writer.uint32(18);
         writer.bytes(unique_name_token);
       }
+
+      if (message.expiration != 0) {
+        writer.uint32(24);
+        writer.uint64(message.expiration);
+      }
     }
 
     static decode(
@@ -1045,6 +1137,10 @@ export namespace bridge {
             message.token = reader.bytes();
             break;
 
+          case 3:
+            message.expiration = reader.uint64();
+            break;
+
           default:
             reader.skipType(tag & 7);
             break;
@@ -1056,13 +1152,16 @@ export namespace bridge {
 
     signatures: Array<Uint8Array>;
     token: Uint8Array | null;
+    expiration: u64;
 
     constructor(
       signatures: Array<Uint8Array> = [],
-      token: Uint8Array | null = null
+      token: Uint8Array | null = null,
+      expiration: u64 = 0
     ) {
       this.signatures = signatures;
       this.token = token;
+      this.expiration = expiration;
     }
   }
 
@@ -1119,6 +1218,11 @@ export namespace bridge {
         writer.uint32(34);
         writer.string(unique_name_recipient);
       }
+
+      if (message.blocktime != 0) {
+        writer.uint32(40);
+        writer.uint64(message.blocktime);
+      }
     }
 
     static decode(reader: Reader, length: i32): transfer_tokens_event {
@@ -1144,6 +1248,10 @@ export namespace bridge {
             message.recipient = reader.string();
             break;
 
+          case 5:
+            message.blocktime = reader.uint64();
+            break;
+
           default:
             reader.skipType(tag & 7);
             break;
@@ -1157,17 +1265,20 @@ export namespace bridge {
     token: Uint8Array | null;
     amount: u64;
     recipient: string | null;
+    blocktime: u64;
 
     constructor(
       from: Uint8Array | null = null,
       token: Uint8Array | null = null,
       amount: u64 = 0,
-      recipient: string | null = null
+      recipient: string | null = null,
+      blocktime: u64 = 0
     ) {
       this.from = from;
       this.token = token;
       this.amount = amount;
       this.recipient = recipient;
+      this.blocktime = blocktime;
     }
   }
 

@@ -61,7 +61,8 @@ const CONTRACT_ID = utils.decodeBase58('1DQzuCcTKacbs9GGScRTU1Hc8BsyARTPqe');
     action: actionIdProto.values['add_supported_token'],
     address: utils.decodeBase58('19JntSm8pSNETT9aHTwAUHC5RMoaSmgZPJ'),
     nonce: '1',
-    contract_id: CONTRACT_ID
+    contract_id: CONTRACT_ID,
+    expiration: 123457
   }).finish();
   
   sigs = await sign(buffer);

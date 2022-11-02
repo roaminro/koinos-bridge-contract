@@ -200,6 +200,13 @@
                             "pause": {
                                 "type": "bool",
                                 "id": 2
+                            },
+                            "expiration": {
+                                "type": "uint64",
+                                "id": 3,
+                                "options": {
+                                    "jstype": "JS_STRING"
+                                }
                             }
                         }
                     },
@@ -224,7 +231,10 @@
                             },
                             "amount": {
                                 "type": "uint64",
-                                "id": 3
+                                "id": 3,
+                                "options": {
+                                    "jstype": "JS_STRING"
+                                }
                             },
                             "recipient": {
                                 "type": "string",
@@ -257,12 +267,22 @@
                             },
                             "value": {
                                 "type": "uint64",
-                                "id": 4
+                                "id": 4,
+                                "options": {
+                                    "jstype": "JS_STRING"
+                                }
                             },
                             "signatures": {
                                 "rule": "repeated",
                                 "type": "bytes",
                                 "id": 6
+                            },
+                            "expiration": {
+                                "type": "uint64",
+                                "id": 7,
+                                "options": {
+                                    "jstype": "JS_STRING"
+                                }
                             }
                         }
                     },
@@ -281,6 +301,13 @@
                                 "id": 2,
                                 "options": {
                                     "(koinos.btype)": "ADDRESS"
+                                }
+                            },
+                            "expiration": {
+                                "type": "uint64",
+                                "id": 3,
+                                "options": {
+                                    "jstype": "JS_STRING"
                                 }
                             }
                         }
@@ -301,6 +328,13 @@
                                 "options": {
                                     "(koinos.btype)": "ADDRESS"
                                 }
+                            },
+                            "expiration": {
+                                "type": "uint64",
+                                "id": 3,
+                                "options": {
+                                    "jstype": "JS_STRING"
+                                }
                             }
                         }
                     },
@@ -319,6 +353,13 @@
                                 "id": 2,
                                 "options": {
                                     "(koinos.btype)": "CONTRACT_ID"
+                                }
+                            },
+                            "expiration": {
+                                "type": "uint64",
+                                "id": 3,
+                                "options": {
+                                    "jstype": "JS_STRING"
                                 }
                             }
                         }
@@ -339,6 +380,13 @@
                                 "options": {
                                     "(koinos.btype)": "CONTRACT_ID"
                                 }
+                            },
+                            "expiration": {
+                                "type": "uint64",
+                                "id": 3,
+                                "options": {
+                                    "jstype": "JS_STRING"
+                                }
                             }
                         }
                     },
@@ -358,6 +406,13 @@
                                 "options": {
                                     "(koinos.btype)": "CONTRACT_ID"
                                 }
+                            },
+                            "expiration": {
+                                "type": "uint64",
+                                "id": 3,
+                                "options": {
+                                    "jstype": "JS_STRING"
+                                }
                             }
                         }
                     },
@@ -376,6 +431,13 @@
                                 "id": 2,
                                 "options": {
                                     "(koinos.btype)": "CONTRACT_ID"
+                                }
+                            },
+                            "expiration": {
+                                "type": "uint64",
+                                "id": 3,
+                                "options": {
+                                    "jstype": "JS_STRING"
                                 }
                             }
                         }
@@ -401,11 +463,21 @@
                             },
                             "amount": {
                                 "type": "uint64",
-                                "id": 3
+                                "id": 3,
+                                "options": {
+                                    "jstype": "JS_STRING"
+                                }
                             },
                             "recipient": {
                                 "type": "string",
                                 "id": 4
+                            },
+                            "blocktime": {
+                                "type": "uint64",
+                                "id": 5,
+                                "options": {
+                                    "jstype": "JS_STRING"
+                                }
                             }
                         }
                     },
@@ -498,7 +570,10 @@
                             },
                             "nonce": {
                                 "type": "uint64",
-                                "id": 2
+                                "id": 2,
+                                "options": {
+                                    "jstype": "JS_STRING"
+                                }
                             },
                             "nbValidators": {
                                 "type": "uint32",
