@@ -511,6 +511,10 @@
                             "contractId": {
                                 "type": "bytes",
                                 "id": 4
+                            },
+                            "expiration": {
+                                "type": "uint64",
+                                "id": 5
                             }
                         }
                     },
@@ -531,6 +535,10 @@
                             "contractId": {
                                 "type": "bytes",
                                 "id": 4
+                            },
+                            "expiration": {
+                                "type": "uint64",
+                                "id": 5
                             }
                         }
                     },
@@ -559,6 +567,10 @@
                             "contractId": {
                                 "type": "bytes",
                                 "id": 6
+                            },
+                            "expiration": {
+                                "type": "uint64",
+                                "id": 7
                             }
                         }
                     },

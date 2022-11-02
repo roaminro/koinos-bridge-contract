@@ -182,6 +182,7 @@ message add_remove_action_hash {
   bytes address = 2;
   uint64 nonce = 3;
   bytes contract_id = 4;
+  uint64 expiration = 5;
 }
 
 message set_pause_action_hash {
@@ -189,6 +190,7 @@ message set_pause_action_hash {
   bool pause = 2;
   uint64 nonce = 3;
   bytes contract_id = 4;
+  uint64 expiration = 5;
 }
 
 message complete_transfer_hash {
@@ -198,6 +200,7 @@ message complete_transfer_hash {
   bytes recipient = 4;
   uint64 amount = 5;
   bytes contract_id = 6;
+  uint64 expiration = 7;
 }
 
 message metadata_object {

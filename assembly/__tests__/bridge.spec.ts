@@ -113,14 +113,14 @@ describe('bridge', () => {
     b.initialize(initArgs);
 
     const signatures = convertSigsToBytes([
-      'H5lFRpLkZXaoaWf0gc2kcOKSPxVv3UKTboBNAnM3q6RwNgJ4pYtYnfujKr+vf1y1NPGe3Dt0IPEEV9zyoxJQaB8=',
-      'ID9TrPaRw+/9jFPBKLcnE3/PH3gELjgg6xK+dOfkQQroG50wxOXi6aQDBSQoZFLCyPH7FrdR2pQLxv6lFCqi22w=',
-      'IIYmnE/temidt3AxWc2J6hssaNQJJBfOXKWtLV8lNV1+PXk9eaK3tuGh5JgCq5xEd7qcUi4aybl7E6bqDIDItIU=',
-      'IOXq8mIS6ZmyuoT7ARA27z1L2eWVBP0rNI5KmjK9hLlmHRv9U7N7Ut15vWxpzKA56aT55q7svckSdRMHmOguhT4=',
-      'H3NzUiI5CpOc0+EttyIfLumxmFhR7wsMP5zYlkM25tDxLarRTLv6trdBWQC3g3pCafnEwzk+9sWqoLlWH4xLY8Q=',
-      'H4KMreDNVxSP8G6Q6r7QWCnXdjE29E4V3bHStnBcecpNSwacxDrsX8s+xQkZM1w/BiGFwD3/k7IwWqlEHkmEWxI=',
-      'IJOAvfUnuxkFEDOJKa4sbPWmsSBY3HXcqyJO7J1pZUowNdURN+ZABAzUEnmj2xir8tZrIFJjO0Y6KyMDVkoCkyc=',
-      'H6+Nq3s17Vu3LfRCst301d6YhYfUXnY8UGcQaXiLj6W0aWaKb2lgBXcjpZa8enb25kjGtu+s91tc1TbkfprAH50='
+      'H+Y6m6vRLFXRDN8OnWkrWKmcwNOE0Ib8NoBAkyjXomKsXMgyIzvjgsPLkWCb7+JuR96zHG1eDafrC8wIoj5mZrQ=',
+      'Hw+s64tgoE6L/HsVHnd8CrFrGK7kY9L2emq3fqbHHQaQG6VrmZoUqR7zrTjIND47UxbH1LzPs8d2i02Yfb1B20g=',
+      'H2iClnYBCziOolekL/4DNUX1zoYGdrmedaMfM65F4u1DQWEjEu98ImfzB3ptJjiW6VwzjSXkKHMIC/pHYirWFqE=',
+      'HxQ2gTOIgDwY7f9Lkuf3uhQK3AhCjmXdDgKz5M+Lh6bkdF3UmZVAirjf8B1/YQ0NL6vyG3XD7hyhVn7OMks2Zw4=',
+      'IOkpAB0Z8i9BN58uODf5arwzM7a6UEgLCL6OSz77c1CrHaSQPMlzvS+k4blivYo95Csj5W33pLMOqYE6ss5Q/aA=',
+      'H+J7+BplkQFEFTDRACVHZls9y9jXU5eU624IoHaDyfo/Purcajf7fq2nul/ZKcSa9NLfNucAK7c6UVSIrvYmUrg=',
+      'H86M5kwU1hRwMX+JxnF8wvt2MIzEhPrmNhDow9lWPvjwBIyA7jPeswGIyARWSgzCn4N6RboovvfAS+ju6QBWMNw=',
+      'IGpDS6X/bgaj5wVcx6CdPWB/8PhWeXFKIUHaCDtpb8iLX9ouFX8WhTSy8UvLUIMFo/zkN7nAi0kz2k3Pnz1SO6M='
     ]);
 
     const tokenAddr = Base58.decode('19JntSm8pSNETT9aHTwAUHC5RMoaSmgZPJ');
@@ -135,7 +135,7 @@ describe('bridge', () => {
     expect(Arrays.equal(res.addresses[0], tokenAddr)).toBe(true);
 
     const ev = MockVM.getEvents()[0];
-    expect(ev.name).toStrictEqual('bridge.token.added');
+    expect(ev.name).toStrictEqual('bridge.add_supported_token_result');
     expect(Arrays.equal(ev.impacted[0], tokenAddr)).toBe(true);
   });
 
@@ -301,7 +301,7 @@ describe('bridge', () => {
     expect(Arrays.equal(res.addresses[0], tokenAddr)).toBe(true);
 
     const ev = MockVM.getEvents()[0];
-    expect(ev.name).toStrictEqual('bridge.wrapped_token.added');
+    expect(ev.name).toStrictEqual('bridge.add_supported_wrapped_token_result');
     expect(Arrays.equal(ev.impacted[0], tokenAddr)).toBe(true);
   });
 
@@ -444,7 +444,7 @@ describe('bridge', () => {
     expect(Arrays.equal(res.addresses[1], validatorAddr)).toBe(true);
 
     const ev = MockVM.getEvents()[0];
-    expect(ev.name).toStrictEqual('bridge.validator.added');
+    expect(ev.name).toStrictEqual('bridge.add_validator_result');
     expect(Arrays.equal(ev.impacted[0], validatorAddr)).toBe(true);
   });
 

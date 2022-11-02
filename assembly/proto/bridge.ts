@@ -1305,6 +1305,11 @@ export namespace bridge {
         writer.uint32(34);
         writer.bytes(unique_name_contract_id);
       }
+
+      if (message.expiration != 0) {
+        writer.uint32(40);
+        writer.uint64(message.expiration);
+      }
     }
 
     static decode(reader: Reader, length: i32): add_remove_action_hash {
@@ -1330,6 +1335,10 @@ export namespace bridge {
             message.contract_id = reader.bytes();
             break;
 
+          case 5:
+            message.expiration = reader.uint64();
+            break;
+
           default:
             reader.skipType(tag & 7);
             break;
@@ -1343,17 +1352,20 @@ export namespace bridge {
     address: Uint8Array | null;
     nonce: u64;
     contract_id: Uint8Array | null;
+    expiration: u64;
 
     constructor(
       action: action_id = 0,
       address: Uint8Array | null = null,
       nonce: u64 = 0,
-      contract_id: Uint8Array | null = null
+      contract_id: Uint8Array | null = null,
+      expiration: u64 = 0
     ) {
       this.action = action;
       this.address = address;
       this.nonce = nonce;
       this.contract_id = contract_id;
+      this.expiration = expiration;
     }
   }
 
@@ -1378,6 +1390,11 @@ export namespace bridge {
       if (unique_name_contract_id !== null) {
         writer.uint32(34);
         writer.bytes(unique_name_contract_id);
+      }
+
+      if (message.expiration != 0) {
+        writer.uint32(40);
+        writer.uint64(message.expiration);
       }
     }
 
@@ -1404,6 +1421,10 @@ export namespace bridge {
             message.contract_id = reader.bytes();
             break;
 
+          case 5:
+            message.expiration = reader.uint64();
+            break;
+
           default:
             reader.skipType(tag & 7);
             break;
@@ -1417,17 +1438,20 @@ export namespace bridge {
     pause: bool;
     nonce: u64;
     contract_id: Uint8Array | null;
+    expiration: u64;
 
     constructor(
       action: action_id = 0,
       pause: bool = false,
       nonce: u64 = 0,
-      contract_id: Uint8Array | null = null
+      contract_id: Uint8Array | null = null,
+      expiration: u64 = 0
     ) {
       this.action = action;
       this.pause = pause;
       this.nonce = nonce;
       this.contract_id = contract_id;
+      this.expiration = expiration;
     }
   }
 
@@ -1466,6 +1490,11 @@ export namespace bridge {
         writer.uint32(50);
         writer.bytes(unique_name_contract_id);
       }
+
+      if (message.expiration != 0) {
+        writer.uint32(56);
+        writer.uint64(message.expiration);
+      }
     }
 
     static decode(reader: Reader, length: i32): complete_transfer_hash {
@@ -1499,6 +1528,10 @@ export namespace bridge {
             message.contract_id = reader.bytes();
             break;
 
+          case 7:
+            message.expiration = reader.uint64();
+            break;
+
           default:
             reader.skipType(tag & 7);
             break;
@@ -1514,6 +1547,7 @@ export namespace bridge {
     recipient: Uint8Array | null;
     amount: u64;
     contract_id: Uint8Array | null;
+    expiration: u64;
 
     constructor(
       action: action_id = 0,
@@ -1521,7 +1555,8 @@ export namespace bridge {
       token: Uint8Array | null = null,
       recipient: Uint8Array | null = null,
       amount: u64 = 0,
-      contract_id: Uint8Array | null = null
+      contract_id: Uint8Array | null = null,
+      expiration: u64 = 0
     ) {
       this.action = action;
       this.transaction_id = transaction_id;
@@ -1529,6 +1564,7 @@ export namespace bridge {
       this.recipient = recipient;
       this.amount = amount;
       this.contract_id = contract_id;
+      this.expiration = expiration;
     }
   }
 

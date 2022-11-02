@@ -116,7 +116,7 @@ export class Bridge {
     
     const metadata = new Metadata(this.contractId);
     const meta = metadata.get()!;
-    const objToHash = new bridge.set_pause_action_hash(bridge.action_id.set_pause, pause, meta.nonce, this.contractId);
+    const objToHash = new bridge.set_pause_action_hash(bridge.action_id.set_pause, pause, meta.nonce, this.contractId, args.expiration);
 
     const hash = System.hash(Crypto.multicodec.sha2_256, Protobuf.encode(objToHash, bridge.set_pause_action_hash.encode))!;
 
@@ -218,7 +218,7 @@ export class Bridge {
     const isSupportedWrappedToken = new WrappedTokens(this.contractId).has(token);
     System.require(isSupportedToken || isSupportedWrappedToken, 'token is not supported');
 
-    const objToHash = new bridge.complete_transfer_hash(bridge.action_id.complete_transfer, transaction_id, token, recipient, value, this.contractId);
+    const objToHash = new bridge.complete_transfer_hash(bridge.action_id.complete_transfer, transaction_id, token, recipient, value, this.contractId, args.expiration);
     const hash = System.hash(Crypto.multicodec.sha2_256, Protobuf.encode(objToHash, bridge.complete_transfer_hash.encode))!;
 
     const transfers = new Transfers(this.contractId);
@@ -264,7 +264,7 @@ export class Bridge {
 
     const metadata = new Metadata(this.contractId);
     const meta = metadata.get()!;
-    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.add_validator, validator, meta.nonce, this.contractId);
+    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.add_validator, validator, meta.nonce, this.contractId, args.expiration);
 
     const hash = System.hash(Crypto.multicodec.sha2_256, Protobuf.encode(objToHash, bridge.add_remove_action_hash.encode))!;
 
@@ -296,7 +296,7 @@ export class Bridge {
 
     const metadata = new Metadata(this.contractId);
     const meta = metadata.get()!;
-    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.remove_validator, validator, meta.nonce, this.contractId);
+    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.remove_validator, validator, meta.nonce, this.contractId, args.expiration);
 
     const hash = System.hash(Crypto.multicodec.sha2_256, Protobuf.encode(objToHash, bridge.add_remove_action_hash.encode))!;
 
@@ -326,7 +326,7 @@ export class Bridge {
 
     const metadata = new Metadata(this.contractId);
     const meta = metadata.get()!;
-    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.add_supported_token, token, meta.nonce, this.contractId);
+    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.add_supported_token, token, meta.nonce, this.contractId, args.expiration);
 
     const hash = System.hash(Crypto.multicodec.sha2_256, Protobuf.encode(objToHash, bridge.add_remove_action_hash.encode))!;
 
@@ -356,7 +356,7 @@ export class Bridge {
 
     const metadata = new Metadata(this.contractId);
     const meta = metadata.get()!;
-    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.remove_supported_token, token, meta.nonce, this.contractId);
+    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.remove_supported_token, token, meta.nonce, this.contractId, args.expiration);
 
     const hash = System.hash(Crypto.multicodec.sha2_256, Protobuf.encode(objToHash, bridge.add_remove_action_hash.encode))!;
 
@@ -385,7 +385,7 @@ export class Bridge {
 
     const metadata = new Metadata(this.contractId);
     const meta = metadata.get()!;
-    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.add_supported_wrapped_token, token, meta.nonce, this.contractId);
+    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.add_supported_wrapped_token, token, meta.nonce, this.contractId, args.expiration);
 
     const hash = System.hash(Crypto.multicodec.sha2_256, Protobuf.encode(objToHash, bridge.add_remove_action_hash.encode))!;
 
@@ -417,7 +417,7 @@ export class Bridge {
 
     const metadata = new Metadata(this.contractId);
     const meta = metadata.get()!;
-    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.remove_supported_wrapped_token, token, meta.nonce, this.contractId);
+    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.remove_supported_wrapped_token, token, meta.nonce, this.contractId, args.expiration);
 
     const hash = System.hash(Crypto.multicodec.sha2_256, Protobuf.encode(objToHash, bridge.add_remove_action_hash.encode))!;
 
