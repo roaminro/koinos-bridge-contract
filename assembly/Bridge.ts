@@ -1,4 +1,4 @@
-import { Protobuf, System, Crypto, Token, Base58, Space } from 'koinos-sdk-as';
+import { Protobuf, System, Crypto, Token, Base58, Storage } from '@koinos/sdk-as';
 import { bridge } from './proto/bridge';
 import { Metadata } from './state/Metadata';
 import { Tokens } from './state/Tokens';
@@ -9,32 +9,27 @@ import { Pausable } from './util/Pausable';
 import { ReentrancyGuard } from './util/ReentrancyGuard';
 
 export class Bridge {
-  _contractId: Uint8Array;
-
-  constructor() {
-    this._contractId = System.getContractId();
-  }
+  contractId: Uint8Array = System.getContractId();
 
   initialize(args: bridge.initialize_arguments): bridge.initialize_result {
     const initialValidators = args.initial_validators;
     System.require(initialValidators.length > 0, 'Validators required');
 
-    const metadataSpace = new Metadata(this._contractId);
-    const validators = new Validators(this._contractId);
+    const validators = new Validators(this.contractId);
 
-    const metadata = metadataSpace.get();
-    System.require(!metadata.initialized, 'Contract already initialized');
+    const metadata = new Metadata(this.contractId);
+    const meta = metadata.get()!;
+    System.require(!meta.initialized, 'Contract already initialized');
 
     for (let index = 0; index < initialValidators.length; index++) {
       const validator = initialValidators[index];
-
       System.require(!validators.has(validator), 'Validator not unique');
       validators.put(validator, new bridge.validator_object());
-      metadata.nb_validators += 1;
+      meta.nb_validators += 1;
     }
 
-    metadata.initialized = true;
-    metadataSpace.put(metadata);
+    meta.initialized = true;
+    metadata.put(meta);
 
     return new bridge.initialize_result();
   }
@@ -50,11 +45,11 @@ export class Bridge {
       limit = 100;
     }
 
-    const validators = new Validators(this._contractId);
+    const validators = new Validators(this.contractId);
     let res: Uint8Array[] = [];
 
     if (validators.has(start)) {
-      const d = direction == 0 ? Space.Direction.Ascending : Space.Direction.Descending;
+      const d = direction == 0 ? Storage.Direction.Ascending : Storage.Direction.Descending;
       res = validators.getManyKeys(start, limit, d);
       res.unshift(start);
     }
@@ -73,11 +68,11 @@ export class Bridge {
       limit = 100;
     }
 
-    const tokens = new Tokens(this._contractId);
+    const tokens = new Tokens(this.contractId);
     let res: Uint8Array[] = [];
 
     if (tokens.has(start)) {
-      const d = direction == 0 ? Space.Direction.Ascending : Space.Direction.Descending;
+      const d = direction == 0 ? Storage.Direction.Ascending : Storage.Direction.Descending;
       res = tokens.getManyKeys(start, limit, d);
       res.unshift(start);
     }
@@ -96,11 +91,11 @@ export class Bridge {
       limit = 100;
     }
 
-    const tokens = new WrappedTokens(this._contractId);
+    const tokens = new WrappedTokens(this.contractId);
     let res: Uint8Array[] = [];
 
     if (tokens.has(start)) {
-      const d = direction == 0 ? Space.Direction.Ascending : Space.Direction.Descending;
+      const d = direction == 0 ? Storage.Direction.Ascending : Storage.Direction.Descending;
       res = tokens.getManyKeys(start, limit, d);
       res.unshift(start);
     }
@@ -109,28 +104,27 @@ export class Bridge {
   }
 
   get_metadata(args: bridge.get_metadata_arguments): bridge.metadata_object {
-    const metadata = new Metadata(this._contractId);
-
-    return metadata.get();
+    const metadata = new Metadata(this.contractId);
+    return metadata.get()!;
   }
 
   set_pause(args: bridge.set_pause_arguments): bridge.set_pause_result {
     const signatures = args.signatures;
     const pause = args.pause;
 
-    const metadataSpace = new Metadata(this._contractId);
-    const metadata = metadataSpace.get();
-    const objToHash = new bridge.set_pause_action_hash(bridge.action_id.set_pause, pause, metadata.nonce, this._contractId);
+    const metadata = new Metadata(this.contractId);
+    const meta = metadata.get()!;
+    const objToHash = new bridge.set_pause_action_hash(bridge.action_id.set_pause, pause, meta.nonce, this.contractId);
 
     const hash = System.hash(Crypto.multicodec.sha2_256, Protobuf.encode(objToHash, bridge.set_pause_action_hash.encode))!;
 
-    this.verifySignatures(hash, signatures, metadata.nb_validators);
+    this.verifySignatures(hash, signatures, meta.nb_validators);
 
-    const pausable = new Pausable(this._contractId);
+    const pausable = new Pausable(this.contractId);
     pausable.setPause(pause);
 
-    metadata.nonce += 1;
-    metadataSpace.put(metadata);
+    meta.nonce += 1;
+    metadata.put(meta);
 
     if (pause) {
       System.event('bridge.paused', new Uint8Array(0), []);
@@ -145,18 +139,18 @@ export class Bridge {
     args: bridge.transfer_tokens_arguments
   ): bridge.transfer_tokens_result {
     // cannot call when contract is paused
-    new Pausable(this._contractId).whenNotPaused();
+    new Pausable(this.contractId).whenNotPaused();
 
     // reentrancy guard
-    const reentrancyGuard = new ReentrancyGuard(this._contractId);
+    const reentrancyGuard = new ReentrancyGuard(this.contractId);
 
     const from = args.from!;
     const token = args.token!;
     const amount = args.amount;
     const recipient = args.recipient!;
 
-    const isSupportedToken = new Tokens(this._contractId).has(token);
-    const isSupportedWrappedToken = new WrappedTokens(this._contractId).has(token);
+    const isSupportedToken = new Tokens(this.contractId).has(token);
+    const isSupportedWrappedToken = new WrappedTokens(this.contractId).has(token);
     System.require(isSupportedToken || isSupportedWrappedToken, 'token is not supported');
 
     const tokenContract = new Token(token);
@@ -167,19 +161,19 @@ export class Bridge {
 
     if (isSupportedWrappedToken) {
       // transfer tokens to contract
-      System.require(tokenContract.transfer(from, this._contractId, bridgedAmount), 'could not transfer wrapped tokens to the bridge');
+      System.require(tokenContract.transfer(from, this.contractId, bridgedAmount), 'could not transfer wrapped tokens to the bridge');
 
       // and burn them...
-      System.require(tokenContract.burn(this._contractId, bridgedAmount), 'could not burn wrapped tokens');
+      System.require(tokenContract.burn(this.contractId, bridgedAmount), 'could not burn wrapped tokens');
     } else {
       // query own token balance before transfer
-      const balanceBefore = tokenContract.balanceOf(this._contractId);
+      const balanceBefore = tokenContract.balanceOf(this.contractId);
 
       // transfer tokens to contract
-      System.require(tokenContract.transfer(from, this._contractId, bridgedAmount), 'could not transfer tokens to the bridge');
+      System.require(tokenContract.transfer(from, this.contractId, bridgedAmount), 'could not transfer tokens to the bridge');
 
       // query own token balance after transfer
-      const balanceAfter = tokenContract.balanceOf(this._contractId);
+      const balanceAfter = tokenContract.balanceOf(this.contractId);
 
       // correct amount for potential transfer fees
       bridgedAmount = balanceAfter - balanceBefore;
@@ -205,10 +199,10 @@ export class Bridge {
     args: bridge.complete_transfer_arguments
   ): bridge.complete_transfer_result {
     // cannot call when contract is paused
-    new Pausable(this._contractId).whenNotPaused();
+    new Pausable(this.contractId).whenNotPaused();
 
     // reentrancy guard
-    const reentrancyGuard = new ReentrancyGuard(this._contractId);
+    const reentrancyGuard = new ReentrancyGuard(this.contractId);
 
     const transaction_id = args.transaction_id!;
     const token = args.token!;
@@ -216,22 +210,21 @@ export class Bridge {
     const value = args.value;
     const signatures = args.signatures;
 
-    const isSupportedToken = new Tokens(this._contractId).has(token);
-    const isSupportedWrappedToken = new WrappedTokens(this._contractId).has(token);
+    const isSupportedToken = new Tokens(this.contractId).has(token);
+    const isSupportedWrappedToken = new WrappedTokens(this.contractId).has(token);
     System.require(isSupportedToken || isSupportedWrappedToken, 'token is not supported');
 
-    const metadataSpace = new Metadata(this._contractId);
-
-    const objToHash = new bridge.complete_transfer_hash(bridge.action_id.complete_transfer, transaction_id, token, recipient, value, this._contractId);
+    const objToHash = new bridge.complete_transfer_hash(bridge.action_id.complete_transfer, transaction_id, token, recipient, value, this.contractId);
     const hash = System.hash(Crypto.multicodec.sha2_256, Protobuf.encode(objToHash, bridge.complete_transfer_hash.encode))!;
 
-    const transfers = new Transfers(this._contractId);
+    const transfers = new Transfers(this.contractId);
 
     System.require(!transfers.has(hash), '!transfer already completed');
     transfers.put(hash);
 
-    const metadata = metadataSpace.get();
-    this.verifySignatures(hash, signatures, metadata.nb_validators);
+    const metadata = new Metadata(this.contractId);
+    const meta = metadata.get()!;
+    this.verifySignatures(hash, signatures, meta.nb_validators);
 
     const tokenContract = new Token(token);
     // query decimals
@@ -245,7 +238,7 @@ export class Bridge {
       // mint wrapped asset
       System.require(tokenContract.mint(recipient, value), 'mint of new wrapped tokens failed');
     } else {
-      System.require(tokenContract.transfer(this._contractId, recipient, transferAmount), 'transfer of tokens failed');
+      System.require(tokenContract.transfer(this.contractId, recipient, transferAmount), 'transfer of tokens failed');
     }
 
     reentrancyGuard.reset();
@@ -259,24 +252,24 @@ export class Bridge {
     const signatures = args.signatures;
     const validator = args.validator!;
 
-    const metadataSpace = new Metadata(this._contractId);
-    const validators = new Validators(this._contractId);
+    const validators = new Validators(this.contractId);
 
     System.require(!validators.has(validator), 'Validator already exists');
 
-    const metadata = metadataSpace.get();
-    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.add_validator, validator, metadata.nonce, this._contractId);
+    const metadata = new Metadata(this.contractId);
+    const meta = metadata.get()!;
+    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.add_validator, validator, meta.nonce, this.contractId);
 
     const hash = System.hash(Crypto.multicodec.sha2_256, Protobuf.encode(objToHash, bridge.add_remove_action_hash.encode))!;
 
-    this.verifySignatures(hash, signatures, metadata.nb_validators);
+    this.verifySignatures(hash, signatures, meta.nb_validators);
 
     const validatorObj = validators.get(validator);
     validators.put(validator, validatorObj);
 
-    metadata.nb_validators += 1;
-    metadata.nonce += 1;
-    metadataSpace.put(metadata);
+    meta.nb_validators += 1;
+    meta.nonce += 1;
+    metadata.put(meta);
 
     System.event('bridge.validator.added', new Uint8Array(0), [validator]);
 
@@ -289,23 +282,23 @@ export class Bridge {
     const signatures = args.signatures;
     const validator = args.validator!;
 
-    const metadataSpace = new Metadata(this._contractId);
-    const validators = new Validators(this._contractId);
+    const validators = new Validators(this.contractId);
 
     System.require(validators.has(validator), 'Validator does not exist');
 
-    const metadata = metadataSpace.get();
-    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.remove_validator, validator, metadata.nonce, this._contractId);
+    const metadata = new Metadata(this.contractId);
+    const meta = metadata.get()!;
+    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.remove_validator, validator, meta.nonce, this.contractId);
 
     const hash = System.hash(Crypto.multicodec.sha2_256, Protobuf.encode(objToHash, bridge.add_remove_action_hash.encode))!;
 
-    this.verifySignatures(hash, signatures, metadata.nb_validators);
+    this.verifySignatures(hash, signatures, meta.nb_validators);
 
     validators.remove(validator);
 
-    metadata.nb_validators -= 1;
-    metadata.nonce += 1;
-    metadataSpace.put(metadata);
+    meta.nb_validators -= 1;
+    meta.nonce += 1;
+    metadata.put(meta);
 
     System.event('bridge.validator.removed', new Uint8Array(0), [validator]);
 
@@ -318,22 +311,22 @@ export class Bridge {
     const signatures = args.signatures;
     const token = args.token!;
 
-    const tokens = new Tokens(this._contractId);
+    const tokens = new Tokens(this.contractId);
     System.require(!tokens.has(token), 'Token already exists');
 
-    const metadataSpace = new Metadata(this._contractId);
-    const metadata = metadataSpace.get();
-    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.add_supported_token, token, metadata.nonce, this._contractId);
+    const metadata = new Metadata(this.contractId);
+    const meta = metadata.get()!;
+    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.add_supported_token, token, meta.nonce, this.contractId);
 
     const hash = System.hash(Crypto.multicodec.sha2_256, Protobuf.encode(objToHash, bridge.add_remove_action_hash.encode))!;
 
-    this.verifySignatures(hash, signatures, metadata.nb_validators);
+    this.verifySignatures(hash, signatures, meta.nb_validators);
 
     const tokenObj = tokens.get(token);
     tokens.put(token, tokenObj);
 
-    metadata.nonce += 1;
-    metadataSpace.put(metadata);
+    meta.nonce += 1;
+    metadata.put(meta);
 
     System.event('bridge.token.added', new Uint8Array(0), [token]);
 
@@ -346,21 +339,21 @@ export class Bridge {
     const signatures = args.signatures;
     const token = args.token!;
 
-    const tokens = new Tokens(this._contractId);
+    const tokens = new Tokens(this.contractId);
     System.require(tokens.has(token), 'Token does not exist');
 
-    const metadataSpace = new Metadata(this._contractId);
-    const metadata = metadataSpace.get();
-    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.remove_supported_token, token, metadata.nonce, this._contractId);
+    const metadata = new Metadata(this.contractId);
+    const meta = metadata.get()!;
+    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.remove_supported_token, token, meta.nonce, this.contractId);
 
     const hash = System.hash(Crypto.multicodec.sha2_256, Protobuf.encode(objToHash, bridge.add_remove_action_hash.encode))!;
 
-    this.verifySignatures(hash, signatures, metadata.nb_validators);
+    this.verifySignatures(hash, signatures, meta.nb_validators);
 
     tokens.remove(token);
 
-    metadata.nonce += 1;
-    metadataSpace.put(metadata);
+    meta.nonce += 1;
+    metadata.put(meta);
 
     System.event('bridge.token.removed', new Uint8Array(0), [token]);
 
@@ -373,22 +366,22 @@ export class Bridge {
     const signatures = args.signatures;
     const token = args.token!;
 
-    const wrappedTokens = new WrappedTokens(this._contractId);
+    const wrappedTokens = new WrappedTokens(this.contractId);
     System.require(!wrappedTokens.has(token), 'Token already exists');
 
-    const metadataSpace = new Metadata(this._contractId);
-    const metadata = metadataSpace.get();
-    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.add_supported_wrapped_token, token, metadata.nonce, this._contractId);
+    const metadata = new Metadata(this.contractId);
+    const meta = metadata.get()!;
+    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.add_supported_wrapped_token, token, meta.nonce, this.contractId);
 
     const hash = System.hash(Crypto.multicodec.sha2_256, Protobuf.encode(objToHash, bridge.add_remove_action_hash.encode))!;
 
-    this.verifySignatures(hash, signatures, metadata.nb_validators);
+    this.verifySignatures(hash, signatures, meta.nb_validators);
 
     const tokenObj = wrappedTokens.get(token);
     wrappedTokens.put(token, tokenObj);
 
-    metadata.nonce += 1;
-    metadataSpace.put(metadata);
+    meta.nonce += 1;
+    metadata.put(meta);
 
     System.event('bridge.wrapped_token.added', new Uint8Array(0), [token]);
 
@@ -403,21 +396,21 @@ export class Bridge {
     const signatures = args.signatures;
     const token = args.token!;
 
-    const wrappedTokens = new WrappedTokens(this._contractId);
+    const wrappedTokens = new WrappedTokens(this.contractId);
     System.require(wrappedTokens.has(token), 'Token does not exist');
 
-    const metadataSpace = new Metadata(this._contractId);
-    const metadata = metadataSpace.get();
-    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.remove_supported_wrapped_token, token, metadata.nonce, this._contractId);
+    const metadata = new Metadata(this.contractId);
+    const meta = metadata.get()!;
+    const objToHash = new bridge.add_remove_action_hash(bridge.action_id.remove_supported_wrapped_token, token, meta.nonce, this.contractId);
 
     const hash = System.hash(Crypto.multicodec.sha2_256, Protobuf.encode(objToHash, bridge.add_remove_action_hash.encode))!;
 
-    this.verifySignatures(hash, signatures, metadata.nb_validators);
+    this.verifySignatures(hash, signatures, meta.nb_validators);
 
     wrappedTokens.remove(token);
 
-    metadata.nonce += 1;
-    metadataSpace.put(metadata);
+    meta.nonce += 1;
+    metadata.put(meta);
 
     System.event('bridge.wrapped_token.removed', new Uint8Array(0), [token]);
 
@@ -430,7 +423,7 @@ export class Bridge {
       'quorum not met'
     );
 
-    const validators = new Validators(this._contractId);
+    const validators = new Validators(this.contractId);
 
     const validatorAlreadySigned = new Map<string, boolean>();
 

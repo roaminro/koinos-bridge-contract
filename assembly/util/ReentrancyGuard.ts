@@ -1,4 +1,4 @@
-import { chain, System } from "koinos-sdk-as";
+import { chain, System } from '@koinos/sdk-as';
 
 const REENNTRACY_GUARD_SPACE_ID = 100001;
 const REENNTRACY_GUARD_KEY = new Uint8Array(0);

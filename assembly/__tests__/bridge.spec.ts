@@ -1,4 +1,4 @@
-import { MockVM, Base58, Arrays, StringBytes, System, Base64 } from "koinos-sdk-as";
+import { MockVM, Base58, Arrays, StringBytes, System, Base64 } from "@koinos/sdk-as";
 import { Bridge } from "../Bridge";
 import { bridge } from "../proto/bridge";
 
@@ -69,9 +69,8 @@ describe('bridge', () => {
 
       b.initialize(initArgs);
     }).toThrow();
-
-    expect(MockVM.getLogs()).toStrictEqual(['Validators required']);
-    MockVM.clearLogs();
+    
+    expect(MockVM.getErrorMessage()).toStrictEqual('Validators required');
 
     // not unique validators
     expect(() => {
@@ -89,8 +88,7 @@ describe('bridge', () => {
       b.initialize(initArgs);
     }).toThrow();
 
-    expect(MockVM.getLogs()).toStrictEqual(['Validator not unique']);
-    MockVM.clearLogs();
+    expect(MockVM.getErrorMessage()).toStrictEqual('Validator not unique');
 
     // already initialized
     expect(() => {
@@ -102,8 +100,7 @@ describe('bridge', () => {
       b.initialize(initArgs);
     }).toThrow();
 
-    expect(MockVM.getLogs()).toStrictEqual(['Contract already initialized']);
-    MockVM.clearLogs();
+    expect(MockVM.getErrorMessage()).toStrictEqual('Contract already initialized');
   });
 
   it('should add support for token', () => {
@@ -166,8 +163,7 @@ describe('bridge', () => {
       b.add_supported_token(addTokenArgs);
     }).toThrow();
 
-    expect(MockVM.getLogs()).toStrictEqual(['1M7YfL49EK4NGs9ZYKNTeBx9HTMEz3Fh2S is not a validator']);
-    MockVM.clearLogs();
+    expect(MockVM.getErrorMessage()).toStrictEqual('1M7YfL49EK4NGs9ZYKNTeBx9HTMEz3Fh2S is not a validator');
 
     expect(() => {
       const b = new Bridge();
@@ -190,8 +186,7 @@ describe('bridge', () => {
       b.add_supported_token(addTokenArgs);
     }).toThrow();
 
-    expect(MockVM.getLogs()).toStrictEqual(['validator 1BTG2Xo4EgMMchMSytW3bmyY75Ce54oCaw already signed']);
-    MockVM.clearLogs();
+    expect(MockVM.getErrorMessage()).toStrictEqual('validator 1BTG2Xo4EgMMchMSytW3bmyY75Ce54oCaw already signed');
 
     expect(() => {
       const b = new Bridge();
@@ -210,8 +205,7 @@ describe('bridge', () => {
       b.add_supported_token(addTokenArgs);
     }).toThrow();
 
-    expect(MockVM.getLogs()).toStrictEqual(['quorum not met']);
-    MockVM.clearLogs();
+    expect(MockVM.getErrorMessage()).toStrictEqual('quorum not met');
 
     const signatures = convertSigsToBytes([
       'H5lFRpLkZXaoaWf0gc2kcOKSPxVv3UKTboBNAnM3q6RwNgJ4pYtYnfujKr+vf1y1NPGe3Dt0IPEEV9zyoxJQaB8=',
@@ -249,8 +243,7 @@ describe('bridge', () => {
       b.add_supported_token(addTokenArgs);
     }).toThrow();
 
-    expect(MockVM.getLogs()).toStrictEqual(['Token already exists']);
-    MockVM.clearLogs();
+    expect(MockVM.getErrorMessage()).toStrictEqual('Token already exists');
   });
 
   it('should add support for wrapped token', () => {
@@ -313,8 +306,7 @@ describe('bridge', () => {
       b.add_supported_wrapped_token(addTokenArgs);
     }).toThrow();
 
-    expect(MockVM.getLogs()).toStrictEqual(['16CAaFoNPh9yZmbzod7NXAymFmxeU1EKnQ is not a validator']);
-    MockVM.clearLogs();
+    expect(MockVM.getErrorMessage()).toStrictEqual('16CAaFoNPh9yZmbzod7NXAymFmxeU1EKnQ is not a validator');
 
     expect(() => {
       const b = new Bridge();
@@ -337,8 +329,7 @@ describe('bridge', () => {
       b.add_supported_wrapped_token(addTokenArgs);
     }).toThrow();
 
-    expect(MockVM.getLogs()).toStrictEqual(['validator 1FTx6dfpvSpyToKmkdAAQsVHW6DsyqSeHZ already signed']);
-    MockVM.clearLogs();
+    expect(MockVM.getErrorMessage()).toStrictEqual('validator 1FTx6dfpvSpyToKmkdAAQsVHW6DsyqSeHZ already signed');
 
     expect(() => {
       const b = new Bridge();
@@ -357,8 +348,7 @@ describe('bridge', () => {
       b.add_supported_wrapped_token(addTokenArgs);
     }).toThrow();
 
-    expect(MockVM.getLogs()).toStrictEqual(['quorum not met']);
-    MockVM.clearLogs();
+    expect(MockVM.getErrorMessage()).toStrictEqual('quorum not met');
 
     const signatures = convertSigsToBytes([
       'H80QLYEdEJQ+sCKZBmEi44NvbIRiigJJB/r8Vu6YmNGVbk63hlrNxk6u+a7ZqqZLKUCSyYFpqtK4Fv51nENKSQE=',
@@ -396,8 +386,7 @@ describe('bridge', () => {
       b.add_supported_wrapped_token(addTokenArgs);
     }).toThrow();
 
-    expect(MockVM.getLogs()).toStrictEqual(['Token already exists']);
-    MockVM.clearLogs();
+    expect(MockVM.getErrorMessage()).toStrictEqual('Token already exists');
   });
 
   it('should add a validator', () => {
@@ -460,8 +449,7 @@ describe('bridge', () => {
       b.add_validator(addValidatorArgs);
     }).toThrow();
 
-    expect(MockVM.getLogs()).toStrictEqual(['15Q6zC8Q4mHy3AoCKb2bEfLaGrzuUGjtGj is not a validator']);
-    MockVM.clearLogs();
+    expect(MockVM.getErrorMessage()).toStrictEqual('15Q6zC8Q4mHy3AoCKb2bEfLaGrzuUGjtGj is not a validator');
 
     expect(() => {
       const b = new Bridge();
@@ -484,8 +472,7 @@ describe('bridge', () => {
       b.add_validator(addValidatorArgs);
     }).toThrow();
 
-    expect(MockVM.getLogs()).toStrictEqual(['validator 1FTx6dfpvSpyToKmkdAAQsVHW6DsyqSeHZ already signed']);
-    MockVM.clearLogs();
+    expect(MockVM.getErrorMessage()).toStrictEqual('validator 1FTx6dfpvSpyToKmkdAAQsVHW6DsyqSeHZ already signed');
 
     expect(() => {
       const b = new Bridge();
@@ -504,8 +491,7 @@ describe('bridge', () => {
       b.add_validator(addValidatorArgs);
     }).toThrow();
 
-    expect(MockVM.getLogs()).toStrictEqual(['quorum not met']);
-    MockVM.clearLogs();
+    expect(MockVM.getErrorMessage()).toStrictEqual('quorum not met');
 
     const signatures = convertSigsToBytes([
       'H45uKmYRzh7dx1AFj6BcntFR2jIP/pWwY5E75RU1tOTOPn/uqqtv7VRYrB2h3yPP9x2Ub0zHfdK6Z24hML0m7cg=',
@@ -543,7 +529,6 @@ describe('bridge', () => {
       b.add_validator(addValidatorArgs);
     }).toThrow();
 
-    expect(MockVM.getLogs()).toStrictEqual(['Validator already exists']);
-    MockVM.clearLogs();
+    expect(MockVM.getErrorMessage()).toStrictEqual('Validator already exists');
   });
 });

@@ -1,4 +1,4 @@
-import { chain, System } from "koinos-sdk-as";
+import { chain, System } from "@koinos/sdk-as";
 
 const PAUSABLE_SPACE_ID = 100002;
 const PAUSABLE_KEY = new Uint8Array(0);

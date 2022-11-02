@@ -70,11 +70,15 @@ export namespace bridge {
         writer.bytes(unique_name_start);
       }
 
-      writer.uint32(16);
-      writer.int32(message.limit);
+      if (message.limit != 0) {
+        writer.uint32(16);
+        writer.int32(message.limit);
+      }
 
-      writer.uint32(24);
-      writer.int32(message.direction);
+      if (message.direction != 0) {
+        writer.uint32(24);
+        writer.int32(message.direction);
+      }
     }
 
     static decode(reader: Reader, length: i32): get_validators_arguments {
@@ -131,11 +135,15 @@ export namespace bridge {
         writer.bytes(unique_name_start);
       }
 
-      writer.uint32(16);
-      writer.int32(message.limit);
+      if (message.limit != 0) {
+        writer.uint32(16);
+        writer.int32(message.limit);
+      }
 
-      writer.uint32(24);
-      writer.uint32(message.direction);
+      if (message.direction != 0) {
+        writer.uint32(24);
+        writer.uint32(message.direction);
+      }
     }
 
     static decode(reader: Reader, length: i32): get_supported_tokens_arguments {
@@ -192,11 +200,15 @@ export namespace bridge {
         writer.bytes(unique_name_start);
       }
 
-      writer.uint32(16);
-      writer.int32(message.limit);
+      if (message.limit != 0) {
+        writer.uint32(16);
+        writer.int32(message.limit);
+      }
 
-      writer.uint32(24);
-      writer.uint32(message.direction);
+      if (message.direction != 0) {
+        writer.uint32(24);
+        writer.uint32(message.direction);
+      }
     }
 
     static decode(
@@ -316,8 +328,10 @@ export namespace bridge {
         }
       }
 
-      writer.uint32(16);
-      writer.bool(message.pause);
+      if (message.pause != false) {
+        writer.uint32(16);
+        writer.bool(message.pause);
+      }
     }
 
     static decode(reader: Reader, length: i32): set_pause_arguments {
@@ -390,8 +404,10 @@ export namespace bridge {
         writer.bytes(unique_name_token);
       }
 
-      writer.uint32(24);
-      writer.uint64(message.amount);
+      if (message.amount != 0) {
+        writer.uint32(24);
+        writer.uint64(message.amount);
+      }
 
       const unique_name_recipient = message.recipient;
       if (unique_name_recipient !== null) {
@@ -493,8 +509,10 @@ export namespace bridge {
         writer.bytes(unique_name_recipient);
       }
 
-      writer.uint32(32);
-      writer.uint64(message.value);
+      if (message.value != 0) {
+        writer.uint32(32);
+        writer.uint64(message.value);
+      }
 
       const unique_name_signatures = message.signatures;
       if (unique_name_signatures.length !== 0) {
@@ -1091,8 +1109,10 @@ export namespace bridge {
         writer.bytes(unique_name_token);
       }
 
-      writer.uint32(24);
-      writer.uint64(message.amount);
+      if (message.amount != 0) {
+        writer.uint32(24);
+        writer.uint64(message.amount);
+      }
 
       const unique_name_recipient = message.recipient;
       if (unique_name_recipient !== null) {
@@ -1153,8 +1173,10 @@ export namespace bridge {
 
   export class add_remove_action_hash {
     static encode(message: add_remove_action_hash, writer: Writer): void {
-      writer.uint32(8);
-      writer.int32(message.action);
+      if (message.action != 0) {
+        writer.uint32(8);
+        writer.int32(message.action);
+      }
 
       const unique_name_address = message.address;
       if (unique_name_address !== null) {
@@ -1162,8 +1184,10 @@ export namespace bridge {
         writer.bytes(unique_name_address);
       }
 
-      writer.uint32(24);
-      writer.uint64(message.nonce);
+      if (message.nonce != 0) {
+        writer.uint32(24);
+        writer.uint64(message.nonce);
+      }
 
       const unique_name_contract_id = message.contract_id;
       if (unique_name_contract_id !== null) {
@@ -1224,14 +1248,20 @@ export namespace bridge {
 
   export class set_pause_action_hash {
     static encode(message: set_pause_action_hash, writer: Writer): void {
-      writer.uint32(8);
-      writer.int32(message.action);
+      if (message.action != 0) {
+        writer.uint32(8);
+        writer.int32(message.action);
+      }
 
-      writer.uint32(16);
-      writer.bool(message.pause);
+      if (message.pause != false) {
+        writer.uint32(16);
+        writer.bool(message.pause);
+      }
 
-      writer.uint32(24);
-      writer.uint64(message.nonce);
+      if (message.nonce != 0) {
+        writer.uint32(24);
+        writer.uint64(message.nonce);
+      }
 
       const unique_name_contract_id = message.contract_id;
       if (unique_name_contract_id !== null) {
@@ -1292,8 +1322,10 @@ export namespace bridge {
 
   export class complete_transfer_hash {
     static encode(message: complete_transfer_hash, writer: Writer): void {
-      writer.uint32(8);
-      writer.int32(message.action);
+      if (message.action != 0) {
+        writer.uint32(8);
+        writer.int32(message.action);
+      }
 
       const unique_name_transaction_id = message.transaction_id;
       if (unique_name_transaction_id !== null) {
@@ -1313,8 +1345,10 @@ export namespace bridge {
         writer.bytes(unique_name_recipient);
       }
 
-      writer.uint32(40);
-      writer.uint64(message.amount);
+      if (message.amount != 0) {
+        writer.uint32(40);
+        writer.uint64(message.amount);
+      }
 
       const unique_name_contract_id = message.contract_id;
       if (unique_name_contract_id !== null) {
@@ -1390,14 +1424,20 @@ export namespace bridge {
   @unmanaged
   export class metadata_object {
     static encode(message: metadata_object, writer: Writer): void {
-      writer.uint32(8);
-      writer.bool(message.initialized);
+      if (message.initialized != false) {
+        writer.uint32(8);
+        writer.bool(message.initialized);
+      }
 
-      writer.uint32(16);
-      writer.uint64(message.nonce);
+      if (message.nonce != 0) {
+        writer.uint32(16);
+        writer.uint64(message.nonce);
+      }
 
-      writer.uint32(24);
-      writer.uint32(message.nb_validators);
+      if (message.nb_validators != 0) {
+        writer.uint32(24);
+        writer.uint32(message.nb_validators);
+      }
     }
 
     static decode(reader: Reader, length: i32): metadata_object {

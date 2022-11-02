@@ -1,18 +1,17 @@
-import { System, Protobuf, authority } from "koinos-sdk-as";
+import { System, Protobuf, authority } from "@koinos/sdk-as";
 import { Bridge as ContractClass } from "./Bridge";
 import { bridge as ProtoNamespace } from "./proto/bridge";
 
 export function main(): i32 {
-  const entryPoint = System.getEntryPoint();
-  const rdbuf = System.getContractArguments();
+  const contractArgs = System.getArguments();
   let retbuf = new Uint8Array(1024);
 
   const c = new ContractClass();
 
-  switch (entryPoint) {
+  switch (contractArgs.entry_point) {
     case 0x470ebe82: {
       const args = Protobuf.decode<ProtoNamespace.initialize_arguments>(
-        rdbuf,
+        contractArgs.args,
         ProtoNamespace.initialize_arguments.decode
       );
       const res = c.initialize(args);
@@ -22,7 +21,7 @@ export function main(): i32 {
 
     case 0x50068f92: {
       const args = Protobuf.decode<ProtoNamespace.get_validators_arguments>(
-        rdbuf,
+        contractArgs.args,
         ProtoNamespace.get_validators_arguments.decode
       );
       const res = c.get_validators(args);
@@ -33,7 +32,7 @@ export function main(): i32 {
     case 0xc8e36f04: {
       const args =
         Protobuf.decode<ProtoNamespace.get_supported_tokens_arguments>(
-          rdbuf,
+          contractArgs.args,
           ProtoNamespace.get_supported_tokens_arguments.decode
         );
       const res = c.get_supported_tokens(args);
@@ -44,7 +43,7 @@ export function main(): i32 {
     case 0x2f540a24: {
       const args =
         Protobuf.decode<ProtoNamespace.get_supported_wrapped_tokens_arguments>(
-          rdbuf,
+          contractArgs.args,
           ProtoNamespace.get_supported_wrapped_tokens_arguments.decode
         );
       const res = c.get_supported_wrapped_tokens(args);
@@ -54,7 +53,7 @@ export function main(): i32 {
 
     case 0xfcf7a68f: {
       const args = Protobuf.decode<ProtoNamespace.get_metadata_arguments>(
-        rdbuf,
+        contractArgs.args,
         ProtoNamespace.get_metadata_arguments.decode
       );
       const res = c.get_metadata(args);
@@ -64,7 +63,7 @@ export function main(): i32 {
 
     case 0x39a2c4e4: {
       const args = Protobuf.decode<ProtoNamespace.set_pause_arguments>(
-        rdbuf,
+        contractArgs.args,
         ProtoNamespace.set_pause_arguments.decode
       );
       const res = c.set_pause(args);
@@ -74,7 +73,7 @@ export function main(): i32 {
 
     case 0x1d2e4ff3: {
       const args = Protobuf.decode<ProtoNamespace.transfer_tokens_arguments>(
-        rdbuf,
+        contractArgs.args,
         ProtoNamespace.transfer_tokens_arguments.decode
       );
       const res = c.transfer_tokens(args);
@@ -87,7 +86,7 @@ export function main(): i32 {
 
     case 0x4d4d3ef9: {
       const args = Protobuf.decode<ProtoNamespace.complete_transfer_arguments>(
-        rdbuf,
+        contractArgs.args,
         ProtoNamespace.complete_transfer_arguments.decode
       );
       const res = c.complete_transfer(args);
@@ -100,7 +99,7 @@ export function main(): i32 {
 
     case 0xfc15f1be: {
       const args = Protobuf.decode<ProtoNamespace.add_validator_arguments>(
-        rdbuf,
+        contractArgs.args,
         ProtoNamespace.add_validator_arguments.decode
       );
       const res = c.add_validator(args);
@@ -110,7 +109,7 @@ export function main(): i32 {
 
     case 0xff61ff26: {
       const args = Protobuf.decode<ProtoNamespace.remove_validator_arguments>(
-        rdbuf,
+        contractArgs.args,
         ProtoNamespace.remove_validator_arguments.decode
       );
       const res = c.remove_validator(args);
@@ -124,7 +123,7 @@ export function main(): i32 {
     case 0xc5ce0923: {
       const args =
         Protobuf.decode<ProtoNamespace.add_supported_token_arguments>(
-          rdbuf,
+          contractArgs.args,
           ProtoNamespace.add_supported_token_arguments.decode
         );
       const res = c.add_supported_token(args);
@@ -138,7 +137,7 @@ export function main(): i32 {
     case 0x2d3a597e: {
       const args =
         Protobuf.decode<ProtoNamespace.remove_supported_token_arguments>(
-          rdbuf,
+          contractArgs.args,
           ProtoNamespace.remove_supported_token_arguments.decode
         );
       const res = c.remove_supported_token(args);
@@ -152,7 +151,7 @@ export function main(): i32 {
     case 0x5457c617: {
       const args =
         Protobuf.decode<ProtoNamespace.add_supported_wrapped_token_arguments>(
-          rdbuf,
+          contractArgs.args,
           ProtoNamespace.add_supported_wrapped_token_arguments.decode
         );
       const res = c.add_supported_wrapped_token(args);
@@ -166,7 +165,7 @@ export function main(): i32 {
     case 0x927c7515: {
       const args =
         Protobuf.decode<ProtoNamespace.remove_supported_wrapped_token_arguments>(
-          rdbuf,
+          contractArgs.args,
           ProtoNamespace.remove_supported_wrapped_token_arguments.decode
         );
       const res = c.remove_supported_wrapped_token(args);
@@ -178,13 +177,11 @@ export function main(): i32 {
     }
 
     default:
-      System.exitContract(1);
+      System.exit(1);
       break;
   }
 
-  System.setContractResult(retbuf);
-
-  System.exitContract(0);
+  System.exit(0, retbuf);
   return 0;
 }
 

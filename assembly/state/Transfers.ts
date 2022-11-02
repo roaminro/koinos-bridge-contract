@@ -1,4 +1,4 @@
-import { chain, System } from 'koinos-sdk-as';
+import { chain, System } from '@koinos/sdk-as';
 
 const TOKENS_SPACE_ID = 103;
 
@@ -19,7 +19,7 @@ export class Transfers {
     return System.getBytes(this.space, key);
   }
 
-  put(key: Uint8Array): i32 {
-    return System.putBytes(this.space, key, new Uint8Array(0));
+  put(key: Uint8Array): void {
+    System.putBytes(this.space, key, new Uint8Array(0));
   }
 }

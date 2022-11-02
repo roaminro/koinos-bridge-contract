@@ -4,98 +4,98 @@
             "argument": "bridge.initialize_arguments",
             "return": "bridge.initialize_result",
             "description": "Initialize contract",
-            "entry_point": "0x470ebe82",
+            "entry-point": "0x470ebe82",
             "read-only": false
         },
         "get_validators": {
             "argument": "bridge.get_validators_arguments",
             "return": "bridge.repeated_addresses",
             "description": "Get validators",
-            "entry_point": "0x50068f92",
+            "entry-point": "0x50068f92",
             "read-only": true
         },
         "get_supported_tokens": {
             "argument": "bridge.get_supported_tokens_arguments",
             "return": "bridge.repeated_addresses",
             "description": "Get supported tokens",
-            "entry_point": "0xc8e36f04",
+            "entry-point": "0xc8e36f04",
             "read-only": true
         },
         "get_supported_wrapped_tokens": {
             "argument": "bridge.get_supported_wrapped_tokens_arguments",
             "return": "bridge.repeated_addresses",
             "description": "Get supported wrapped tokens",
-            "entry_point": "0x2f540a24",
+            "entry-point": "0x2f540a24",
             "read-only": true
         },
         "get_metadata": {
             "argument": "bridge.get_metadata_arguments",
             "return": "bridge.metadata_object",
             "description": "Get metadata",
-            "entry_point": "0xfcf7a68f",
+            "entry-point": "0xfcf7a68f",
             "read-only": true
         },
         "set_pause": {
             "argument": "bridge.set_pause_arguments",
             "return": "bridge.set_pause_result",
             "description": "Pause/Unpause bridge",
-            "entry_point": "0x39a2c4e4",
+            "entry-point": "0x39a2c4e4",
             "read-only": false
         },
         "transfer_tokens": {
             "argument": "bridge.transfer_tokens_arguments",
             "return": "bridge.transfer_tokens_result",
             "description": "Transfer tokens",
-            "entry_point": "0x1d2e4ff3",
+            "entry-point": "0x1d2e4ff3",
             "read-only": false
         },
         "complete_transfer": {
             "argument": "bridge.complete_transfer_arguments",
             "return": "bridge.complete_transfer_result",
             "description": "Complete a bridge transfer",
-            "entry_point": "0x4d4d3ef9",
+            "entry-point": "0x4d4d3ef9",
             "read-only": false
         },
         "add_validator": {
             "argument": "bridge.add_validator_arguments",
             "return": "bridge.add_validator_result",
             "description": "Add a new validator",
-            "entry_point": "0xfc15f1be",
+            "entry-point": "0xfc15f1be",
             "read-only": false
         },
         "remove_validator": {
             "argument": "bridge.remove_validator_arguments",
             "return": "bridge.remove_validator_result",
             "description": "Remove an existing validator",
-            "entry_point": "0xff61ff26",
+            "entry-point": "0xff61ff26",
             "read-only": false
         },
         "add_supported_token": {
             "argument": "bridge.add_supported_token_arguments",
             "return": "bridge.add_supported_token_result",
             "description": "Add support for a new token",
-            "entry_point": "0xc5ce0923",
+            "entry-point": "0xc5ce0923",
             "read-only": false
         },
         "remove_supported_token": {
             "argument": "bridge.remove_supported_token_arguments",
             "return": "bridge.remove_supported_token_result",
             "description": "Remove an existing supported token",
-            "entry_point": "0x2d3a597e",
+            "entry-point": "0x2d3a597e",
             "read-only": false
         },
         "add_supported_wrapped_token": {
             "argument": "bridge.add_supported_wrapped_token_arguments",
             "return": "bridge.add_supported_wrapped_token_result",
             "description": "Add support for a new wrapped token",
-            "entry_point": "0x5457c617",
+            "entry-point": "0x5457c617",
             "read-only": false
         },
         "remove_supported_wrapped_token": {
             "argument": "bridge.remove_supported_wrapped_token_arguments",
             "return": "bridge.remove_supported_wrapped_token_result",
             "description": "Remove an existing supported token",
-            "entry_point": "0x927c7515",
+            "entry-point": "0x927c7515",
             "read-only": false
         }
     },
