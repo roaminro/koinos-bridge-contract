@@ -156,12 +156,15 @@ message remove_supported_wrapped_token_result {
 }
 
 // Events
-message transfer_tokens_event {
+message tokens_locked_event {
   bytes from = 1 [(koinos.btype) = ADDRESS];
   bytes token = 2 [(koinos.btype) = CONTRACT_ID];
   uint64 amount = 3 [jstype = JS_STRING];
   string recipient = 4;
-  uint64 blocktime = 5 [jstype = JS_STRING];
+}
+
+message transfer_completed_event {
+  bytes tx_id = 1 [(koinos.btype) = TRANSACTION_ID];
 }
 
 enum action_id {

@@ -189,8 +189,8 @@ export class Bridge {
       'normalizedAmount amount must be greater than 0'
     );
 
-    const event = new bridge.transfer_tokens_event(from, token, normalizedAmount, recipient, System.getHeadInfo().head_block_time);
-    System.event('bridge.transfer_tokens_event', Protobuf.encode(event, bridge.transfer_tokens_event.encode), [from]);
+    const event = new bridge.tokens_locked_event(from, token, normalizedAmount, recipient);
+    System.event('bridge.tokens_locked_event', Protobuf.encode(event, bridge.tokens_locked_event.encode), [from]);
 
     reentrancyGuard.reset();
 
@@ -223,7 +223,7 @@ export class Bridge {
 
     const transfers = new Transfers(this.contractId);
 
-    System.require(!transfers.has(hash), '!transfer already completed');
+    System.require(!transfers.has(hash), 'transfer already completed');
     transfers.put(hash);
 
     const metadata = new Metadata(this.contractId);
@@ -244,6 +244,9 @@ export class Bridge {
     } else {
       System.require(tokenContract.transfer(this.contractId, recipient, transferAmount), 'transfer of tokens failed');
     }
+
+    const event = new bridge.transfer_completed_event(transaction_id);
+    System.event('bridge.transfer_completed_event', Protobuf.encode(event, bridge.transfer_completed_event.encode), [recipient]);
 
     reentrancyGuard.reset();
 

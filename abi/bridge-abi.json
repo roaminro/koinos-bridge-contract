@@ -445,7 +445,7 @@
                     "remove_supported_wrapped_token_result": {
                         "fields": {}
                     },
-                    "transfer_tokens_event": {
+                    "tokens_locked_event": {
                         "fields": {
                             "from": {
                                 "type": "bytes",
@@ -471,12 +471,16 @@
                             "recipient": {
                                 "type": "string",
                                 "id": 4
-                            },
-                            "blocktime": {
-                                "type": "uint64",
-                                "id": 5,
+                            }
+                        }
+                    },
+                    "transfer_completed_event": {
+                        "fields": {
+                            "txId": {
+                                "type": "bytes",
+                                "id": 1,
                                 "options": {
-                                    "jstype": "JS_STRING"
+                                    "(koinos.btype)": "TRANSACTION_ID"
                                 }
                             }
                         }

@@ -1194,8 +1194,8 @@ export namespace bridge {
     constructor() {}
   }
 
-  export class transfer_tokens_event {
-    static encode(message: transfer_tokens_event, writer: Writer): void {
+  export class tokens_locked_event {
+    static encode(message: tokens_locked_event, writer: Writer): void {
       const unique_name_from = message.from;
       if (unique_name_from !== null) {
         writer.uint32(10);
@@ -1218,16 +1218,11 @@ export namespace bridge {
         writer.uint32(34);
         writer.string(unique_name_recipient);
       }
-
-      if (message.blocktime != 0) {
-        writer.uint32(40);
-        writer.uint64(message.blocktime);
-      }
     }
 
-    static decode(reader: Reader, length: i32): transfer_tokens_event {
+    static decode(reader: Reader, length: i32): tokens_locked_event {
       const end: usize = length < 0 ? reader.end : reader.ptr + length;
-      const message = new transfer_tokens_event();
+      const message = new tokens_locked_event();
 
       while (reader.ptr < end) {
         const tag = reader.uint32();
@@ -1248,10 +1243,6 @@ export namespace bridge {
             message.recipient = reader.string();
             break;
 
-          case 5:
-            message.blocktime = reader.uint64();
-            break;
-
           default:
             reader.skipType(tag & 7);
             break;
@@ -1265,20 +1256,53 @@ export namespace bridge {
     token: Uint8Array | null;
     amount: u64;
     recipient: string | null;
-    blocktime: u64;
 
     constructor(
       from: Uint8Array | null = null,
       token: Uint8Array | null = null,
       amount: u64 = 0,
-      recipient: string | null = null,
-      blocktime: u64 = 0
+      recipient: string | null = null
     ) {
       this.from = from;
       this.token = token;
       this.amount = amount;
       this.recipient = recipient;
-      this.blocktime = blocktime;
+    }
+  }
+
+  export class transfer_completed_event {
+    static encode(message: transfer_completed_event, writer: Writer): void {
+      const unique_name_tx_id = message.tx_id;
+      if (unique_name_tx_id !== null) {
+        writer.uint32(10);
+        writer.bytes(unique_name_tx_id);
+      }
+    }
+
+    static decode(reader: Reader, length: i32): transfer_completed_event {
+      const end: usize = length < 0 ? reader.end : reader.ptr + length;
+      const message = new transfer_completed_event();
+
+      while (reader.ptr < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1:
+            message.tx_id = reader.bytes();
+            break;
+
+          default:
+            reader.skipType(tag & 7);
+            break;
+        }
+      }
+
+      return message;
+    }
+
+    tx_id: Uint8Array | null;
+
+    constructor(tx_id: Uint8Array | null = null) {
+      this.tx_id = tx_id;
     }
   }
 
