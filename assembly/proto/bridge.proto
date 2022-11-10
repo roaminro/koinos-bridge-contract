@@ -8,11 +8,9 @@ import "koinos/options.proto";
 
 // @description Initialize contract
 // @read-only false
+// @result empty_object
 message initialize_arguments {
   repeated bytes initial_validators = 1 [(koinos.btype) = ADDRESS];
-}
-
-message initialize_result {
 }
 
 // @description Get validators
@@ -54,17 +52,16 @@ message get_metadata_arguments {
 
 // @description Pause/Unpause bridge
 // @read-only false
+// @result empty_object
 message set_pause_arguments {
   repeated bytes signatures = 1;
   bool pause = 2;
   uint64 expiration = 3 [jstype = JS_STRING];
 }
 
-message set_pause_result {
-}
-
 // @description Transfer tokens
 // @read-only false
+// @result empty_object
 message transfer_tokens_arguments {
   bytes from = 1 [(koinos.btype) = ADDRESS];
   bytes token = 2 [(koinos.btype) = CONTRACT_ID];
@@ -72,11 +69,9 @@ message transfer_tokens_arguments {
   string recipient = 4;
 }
 
-message transfer_tokens_result {
-}
-
 // @description Complete a bridge transfer
 // @read-only false
+// @result empty_object
 message complete_transfer_arguments {
   bytes transaction_id = 1 [(koinos.btype) = TRANSACTION_ID];
   bytes token = 2 [(koinos.btype) = CONTRACT_ID];
@@ -86,80 +81,65 @@ message complete_transfer_arguments {
   uint64 expiration = 7 [jstype = JS_STRING];
 }
 
-message complete_transfer_result {
-}
-
 // @description Add a new validator
 // @read-only false
+// @result empty_object
 message add_validator_arguments {
   repeated bytes signatures = 1;
   bytes validator = 2 [(koinos.btype) = ADDRESS];
   uint64 expiration = 3 [jstype = JS_STRING];
 }
 
-message add_validator_result {
-}
-
 // @description Remove an existing validator
 // @read-only false
+// @result empty_object
 message remove_validator_arguments {
   repeated bytes signatures = 1;
   bytes validator = 2 [(koinos.btype) = ADDRESS];
   uint64 expiration = 3 [jstype = JS_STRING];
 }
 
-message remove_validator_result {
-}
-
 // @description Add support for a new token
 // @read-only false
+// @result empty_object
 message add_supported_token_arguments {
   repeated bytes signatures = 1;
   bytes token = 2 [(koinos.btype) = CONTRACT_ID];
   uint64 expiration = 3 [jstype = JS_STRING];
 }
-
-message add_supported_token_result {
-}
-
 // @description Remove an existing supported token
 // @read-only false
+// @result empty_object
 message remove_supported_token_arguments {
   repeated bytes signatures = 1;
   bytes token = 2 [(koinos.btype) = CONTRACT_ID];
   uint64 expiration = 3 [jstype = JS_STRING];
 }
 
-message remove_supported_token_result {
-}
-
 // @description Add support for a new wrapped token
 // @read-only false
+// @result empty_object
 message add_supported_wrapped_token_arguments {
   repeated bytes signatures = 1;
   bytes token = 2 [(koinos.btype) = CONTRACT_ID];
   uint64 expiration = 3 [jstype = JS_STRING];
 }
 
-message add_supported_wrapped_token_result {
-}
-
 // @description Remove an existing supported token
 // @read-only false
+// @result empty_object
 message remove_supported_wrapped_token_arguments {
   repeated bytes signatures = 1;
   bytes token = 2 [(koinos.btype) = CONTRACT_ID];
   uint64 expiration = 3 [jstype = JS_STRING];
 }
 
-message remove_supported_wrapped_token_result {
-}
 
 // Events
 message tokens_locked_event {
   bytes from = 1 [(koinos.btype) = ADDRESS];
   bytes token = 2 [(koinos.btype) = CONTRACT_ID];
-  uint64 amount = 3 [jstype = JS_STRING];
+  string amount = 3;
   string recipient = 4;
 }
 
@@ -212,15 +192,6 @@ message metadata_object {
   uint32 nb_validators = 3;
 }
 
-// use an object to possibly store metadata later on
-message validator_object {
-  
-}
+message empty_object {
 
-message wrapped_token_object {
-  
-}
-
-message token_object {
-  
 }

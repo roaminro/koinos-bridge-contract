@@ -39,35 +39,11 @@ export namespace bridge {
     }
   }
 
-  @unmanaged
-  export class initialize_result {
-    static encode(message: initialize_result, writer: Writer): void {}
-
-    static decode(reader: Reader, length: i32): initialize_result {
-      const end: usize = length < 0 ? reader.end : reader.ptr + length;
-      const message = new initialize_result();
-
-      while (reader.ptr < end) {
-        const tag = reader.uint32();
-        switch (tag >>> 3) {
-          default:
-            reader.skipType(tag & 7);
-            break;
-        }
-      }
-
-      return message;
-    }
-
-    constructor() {}
-  }
-
   export class get_validators_arguments {
     static encode(message: get_validators_arguments, writer: Writer): void {
-      const unique_name_start = message.start;
-      if (unique_name_start !== null) {
+      if (message.start.length != 0) {
         writer.uint32(10);
-        writer.bytes(unique_name_start);
+        writer.bytes(message.start);
       }
 
       if (message.limit != 0) {
@@ -109,12 +85,12 @@ export namespace bridge {
       return message;
     }
 
-    start: Uint8Array | null;
+    start: Uint8Array;
     limit: i32;
     direction: i32;
 
     constructor(
-      start: Uint8Array | null = null,
+      start: Uint8Array = new Uint8Array(0),
       limit: i32 = 0,
       direction: i32 = 0
     ) {
@@ -129,10 +105,9 @@ export namespace bridge {
       message: get_supported_tokens_arguments,
       writer: Writer
     ): void {
-      const unique_name_start = message.start;
-      if (unique_name_start !== null) {
+      if (message.start.length != 0) {
         writer.uint32(10);
-        writer.bytes(unique_name_start);
+        writer.bytes(message.start);
       }
 
       if (message.limit != 0) {
@@ -174,12 +149,12 @@ export namespace bridge {
       return message;
     }
 
-    start: Uint8Array | null;
+    start: Uint8Array;
     limit: i32;
     direction: u32;
 
     constructor(
-      start: Uint8Array | null = null,
+      start: Uint8Array = new Uint8Array(0),
       limit: i32 = 0,
       direction: u32 = 0
     ) {
@@ -194,10 +169,9 @@ export namespace bridge {
       message: get_supported_wrapped_tokens_arguments,
       writer: Writer
     ): void {
-      const unique_name_start = message.start;
-      if (unique_name_start !== null) {
+      if (message.start.length != 0) {
         writer.uint32(10);
-        writer.bytes(unique_name_start);
+        writer.bytes(message.start);
       }
 
       if (message.limit != 0) {
@@ -242,12 +216,12 @@ export namespace bridge {
       return message;
     }
 
-    start: Uint8Array | null;
+    start: Uint8Array;
     limit: i32;
     direction: u32;
 
     constructor(
-      start: Uint8Array | null = null,
+      start: Uint8Array = new Uint8Array(0),
       limit: i32 = 0,
       direction: u32 = 0
     ) {
@@ -382,41 +356,16 @@ export namespace bridge {
     }
   }
 
-  @unmanaged
-  export class set_pause_result {
-    static encode(message: set_pause_result, writer: Writer): void {}
-
-    static decode(reader: Reader, length: i32): set_pause_result {
-      const end: usize = length < 0 ? reader.end : reader.ptr + length;
-      const message = new set_pause_result();
-
-      while (reader.ptr < end) {
-        const tag = reader.uint32();
-        switch (tag >>> 3) {
-          default:
-            reader.skipType(tag & 7);
-            break;
-        }
-      }
-
-      return message;
-    }
-
-    constructor() {}
-  }
-
   export class transfer_tokens_arguments {
     static encode(message: transfer_tokens_arguments, writer: Writer): void {
-      const unique_name_from = message.from;
-      if (unique_name_from !== null) {
+      if (message.from.length != 0) {
         writer.uint32(10);
-        writer.bytes(unique_name_from);
+        writer.bytes(message.from);
       }
 
-      const unique_name_token = message.token;
-      if (unique_name_token !== null) {
+      if (message.token.length != 0) {
         writer.uint32(18);
-        writer.bytes(unique_name_token);
+        writer.bytes(message.token);
       }
 
       if (message.amount != 0) {
@@ -424,10 +373,9 @@ export namespace bridge {
         writer.uint64(message.amount);
       }
 
-      const unique_name_recipient = message.recipient;
-      if (unique_name_recipient !== null) {
+      if (message.recipient.length != 0) {
         writer.uint32(34);
-        writer.string(unique_name_recipient);
+        writer.string(message.recipient);
       }
     }
 
@@ -463,16 +411,16 @@ export namespace bridge {
       return message;
     }
 
-    from: Uint8Array | null;
-    token: Uint8Array | null;
+    from: Uint8Array;
+    token: Uint8Array;
     amount: u64;
-    recipient: string | null;
+    recipient: string;
 
     constructor(
-      from: Uint8Array | null = null,
-      token: Uint8Array | null = null,
+      from: Uint8Array = new Uint8Array(0),
+      token: Uint8Array = new Uint8Array(0),
       amount: u64 = 0,
-      recipient: string | null = null
+      recipient: string = ""
     ) {
       this.from = from;
       this.token = token;
@@ -481,47 +429,21 @@ export namespace bridge {
     }
   }
 
-  @unmanaged
-  export class transfer_tokens_result {
-    static encode(message: transfer_tokens_result, writer: Writer): void {}
-
-    static decode(reader: Reader, length: i32): transfer_tokens_result {
-      const end: usize = length < 0 ? reader.end : reader.ptr + length;
-      const message = new transfer_tokens_result();
-
-      while (reader.ptr < end) {
-        const tag = reader.uint32();
-        switch (tag >>> 3) {
-          default:
-            reader.skipType(tag & 7);
-            break;
-        }
-      }
-
-      return message;
-    }
-
-    constructor() {}
-  }
-
   export class complete_transfer_arguments {
     static encode(message: complete_transfer_arguments, writer: Writer): void {
-      const unique_name_transaction_id = message.transaction_id;
-      if (unique_name_transaction_id !== null) {
+      if (message.transaction_id.length != 0) {
         writer.uint32(10);
-        writer.bytes(unique_name_transaction_id);
+        writer.bytes(message.transaction_id);
       }
 
-      const unique_name_token = message.token;
-      if (unique_name_token !== null) {
+      if (message.token.length != 0) {
         writer.uint32(18);
-        writer.bytes(unique_name_token);
+        writer.bytes(message.token);
       }
 
-      const unique_name_recipient = message.recipient;
-      if (unique_name_recipient !== null) {
+      if (message.recipient.length != 0) {
         writer.uint32(26);
-        writer.bytes(unique_name_recipient);
+        writer.bytes(message.recipient);
       }
 
       if (message.value != 0) {
@@ -583,17 +505,17 @@ export namespace bridge {
       return message;
     }
 
-    transaction_id: Uint8Array | null;
-    token: Uint8Array | null;
-    recipient: Uint8Array | null;
+    transaction_id: Uint8Array;
+    token: Uint8Array;
+    recipient: Uint8Array;
     value: u64;
     signatures: Array<Uint8Array>;
     expiration: u64;
 
     constructor(
-      transaction_id: Uint8Array | null = null,
-      token: Uint8Array | null = null,
-      recipient: Uint8Array | null = null,
+      transaction_id: Uint8Array = new Uint8Array(0),
+      token: Uint8Array = new Uint8Array(0),
+      recipient: Uint8Array = new Uint8Array(0),
       value: u64 = 0,
       signatures: Array<Uint8Array> = [],
       expiration: u64 = 0
@@ -607,29 +529,6 @@ export namespace bridge {
     }
   }
 
-  @unmanaged
-  export class complete_transfer_result {
-    static encode(message: complete_transfer_result, writer: Writer): void {}
-
-    static decode(reader: Reader, length: i32): complete_transfer_result {
-      const end: usize = length < 0 ? reader.end : reader.ptr + length;
-      const message = new complete_transfer_result();
-
-      while (reader.ptr < end) {
-        const tag = reader.uint32();
-        switch (tag >>> 3) {
-          default:
-            reader.skipType(tag & 7);
-            break;
-        }
-      }
-
-      return message;
-    }
-
-    constructor() {}
-  }
-
   export class add_validator_arguments {
     static encode(message: add_validator_arguments, writer: Writer): void {
       const unique_name_signatures = message.signatures;
@@ -640,10 +539,9 @@ export namespace bridge {
         }
       }
 
-      const unique_name_validator = message.validator;
-      if (unique_name_validator !== null) {
+      if (message.validator.length != 0) {
         writer.uint32(18);
-        writer.bytes(unique_name_validator);
+        writer.bytes(message.validator);
       }
 
       if (message.expiration != 0) {
@@ -681,41 +579,18 @@ export namespace bridge {
     }
 
     signatures: Array<Uint8Array>;
-    validator: Uint8Array | null;
+    validator: Uint8Array;
     expiration: u64;
 
     constructor(
       signatures: Array<Uint8Array> = [],
-      validator: Uint8Array | null = null,
+      validator: Uint8Array = new Uint8Array(0),
       expiration: u64 = 0
     ) {
       this.signatures = signatures;
       this.validator = validator;
       this.expiration = expiration;
     }
-  }
-
-  @unmanaged
-  export class add_validator_result {
-    static encode(message: add_validator_result, writer: Writer): void {}
-
-    static decode(reader: Reader, length: i32): add_validator_result {
-      const end: usize = length < 0 ? reader.end : reader.ptr + length;
-      const message = new add_validator_result();
-
-      while (reader.ptr < end) {
-        const tag = reader.uint32();
-        switch (tag >>> 3) {
-          default:
-            reader.skipType(tag & 7);
-            break;
-        }
-      }
-
-      return message;
-    }
-
-    constructor() {}
   }
 
   export class remove_validator_arguments {
@@ -728,10 +603,9 @@ export namespace bridge {
         }
       }
 
-      const unique_name_validator = message.validator;
-      if (unique_name_validator !== null) {
+      if (message.validator.length != 0) {
         writer.uint32(18);
-        writer.bytes(unique_name_validator);
+        writer.bytes(message.validator);
       }
 
       if (message.expiration != 0) {
@@ -769,41 +643,18 @@ export namespace bridge {
     }
 
     signatures: Array<Uint8Array>;
-    validator: Uint8Array | null;
+    validator: Uint8Array;
     expiration: u64;
 
     constructor(
       signatures: Array<Uint8Array> = [],
-      validator: Uint8Array | null = null,
+      validator: Uint8Array = new Uint8Array(0),
       expiration: u64 = 0
     ) {
       this.signatures = signatures;
       this.validator = validator;
       this.expiration = expiration;
     }
-  }
-
-  @unmanaged
-  export class remove_validator_result {
-    static encode(message: remove_validator_result, writer: Writer): void {}
-
-    static decode(reader: Reader, length: i32): remove_validator_result {
-      const end: usize = length < 0 ? reader.end : reader.ptr + length;
-      const message = new remove_validator_result();
-
-      while (reader.ptr < end) {
-        const tag = reader.uint32();
-        switch (tag >>> 3) {
-          default:
-            reader.skipType(tag & 7);
-            break;
-        }
-      }
-
-      return message;
-    }
-
-    constructor() {}
   }
 
   export class add_supported_token_arguments {
@@ -819,10 +670,9 @@ export namespace bridge {
         }
       }
 
-      const unique_name_token = message.token;
-      if (unique_name_token !== null) {
+      if (message.token.length != 0) {
         writer.uint32(18);
-        writer.bytes(unique_name_token);
+        writer.bytes(message.token);
       }
 
       if (message.expiration != 0) {
@@ -860,41 +710,18 @@ export namespace bridge {
     }
 
     signatures: Array<Uint8Array>;
-    token: Uint8Array | null;
+    token: Uint8Array;
     expiration: u64;
 
     constructor(
       signatures: Array<Uint8Array> = [],
-      token: Uint8Array | null = null,
+      token: Uint8Array = new Uint8Array(0),
       expiration: u64 = 0
     ) {
       this.signatures = signatures;
       this.token = token;
       this.expiration = expiration;
     }
-  }
-
-  @unmanaged
-  export class add_supported_token_result {
-    static encode(message: add_supported_token_result, writer: Writer): void {}
-
-    static decode(reader: Reader, length: i32): add_supported_token_result {
-      const end: usize = length < 0 ? reader.end : reader.ptr + length;
-      const message = new add_supported_token_result();
-
-      while (reader.ptr < end) {
-        const tag = reader.uint32();
-        switch (tag >>> 3) {
-          default:
-            reader.skipType(tag & 7);
-            break;
-        }
-      }
-
-      return message;
-    }
-
-    constructor() {}
   }
 
   export class remove_supported_token_arguments {
@@ -910,10 +737,9 @@ export namespace bridge {
         }
       }
 
-      const unique_name_token = message.token;
-      if (unique_name_token !== null) {
+      if (message.token.length != 0) {
         writer.uint32(18);
-        writer.bytes(unique_name_token);
+        writer.bytes(message.token);
       }
 
       if (message.expiration != 0) {
@@ -954,44 +780,18 @@ export namespace bridge {
     }
 
     signatures: Array<Uint8Array>;
-    token: Uint8Array | null;
+    token: Uint8Array;
     expiration: u64;
 
     constructor(
       signatures: Array<Uint8Array> = [],
-      token: Uint8Array | null = null,
+      token: Uint8Array = new Uint8Array(0),
       expiration: u64 = 0
     ) {
       this.signatures = signatures;
       this.token = token;
       this.expiration = expiration;
     }
-  }
-
-  @unmanaged
-  export class remove_supported_token_result {
-    static encode(
-      message: remove_supported_token_result,
-      writer: Writer
-    ): void {}
-
-    static decode(reader: Reader, length: i32): remove_supported_token_result {
-      const end: usize = length < 0 ? reader.end : reader.ptr + length;
-      const message = new remove_supported_token_result();
-
-      while (reader.ptr < end) {
-        const tag = reader.uint32();
-        switch (tag >>> 3) {
-          default:
-            reader.skipType(tag & 7);
-            break;
-        }
-      }
-
-      return message;
-    }
-
-    constructor() {}
   }
 
   export class add_supported_wrapped_token_arguments {
@@ -1007,10 +807,9 @@ export namespace bridge {
         }
       }
 
-      const unique_name_token = message.token;
-      if (unique_name_token !== null) {
+      if (message.token.length != 0) {
         writer.uint32(18);
-        writer.bytes(unique_name_token);
+        writer.bytes(message.token);
       }
 
       if (message.expiration != 0) {
@@ -1051,47 +850,18 @@ export namespace bridge {
     }
 
     signatures: Array<Uint8Array>;
-    token: Uint8Array | null;
+    token: Uint8Array;
     expiration: u64;
 
     constructor(
       signatures: Array<Uint8Array> = [],
-      token: Uint8Array | null = null,
+      token: Uint8Array = new Uint8Array(0),
       expiration: u64 = 0
     ) {
       this.signatures = signatures;
       this.token = token;
       this.expiration = expiration;
     }
-  }
-
-  @unmanaged
-  export class add_supported_wrapped_token_result {
-    static encode(
-      message: add_supported_wrapped_token_result,
-      writer: Writer
-    ): void {}
-
-    static decode(
-      reader: Reader,
-      length: i32
-    ): add_supported_wrapped_token_result {
-      const end: usize = length < 0 ? reader.end : reader.ptr + length;
-      const message = new add_supported_wrapped_token_result();
-
-      while (reader.ptr < end) {
-        const tag = reader.uint32();
-        switch (tag >>> 3) {
-          default:
-            reader.skipType(tag & 7);
-            break;
-        }
-      }
-
-      return message;
-    }
-
-    constructor() {}
   }
 
   export class remove_supported_wrapped_token_arguments {
@@ -1107,10 +877,9 @@ export namespace bridge {
         }
       }
 
-      const unique_name_token = message.token;
-      if (unique_name_token !== null) {
+      if (message.token.length != 0) {
         writer.uint32(18);
-        writer.bytes(unique_name_token);
+        writer.bytes(message.token);
       }
 
       if (message.expiration != 0) {
@@ -1151,12 +920,12 @@ export namespace bridge {
     }
 
     signatures: Array<Uint8Array>;
-    token: Uint8Array | null;
+    token: Uint8Array;
     expiration: u64;
 
     constructor(
       signatures: Array<Uint8Array> = [],
-      token: Uint8Array | null = null,
+      token: Uint8Array = new Uint8Array(0),
       expiration: u64 = 0
     ) {
       this.signatures = signatures;
@@ -1165,58 +934,26 @@ export namespace bridge {
     }
   }
 
-  @unmanaged
-  export class remove_supported_wrapped_token_result {
-    static encode(
-      message: remove_supported_wrapped_token_result,
-      writer: Writer
-    ): void {}
-
-    static decode(
-      reader: Reader,
-      length: i32
-    ): remove_supported_wrapped_token_result {
-      const end: usize = length < 0 ? reader.end : reader.ptr + length;
-      const message = new remove_supported_wrapped_token_result();
-
-      while (reader.ptr < end) {
-        const tag = reader.uint32();
-        switch (tag >>> 3) {
-          default:
-            reader.skipType(tag & 7);
-            break;
-        }
-      }
-
-      return message;
-    }
-
-    constructor() {}
-  }
-
   export class tokens_locked_event {
     static encode(message: tokens_locked_event, writer: Writer): void {
-      const unique_name_from = message.from;
-      if (unique_name_from !== null) {
+      if (message.from.length != 0) {
         writer.uint32(10);
-        writer.bytes(unique_name_from);
+        writer.bytes(message.from);
       }
 
-      const unique_name_token = message.token;
-      if (unique_name_token !== null) {
+      if (message.token.length != 0) {
         writer.uint32(18);
-        writer.bytes(unique_name_token);
+        writer.bytes(message.token);
       }
 
-      if (message.amount != 0) {
-        writer.uint32(24);
-        writer.uint64(message.amount);
+      if (message.amount.length != 0) {
+        writer.uint32(26);
+        writer.string(message.amount);
       }
 
-      const unique_name_recipient = message.recipient;
-      if (unique_name_recipient !== null) {
+      if (message.recipient.length != 0) {
         writer.uint32(34);
-        writer.string(unique_name_recipient);
+        writer.string(message.recipient);
       }
     }
 
@@ -1236,7 +973,7 @@ export namespace bridge {
             break;
 
           case 3:
-            message.amount = reader.uint64();
+            message.amount = reader.string();
             break;
 
           case 4:
@@ -1252,16 +989,16 @@ export namespace bridge {
       return message;
     }
 
-    from: Uint8Array | null;
-    token: Uint8Array | null;
-    amount: u64;
-    recipient: string | null;
+    from: Uint8Array;
+    token: Uint8Array;
+    amount: string;
+    recipient: string;
 
     constructor(
-      from: Uint8Array | null = null,
-      token: Uint8Array | null = null,
-      amount: u64 = 0,
-      recipient: string | null = null
+      from: Uint8Array = new Uint8Array(0),
+      token: Uint8Array = new Uint8Array(0),
+      amount: string = "",
+      recipient: string = ""
     ) {
       this.from = from;
       this.token = token;
@@ -1272,10 +1009,9 @@ export namespace bridge {
 
   export class transfer_completed_event {
     static encode(message: transfer_completed_event, writer: Writer): void {
-      const unique_name_tx_id = message.tx_id;
-      if (unique_name_tx_id !== null) {
+      if (message.tx_id.length != 0) {
         writer.uint32(10);
-        writer.bytes(unique_name_tx_id);
+        writer.bytes(message.tx_id);
       }
     }
 
@@ -1299,9 +1035,9 @@ export namespace bridge {
       return message;
     }
 
-    tx_id: Uint8Array | null;
+    tx_id: Uint8Array;
 
-    constructor(tx_id: Uint8Array | null = null) {
+    constructor(tx_id: Uint8Array = new Uint8Array(0)) {
       this.tx_id = tx_id;
     }
   }
@@ -1313,10 +1049,9 @@ export namespace bridge {
         writer.int32(message.action);
       }
 
-      const unique_name_address = message.address;
-      if (unique_name_address !== null) {
+      if (message.address.length != 0) {
         writer.uint32(18);
-        writer.bytes(unique_name_address);
+        writer.bytes(message.address);
       }
 
       if (message.nonce != 0) {
@@ -1324,10 +1059,9 @@ export namespace bridge {
         writer.uint64(message.nonce);
       }
 
-      const unique_name_contract_id = message.contract_id;
-      if (unique_name_contract_id !== null) {
+      if (message.contract_id.length != 0) {
         writer.uint32(34);
-        writer.bytes(unique_name_contract_id);
+        writer.bytes(message.contract_id);
       }
 
       if (message.expiration != 0) {
@@ -1373,16 +1107,16 @@ export namespace bridge {
     }
 
     action: action_id;
-    address: Uint8Array | null;
+    address: Uint8Array;
     nonce: u64;
-    contract_id: Uint8Array | null;
+    contract_id: Uint8Array;
     expiration: u64;
 
     constructor(
       action: action_id = 0,
-      address: Uint8Array | null = null,
+      address: Uint8Array = new Uint8Array(0),
       nonce: u64 = 0,
-      contract_id: Uint8Array | null = null,
+      contract_id: Uint8Array = new Uint8Array(0),
       expiration: u64 = 0
     ) {
       this.action = action;
@@ -1410,10 +1144,9 @@ export namespace bridge {
         writer.uint64(message.nonce);
       }
 
-      const unique_name_contract_id = message.contract_id;
-      if (unique_name_contract_id !== null) {
+      if (message.contract_id.length != 0) {
         writer.uint32(34);
-        writer.bytes(unique_name_contract_id);
+        writer.bytes(message.contract_id);
       }
 
       if (message.expiration != 0) {
@@ -1461,14 +1194,14 @@ export namespace bridge {
     action: action_id;
     pause: bool;
     nonce: u64;
-    contract_id: Uint8Array | null;
+    contract_id: Uint8Array;
     expiration: u64;
 
     constructor(
       action: action_id = 0,
       pause: bool = false,
       nonce: u64 = 0,
-      contract_id: Uint8Array | null = null,
+      contract_id: Uint8Array = new Uint8Array(0),
       expiration: u64 = 0
     ) {
       this.action = action;
@@ -1486,22 +1219,19 @@ export namespace bridge {
         writer.int32(message.action);
       }
 
-      const unique_name_transaction_id = message.transaction_id;
-      if (unique_name_transaction_id !== null) {
+      if (message.transaction_id.length != 0) {
         writer.uint32(18);
-        writer.bytes(unique_name_transaction_id);
+        writer.bytes(message.transaction_id);
       }
 
-      const unique_name_token = message.token;
-      if (unique_name_token !== null) {
+      if (message.token.length != 0) {
         writer.uint32(26);
-        writer.bytes(unique_name_token);
+        writer.bytes(message.token);
       }
 
-      const unique_name_recipient = message.recipient;
-      if (unique_name_recipient !== null) {
+      if (message.recipient.length != 0) {
         writer.uint32(34);
-        writer.bytes(unique_name_recipient);
+        writer.bytes(message.recipient);
       }
 
       if (message.amount != 0) {
@@ -1509,10 +1239,9 @@ export namespace bridge {
         writer.uint64(message.amount);
       }
 
-      const unique_name_contract_id = message.contract_id;
-      if (unique_name_contract_id !== null) {
+      if (message.contract_id.length != 0) {
         writer.uint32(50);
-        writer.bytes(unique_name_contract_id);
+        writer.bytes(message.contract_id);
       }
 
       if (message.expiration != 0) {
@@ -1566,20 +1295,20 @@ export namespace bridge {
     }
 
     action: action_id;
-    transaction_id: Uint8Array | null;
-    token: Uint8Array | null;
-    recipient: Uint8Array | null;
+    transaction_id: Uint8Array;
+    token: Uint8Array;
+    recipient: Uint8Array;
     amount: u64;
-    contract_id: Uint8Array | null;
+    contract_id: Uint8Array;
     expiration: u64;
 
     constructor(
       action: action_id = 0,
-      transaction_id: Uint8Array | null = null,
-      token: Uint8Array | null = null,
-      recipient: Uint8Array | null = null,
+      transaction_id: Uint8Array = new Uint8Array(0),
+      token: Uint8Array = new Uint8Array(0),
+      recipient: Uint8Array = new Uint8Array(0),
       amount: u64 = 0,
-      contract_id: Uint8Array | null = null,
+      contract_id: Uint8Array = new Uint8Array(0),
       expiration: u64 = 0
     ) {
       this.action = action;
@@ -1655,58 +1384,12 @@ export namespace bridge {
   }
 
   @unmanaged
-  export class validator_object {
-    static encode(message: validator_object, writer: Writer): void {}
+  export class empty_object {
+    static encode(message: empty_object, writer: Writer): void {}
 
-    static decode(reader: Reader, length: i32): validator_object {
+    static decode(reader: Reader, length: i32): empty_object {
       const end: usize = length < 0 ? reader.end : reader.ptr + length;
-      const message = new validator_object();
-
-      while (reader.ptr < end) {
-        const tag = reader.uint32();
-        switch (tag >>> 3) {
-          default:
-            reader.skipType(tag & 7);
-            break;
-        }
-      }
-
-      return message;
-    }
-
-    constructor() {}
-  }
-
-  @unmanaged
-  export class wrapped_token_object {
-    static encode(message: wrapped_token_object, writer: Writer): void {}
-
-    static decode(reader: Reader, length: i32): wrapped_token_object {
-      const end: usize = length < 0 ? reader.end : reader.ptr + length;
-      const message = new wrapped_token_object();
-
-      while (reader.ptr < end) {
-        const tag = reader.uint32();
-        switch (tag >>> 3) {
-          default:
-            reader.skipType(tag & 7);
-            break;
-        }
-      }
-
-      return message;
-    }
-
-    constructor() {}
-  }
-
-  @unmanaged
-  export class token_object {
-    static encode(message: token_object, writer: Writer): void {}
-
-    static decode(reader: Reader, length: i32): token_object {
-      const end: usize = length < 0 ? reader.end : reader.ptr + length;
-      const message = new token_object();
+      const message = new empty_object();
 
       while (reader.ptr < end) {
         const tag = reader.uint32();

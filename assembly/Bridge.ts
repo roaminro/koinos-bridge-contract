@@ -11,7 +11,7 @@ import { ReentrancyGuard } from './util/ReentrancyGuard';
 export class Bridge {
   contractId: Uint8Array = System.getContractId();
 
-  initialize(args: bridge.initialize_arguments): bridge.initialize_result {
+  initialize(args: bridge.initialize_arguments): bridge.empty_object {
     const initialValidators = args.initial_validators;
     System.require(initialValidators.length > 0, 'Validators required');
 
@@ -24,20 +24,20 @@ export class Bridge {
     for (let index = 0; index < initialValidators.length; index++) {
       const validator = initialValidators[index];
       System.require(!validators.has(validator), 'Validator not unique');
-      validators.put(validator, new bridge.validator_object());
+      validators.put(validator, new bridge.empty_object());
       meta.nb_validators += 1;
     }
 
     meta.initialized = true;
     metadata.put(meta);
 
-    return new bridge.initialize_result();
+    return new bridge.empty_object();
   }
 
   get_validators(
     args: bridge.get_validators_arguments
   ): bridge.repeated_addresses {
-    const start = args.start!;
+    const start = args.start;
     let limit = args.limit;
     let direction = args.direction;
 
@@ -60,7 +60,7 @@ export class Bridge {
   get_supported_tokens(
     args: bridge.get_supported_tokens_arguments
   ): bridge.repeated_addresses {
-    const start = args.start!;
+    const start = args.start;
     let limit = args.limit;
     let direction = args.direction;
 
@@ -83,7 +83,7 @@ export class Bridge {
   get_supported_wrapped_tokens(
     args: bridge.get_supported_wrapped_tokens_arguments
   ): bridge.repeated_addresses {
-    const start = args.start!;
+    const start = args.start;
     let limit = args.limit;
     let direction = args.direction;
 
@@ -108,7 +108,7 @@ export class Bridge {
     return metadata.get()!;
   }
 
-  set_pause(args: bridge.set_pause_arguments): bridge.set_pause_result {
+  set_pause(args: bridge.set_pause_arguments): bridge.empty_object {
     const signatures = args.signatures;
     const pause = args.pause;
 
@@ -134,22 +134,22 @@ export class Bridge {
       System.event('bridge.unpause', new Uint8Array(0), []);
     }
 
-    return new bridge.set_pause_result();
+    return new bridge.empty_object();
   }
 
   transfer_tokens(
     args: bridge.transfer_tokens_arguments
-  ): bridge.transfer_tokens_result {
+  ): bridge.empty_object {
     // cannot call when contract is paused
     new Pausable(this.contractId).whenNotPaused();
 
     // reentrancy guard
     const reentrancyGuard = new ReentrancyGuard(this.contractId);
 
-    const from = args.from!;
-    const token = args.token!;
+    const from = args.from;
+    const token = args.token;
     const amount = args.amount;
-    const recipient = args.recipient!;
+    const recipient = args.recipient;
 
     const isSupportedToken = new Tokens(this.contractId).has(token);
     const isSupportedWrappedToken = new WrappedTokens(this.contractId).has(token);
@@ -168,6 +168,8 @@ export class Bridge {
       // and burn them...
       System.require(tokenContract.burn(this.contractId, bridgedAmount), 'could not burn wrapped tokens');
     } else {
+      System.log('here1');
+
       // query own token balance before transfer
       const balanceBefore = tokenContract.balanceOf(this.contractId);
 
@@ -189,26 +191,26 @@ export class Bridge {
       'normalizedAmount amount must be greater than 0'
     );
 
-    const event = new bridge.tokens_locked_event(from, token, normalizedAmount, recipient);
+    const event = new bridge.tokens_locked_event(from, token, normalizedAmount.toString(), recipient);
     System.event('bridge.tokens_locked_event', Protobuf.encode(event, bridge.tokens_locked_event.encode), [from]);
 
     reentrancyGuard.reset();
 
-    return new bridge.transfer_tokens_result();
+    return new bridge.empty_object();
   }
 
   complete_transfer(
     args: bridge.complete_transfer_arguments
-  ): bridge.complete_transfer_result {
+  ): bridge.empty_object {
     // cannot call when contract is paused
     new Pausable(this.contractId).whenNotPaused();
 
     // reentrancy guard
     const reentrancyGuard = new ReentrancyGuard(this.contractId);
 
-    const transaction_id = args.transaction_id!;
-    const token = args.token!;
-    const recipient = args.recipient!;
+    const transaction_id = args.transaction_id;
+    const token = args.token;
+    const recipient = args.recipient;
     const value = args.value;
     const signatures = args.signatures;
 
@@ -250,14 +252,14 @@ export class Bridge {
 
     reentrancyGuard.reset();
 
-    return new bridge.complete_transfer_result();
+    return new bridge.empty_object();
   }
 
   add_validator(
     args: bridge.add_validator_arguments
-  ): bridge.add_validator_result {
+  ): bridge.empty_object {
     const signatures = args.signatures;
-    const validator = args.validator!;
+    const validator = args.validator;
 
     System.require(args.expiration >= System.getHeadInfo().head_block_time, 'Expired signatures');
 
@@ -273,8 +275,7 @@ export class Bridge {
 
     this.verifySignatures(hash, signatures, meta.nb_validators);
 
-    const validatorObj = validators.get(validator);
-    validators.put(validator, validatorObj);
+    validators.put(validator, new bridge.empty_object());
 
     meta.nb_validators += 1;
     meta.nonce += 1;
@@ -282,14 +283,14 @@ export class Bridge {
 
     System.event('bridge.add_validator_result', new Uint8Array(0), [validator]);
 
-    return new bridge.add_validator_result();
+    return new bridge.empty_object();
   }
 
   remove_validator(
     args: bridge.remove_validator_arguments
-  ): bridge.remove_validator_result {
+  ): bridge.empty_object {
     const signatures = args.signatures;
-    const validator = args.validator!;
+    const validator = args.validator;
 
     System.require(args.expiration >= System.getHeadInfo().head_block_time, 'Expired signatures');
 
@@ -313,14 +314,14 @@ export class Bridge {
 
     System.event('bridge.remove_validator_result', new Uint8Array(0), [validator]);
 
-    return new bridge.remove_validator_result();
+    return new bridge.empty_object();
   }
 
   add_supported_token(
     args: bridge.add_supported_token_arguments
-  ): bridge.add_supported_token_result {
+  ): bridge.empty_object {
     const signatures = args.signatures;
-    const token = args.token!;
+    const token = args.token;
 
     System.require(args.expiration >= System.getHeadInfo().head_block_time, 'Expired signatures');
 
@@ -335,22 +336,21 @@ export class Bridge {
 
     this.verifySignatures(hash, signatures, meta.nb_validators);
 
-    const tokenObj = tokens.get(token);
-    tokens.put(token, tokenObj);
+    tokens.put(token, new bridge.empty_object());
 
     meta.nonce += 1;
     metadata.put(meta);
 
     System.event('bridge.add_supported_token_result', new Uint8Array(0), [token]);
 
-    return new bridge.add_supported_token_result();
+    return new bridge.empty_object();
   }
 
   remove_supported_token(
     args: bridge.remove_supported_token_arguments
-  ): bridge.remove_supported_token_result {
+  ): bridge.empty_object {
     const signatures = args.signatures;
-    const token = args.token!;
+    const token = args.token;
 
     System.require(args.expiration >= System.getHeadInfo().head_block_time, 'Expired signatures');
 
@@ -372,14 +372,14 @@ export class Bridge {
 
     System.event('bridge.remove_supported_token_result', new Uint8Array(0), [token]);
 
-    return new bridge.remove_supported_token_result();
+    return new bridge.empty_object();
   }
 
   add_supported_wrapped_token(
     args: bridge.add_supported_wrapped_token_arguments
-  ): bridge.add_supported_wrapped_token_result {
+  ): bridge.empty_object {
     const signatures = args.signatures;
-    const token = args.token!;
+    const token = args.token;
 
     System.require(args.expiration >= System.getHeadInfo().head_block_time, 'Expired signatures');
 
@@ -394,24 +394,23 @@ export class Bridge {
 
     this.verifySignatures(hash, signatures, meta.nb_validators);
 
-    const tokenObj = wrappedTokens.get(token);
-    wrappedTokens.put(token, tokenObj);
+    wrappedTokens.put(token, new bridge.empty_object());
 
     meta.nonce += 1;
     metadata.put(meta);
 
     System.event('bridge.add_supported_wrapped_token_result', new Uint8Array(0), [token]);
 
-    const res = new bridge.add_supported_wrapped_token_result();
+    const res = new bridge.empty_object();
 
     return res;
   }
 
   remove_supported_wrapped_token(
     args: bridge.remove_supported_wrapped_token_arguments
-  ): bridge.remove_supported_wrapped_token_result {
+  ): bridge.empty_object {
     const signatures = args.signatures;
-    const token = args.token!;
+    const token = args.token;
 
     System.require(args.expiration >= System.getHeadInfo().head_block_time, 'Expired signature');
 
@@ -433,7 +432,7 @@ export class Bridge {
 
     System.event('bridge.remove_supported_wrapped_token_result', new Uint8Array(0), [token]);
 
-    return new bridge.remove_supported_wrapped_token_result();
+    return new bridge.empty_object();
   }
 
   verifySignatures(hash: Uint8Array, signatures: Uint8Array[], nbValidators: u32): void {

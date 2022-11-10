@@ -1,102 +1,102 @@
 {
     "methods": {
         "initialize": {
-            "input": "bridge.initialize_arguments",
-            "output": "bridge.empty_object",
+            "argument": "bridge.initialize_arguments",
+            "return": "bridge.initialize_result",
             "description": "Initialize contract",
-            "entryPoint": 1192148610,
-            "readOnly": false
+            "entry_point": 1192148610,
+            "read_only": false
         },
         "get_validators": {
-            "input": "bridge.get_validators_arguments",
-            "output": "bridge.repeated_addresses",
+            "argument": "bridge.get_validators_arguments",
+            "return": "bridge.repeated_addresses",
             "description": "Get validators",
-            "entryPoint": 1342607250,
-            "readOnly": true
+            "entry_point": 1342607250,
+            "read_only": true
         },
         "get_supported_tokens": {
-            "input": "bridge.get_supported_tokens_arguments",
-            "output": "bridge.repeated_addresses",
+            "argument": "bridge.get_supported_tokens_arguments",
+            "return": "bridge.repeated_addresses",
             "description": "Get supported tokens",
-            "entryPoint": 3370348292,
-            "readOnly": true
+            "entry_point": 3370348292,
+            "read_only": true
         },
         "get_supported_wrapped_tokens": {
-            "input": "bridge.get_supported_wrapped_tokens_arguments",
-            "output": "bridge.repeated_addresses",
+            "argument": "bridge.get_supported_wrapped_tokens_arguments",
+            "return": "bridge.repeated_addresses",
             "description": "Get supported wrapped tokens",
-            "entryPoint": 794036772,
-            "readOnly": true
+            "entry_point": 794036772,
+            "read_only": true
         },
         "get_metadata": {
-            "input": "bridge.get_metadata_arguments",
-            "output": "bridge.metadata_object",
+            "argument": "bridge.get_metadata_arguments",
+            "return": "bridge.metadata_object",
             "description": "Get metadata",
-            "entryPoint": 4244088463,
-            "readOnly": true
+            "entry_point": 4244088463,
+            "read_only": true
         },
         "set_pause": {
-            "input": "bridge.set_pause_arguments",
-            "output": "bridge.empty_object",
+            "argument": "bridge.set_pause_arguments",
+            "return": "bridge.set_pause_result",
             "description": "Pause/Unpause bridge",
-            "entryPoint": 966968548,
-            "readOnly": false
+            "entry_point": 966968548,
+            "read_only": false
         },
         "transfer_tokens": {
-            "input": "bridge.transfer_tokens_arguments",
-            "output": "bridge.empty_object",
+            "argument": "bridge.transfer_tokens_arguments",
+            "return": "bridge.transfer_tokens_result",
             "description": "Transfer tokens",
-            "entryPoint": 489574387,
-            "readOnly": false
+            "entry_point": 489574387,
+            "read_only": false
         },
         "complete_transfer": {
-            "input": "bridge.complete_transfer_arguments",
-            "output": "bridge.empty_object",
+            "argument": "bridge.complete_transfer_arguments",
+            "return": "bridge.complete_transfer_result",
             "description": "Complete a bridge transfer",
-            "entryPoint": 1296908025,
-            "readOnly": false
+            "entry_point": 1296908025,
+            "read_only": false
         },
         "add_validator": {
-            "input": "bridge.add_validator_arguments",
-            "output": "bridge.empty_object",
+            "argument": "bridge.add_validator_arguments",
+            "return": "bridge.add_validator_result",
             "description": "Add a new validator",
-            "entryPoint": 4229296574,
-            "readOnly": false
+            "entry_point": 4229296574,
+            "read_only": false
         },
         "remove_validator": {
-            "input": "bridge.remove_validator_arguments",
-            "output": "bridge.empty_object",
+            "argument": "bridge.remove_validator_arguments",
+            "return": "bridge.remove_validator_result",
             "description": "Remove an existing validator",
-            "entryPoint": 4284612390,
-            "readOnly": false
+            "entry_point": 4284612390,
+            "read_only": false
         },
         "add_supported_token": {
-            "input": "bridge.add_supported_token_arguments",
-            "output": "bridge.empty_object",
+            "argument": "bridge.add_supported_token_arguments",
+            "return": "bridge.add_supported_token_result",
             "description": "Add support for a new token",
-            "entryPoint": 3318614307,
-            "readOnly": false
+            "entry_point": 3318614307,
+            "read_only": false
         },
         "remove_supported_token": {
-            "input": "bridge.remove_supported_token_arguments",
-            "output": "bridge.empty_object",
+            "argument": "bridge.remove_supported_token_arguments",
+            "return": "bridge.remove_supported_token_result",
             "description": "Remove an existing supported token",
-            "entryPoint": 758798718,
-            "readOnly": false
+            "entry_point": 758798718,
+            "read_only": false
         },
         "add_supported_wrapped_token": {
-            "input": "bridge.add_supported_wrapped_token_arguments",
-            "output": "bridge.empty_object",
+            "argument": "bridge.add_supported_wrapped_token_arguments",
+            "return": "bridge.add_supported_wrapped_token_result",
             "description": "Add support for a new wrapped token",
-            "entryPoint": 1415038487,
-            "readOnly": false
+            "entry_point": 1415038487,
+            "read_only": false
         },
         "remove_supported_wrapped_token": {
-            "input": "bridge.remove_supported_wrapped_token_arguments",
-            "output": "bridge.empty_object",
+            "argument": "bridge.remove_supported_wrapped_token_arguments",
+            "return": "bridge.remove_supported_wrapped_token_result",
             "description": "Remove an existing supported token",
-            "entryPoint": 2457629973,
-            "readOnly": false
+            "entry_point": 2457629973,
+            "read_only": false
         }
     },
     "types": {
@@ -114,6 +114,9 @@
                                 }
                             }
                         }
+                    },
+                    "initialize_result": {
+                        "fields": {}
                     },
                     "get_validators_arguments": {
                         "fields": {
@@ -207,6 +210,9 @@
                             }
                         }
                     },
+                    "set_pause_result": {
+                        "fields": {}
+                    },
                     "transfer_tokens_arguments": {
                         "fields": {
                             "from": {
@@ -235,6 +241,9 @@
                                 "id": 4
                             }
                         }
+                    },
+                    "transfer_tokens_result": {
+                        "fields": {}
                     },
                     "complete_transfer_arguments": {
                         "fields": {
@@ -277,6 +286,9 @@
                             }
                         }
                     },
+                    "complete_transfer_result": {
+                        "fields": {}
+                    },
                     "add_validator_arguments": {
                         "fields": {
                             "signatures": {
@@ -299,6 +311,9 @@
                                 }
                             }
                         }
+                    },
+                    "add_validator_result": {
+                        "fields": {}
                     },
                     "remove_validator_arguments": {
                         "fields": {
@@ -323,6 +338,9 @@
                             }
                         }
                     },
+                    "remove_validator_result": {
+                        "fields": {}
+                    },
                     "add_supported_token_arguments": {
                         "fields": {
                             "signatures": {
@@ -345,6 +363,9 @@
                                 }
                             }
                         }
+                    },
+                    "add_supported_token_result": {
+                        "fields": {}
                     },
                     "remove_supported_token_arguments": {
                         "fields": {
@@ -369,6 +390,9 @@
                             }
                         }
                     },
+                    "remove_supported_token_result": {
+                        "fields": {}
+                    },
                     "add_supported_wrapped_token_arguments": {
                         "fields": {
                             "signatures": {
@@ -391,6 +415,9 @@
                                 }
                             }
                         }
+                    },
+                    "add_supported_wrapped_token_result": {
+                        "fields": {}
                     },
                     "remove_supported_wrapped_token_arguments": {
                         "fields": {
@@ -415,6 +442,9 @@
                             }
                         }
                     },
+                    "remove_supported_wrapped_token_result": {
+                        "fields": {}
+                    },
                     "tokens_locked_event": {
                         "fields": {
                             "from": {
@@ -432,8 +462,11 @@
                                 }
                             },
                             "amount": {
-                                "type": "string",
-                                "id": 3
+                                "type": "uint64",
+                                "id": 3,
+                                "options": {
+                                    "jstype": "JS_STRING"
+                                }
                             },
                             "recipient": {
                                 "type": "string",
@@ -564,7 +597,13 @@
                             }
                         }
                     },
-                    "empty_object": {
+                    "validator_object": {
+                        "fields": {}
+                    },
+                    "wrapped_token_object": {
+                        "fields": {}
+                    },
+                    "token_object": {
                         "fields": {}
                     }
                 }
