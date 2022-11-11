@@ -155,6 +155,17 @@ export function main(): i32 {
       break;
     }
 
+    case 0x97bbe8a6: {
+      const args =
+        Protobuf.decode<ProtoNamespace.request_new_signatures_arguments>(
+          contractArgs.args,
+          ProtoNamespace.request_new_signatures_arguments.decode
+        );
+      const res = c.request_new_signatures(args);
+      retbuf = Protobuf.encode(res, ProtoNamespace.empty_object.encode);
+      break;
+    }
+
     default:
       System.exit(1);
       break;

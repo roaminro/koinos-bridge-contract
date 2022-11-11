@@ -97,6 +97,13 @@
             "description": "Remove an existing supported token",
             "entryPoint": 2457629973,
             "readOnly": false
+        },
+        "request_new_signatures": {
+            "input": "bridge.request_new_signatures_arguments",
+            "output": "bridge.empty_object",
+            "description": "Request new signatures when old ones expired",
+            "entryPoint": 2545674406,
+            "readOnly": false
         }
     },
     "types": {
@@ -415,6 +422,18 @@
                                 "options": {
                                     "jstype": "JS_STRING"
                                 }
+                            }
+                        }
+                    },
+                    "request_new_signatures_arguments": {
+                        "fields": {
+                            "transactionId": {
+                                "type": "string",
+                                "id": 1
+                            },
+                            "operationId": {
+                                "type": "string",
+                                "id": 2
                             }
                         }
                     },

@@ -934,6 +934,58 @@ export namespace bridge {
     }
   }
 
+  export class request_new_signatures_arguments {
+    static encode(
+      message: request_new_signatures_arguments,
+      writer: Writer
+    ): void {
+      if (message.transaction_id.length != 0) {
+        writer.uint32(10);
+        writer.string(message.transaction_id);
+      }
+
+      if (message.operation_id.length != 0) {
+        writer.uint32(18);
+        writer.string(message.operation_id);
+      }
+    }
+
+    static decode(
+      reader: Reader,
+      length: i32
+    ): request_new_signatures_arguments {
+      const end: usize = length < 0 ? reader.end : reader.ptr + length;
+      const message = new request_new_signatures_arguments();
+
+      while (reader.ptr < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1:
+            message.transaction_id = reader.string();
+            break;
+
+          case 2:
+            message.operation_id = reader.string();
+            break;
+
+          default:
+            reader.skipType(tag & 7);
+            break;
+        }
+      }
+
+      return message;
+    }
+
+    transaction_id: string;
+    operation_id: string;
+
+    constructor(transaction_id: string = "", operation_id: string = "") {
+      this.transaction_id = transaction_id;
+      this.operation_id = operation_id;
+    }
+  }
+
   export class tokens_locked_event {
     static encode(message: tokens_locked_event, writer: Writer): void {
       if (message.from.length != 0) {

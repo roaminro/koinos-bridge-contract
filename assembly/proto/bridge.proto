@@ -134,6 +134,13 @@ message remove_supported_wrapped_token_arguments {
   uint64 expiration = 3 [jstype = JS_STRING];
 }
 
+// @description Request new signatures when old ones expired
+// @read-only false
+// @result empty_object
+message request_new_signatures_arguments {
+  string transaction_id = 1;
+  string operation_id = 2;
+}
 
 // Events
 message tokens_locked_event {

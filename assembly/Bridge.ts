@@ -473,4 +473,13 @@ export class Bridge {
 
     return amount;
   }
+
+  request_new_signatures(
+    args: bridge.request_new_signatures_arguments
+  ): bridge.empty_object {
+
+    System.event('bridge.request_new_signatures', Protobuf.encode(args, bridge.request_new_signatures_arguments.encode), []);
+    
+    return new bridge.empty_object();
+  }
 }
