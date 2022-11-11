@@ -40,17 +40,17 @@ const main = async () => {
   });
 
   const signatures = [
-    "HwsWS8ZU7WmUz_k3Y9OlC9YPSFamMMR_jeXrKAaNZe2SOz8xqzOjRuXO7pS9Wa2bkRD6Q_O53xQHHvntVOsnQJc=",
-    "H7V9S6FCSYBqJuOcQmp7FfBzljdR-bgg1TyKBOY1ayj-AvQ6Tok2ihuQVpE6lFDGsmMzS_sXhyKawMeLiHyoD1c=",
-    "H-LDbBH7xYP3VCnXJdH-xO7apsgPwwJ6xgJNCRXEEcGRNxegKfeX2DVmHhAmBMeIPElb9HHEsfiXaluicLGjJho="
+    "H3WQ4cZFt3Pmv4583o4FXJrx8B-_w3m1zm3nxKnrgkWbApU88C7z0P-ghvtWwJ-pZumTVAFnG_QdbitFJrAGWc0=",
+    "H6HkSxIyv1vLC2V9PTSUPMHgPEdv-wEpETrag9z4RCNTIKxHGuf86FkTSiIee-G4b22T6hI0F6Ry511Cn-2bh3g=",
+    "H7P1sicofw-eg9qyTZ7ErDYVOLDLCUzb8Zdc1wLwDTXCOBba2Ge9BKfZwotRyvdn92YaUPYb0vY2am4A6k3Nxv4="
   ];
 
   let result = await bridgeContract.functions.complete_transfer({
-    transactionId: '0xa64d6e52b6ba96e66e0f195e6d493e7fee9366d03b2e0ff8d26efe35db4ca98c',
+    transactionId: '0xc4400da5eb03fec6eb0450d1e02b694ea049d103e85ed0d10d568df2ee7800ad',
     token: '1NZcHP37xvQNDZEkGH2RUceFqa33K3FXEG',
     recipient: '1GE2JqXw5LMQaU1sj82Dy8ZEe2BRXQS1cs',
     value: '25000',
-    expiration: '1668133510000',
+    expiration: '1668180607000',
     signatures
   });
 

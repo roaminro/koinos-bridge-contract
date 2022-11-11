@@ -225,8 +225,8 @@ export class Bridge {
 
     const transfers = new Transfers(this.contractId);
 
-    System.require(!transfers.has(hash), 'transfer already completed');
-    transfers.put(hash);
+    System.require(!transfers.has(transaction_id), 'transfer already completed');
+    transfers.put(transaction_id);
 
     const metadata = new Metadata(this.contractId);
     const meta = metadata.get()!;
