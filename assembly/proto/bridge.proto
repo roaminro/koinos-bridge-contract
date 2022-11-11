@@ -75,7 +75,7 @@ message transfer_tokens_arguments {
 message complete_transfer_arguments {
   bytes transaction_id = 1 [(koinos.btype) = TRANSACTION_ID];
   bytes token = 2 [(koinos.btype) = CONTRACT_ID];
-  bytes recipient = 3;
+  bytes recipient = 3 [(koinos.btype) = ADDRESS];
   uint64 value = 4 [jstype = JS_STRING];
   repeated bytes signatures = 6;
   uint64 expiration = 7 [jstype = JS_STRING];

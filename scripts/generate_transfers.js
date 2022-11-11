@@ -7,6 +7,8 @@ const abi = require('./bridge-abi.json')
 
 abi.koilib_types = abi.types;
 
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
 const localKoinos = new LocalKoinos();
 
 const validators = [];
@@ -52,6 +54,12 @@ async function main() {
   await result.transaction.wait();
   result = await mockTokenContract.balanceOf(user.address);
   console.log(`minted ${result} mock tokens to ${user.address}`);
+
+  result = await mockTokenContract.mint(bridge.address, '1000000000000000');
+  console.log(result.receipt.events)
+  await result.transaction.wait();
+  result = await mockTokenContract.balanceOf(user.address);
+  console.log(`minted ${result} mock tokens to ${bridge.address}`);
 
 
   // deploy bridge contract
@@ -100,17 +108,31 @@ async function main() {
   console.log('added support for token ', mockToken.address);
 
   bridgeContract.signer = user.signer;
-  result = await bridgeContract.functions.transfer_tokens({
-    from: user.address,
-    token: mockToken.address,
-    amount: '2500',
-    recipient: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'
-  });
+  for (let index = 0; index < 100000; index++) {
+    result = await bridgeContract.functions.transfer_tokens({
+      from: user.address,
+      token: mockToken.address,
+      amount: '2500',
+      recipient: '0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65'
+    });
+  
+    await result.transaction.wait('byBlock', 3600000);
 
-  await result.transaction.wait();
-
-  console.log('transfer tokens', result.receipt.events);
+    await sleep(4000);
+  
+    console.log('transfer tokens', result.receipt.events);
+  }
 }
+
+process.on('SIGINT', async() => {
+  await localKoinos.stopNode();
+});  // CTRL+C
+process.on('SIGQUIT', async() => {
+  await localKoinos.stopNode();
+}); // Keyboard quit
+process.on('SIGTERM',  async() => {
+  await localKoinos.stopNode();
+}); // `kill` command
 
 main()
   .catch(error => console.error(error))

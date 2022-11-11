@@ -263,7 +263,10 @@
                             },
                             "recipient": {
                                 "type": "bytes",
-                                "id": 3
+                                "id": 3,
+                                "options": {
+                                    "(koinos.btype)": "ADDRESS"
+                                }
                             },
                             "value": {
                                 "type": "uint64",
