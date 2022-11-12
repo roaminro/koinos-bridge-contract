@@ -19,19 +19,8 @@ const main = async () => {
     signer,
   });
 
-  const signatures = [
-    "IN_KKb09Vhrvta_obmBy71Bt6hjvRo9iAOmjTkQPz3e1f7hiWzWGhc6TonEiMIG1dFAmPuvILwiNmuYxV39YexE=",
-    "ILirqxPgwrI4RLxQ94QcEVZH4BoCNeh1WU9ujhQs_RJJKKVTdUVm-SKUGONxyFlDP3YtRCVVhihG_SY7OFqaMQI=",
-    "H_wEIRZwjqZ0fv-LMcewaUqP-1TZQA71uT42OXtWvEJbHg5yHzJ7JivJfd3gvHcBqwpz2-lHZl2EmaOBzOeo36I="
-  ];
-
-  let result = await bridgeContract.functions.complete_transfer({
-    transactionId: '0xc4519e2c82831a2760bd3fbbdef9b2e946c865ed2a8558ea6fe6f9c4b883c73d',
-    token: '1NZcHP37xvQNDZEkGH2RUceFqa33K3FXEG',
-    recipient: '1GE2JqXw5LMQaU1sj82Dy8ZEe2BRXQS1cs',
-    value: '25000',
-    expiration: '1668210858000',
-    signatures
+  let result = await bridgeContract.functions.request_new_signatures({
+    transactionId: '0x1220796bb5a9436ef8d1ff79ac2c555b3c3de7f01309f9f24b3e0efa1d00055830f3',
   });
 
   console.log(result.receipt);
