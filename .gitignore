@@ -2,3 +2,4 @@ build
 *.wasm
 assembly/*.boilerplate.ts
 node_modules
+.env
