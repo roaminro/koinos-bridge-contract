@@ -108,16 +108,20 @@ async function main() {
 
 process.on('SIGINT', async() => {
   await localKoinos.stopNode();
+  process.exit();
 });  // CTRL+C
 process.on('SIGQUIT', async() => {
   await localKoinos.stopNode();
+  process.exit();
 }); // Keyboard quit
 process.on('SIGTERM',  async() => {
   await localKoinos.stopNode();
+  process.exit();
 }); // `kill` command
 
 main()
   .catch(error => console.error(error))
   .finally(async () => {
     await localKoinos.stopNode();
+    process.exit();
   });

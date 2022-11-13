@@ -104,6 +104,13 @@
             "description": "Request new signatures when old ones expired",
             "entryPoint": 2545674406,
             "readOnly": false
+        },
+        "get_transfer_status": {
+            "input": "bridge.get_transfer_status_arguments",
+            "output": "bridge.get_transfer_status_result",
+            "description": "Get transfer status",
+            "entryPoint": 671042517,
+            "readOnly": true
         }
     },
     "types": {
@@ -434,6 +441,25 @@
                             "operationId": {
                                 "type": "string",
                                 "id": 2
+                            }
+                        }
+                    },
+                    "get_transfer_status_arguments": {
+                        "fields": {
+                            "transactionId": {
+                                "type": "bytes",
+                                "id": 1,
+                                "options": {
+                                    "(koinos.btype)": "TRANSACTION_ID"
+                                }
+                            }
+                        }
+                    },
+                    "get_transfer_status_result": {
+                        "fields": {
+                            "value": {
+                                "type": "bool",
+                                "id": 1
                             }
                         }
                     },

@@ -166,6 +166,20 @@ export function main(): i32 {
       break;
     }
 
+    case 0x27ff4bd5: {
+      const args =
+        Protobuf.decode<ProtoNamespace.get_transfer_status_arguments>(
+          contractArgs.args,
+          ProtoNamespace.get_transfer_status_arguments.decode
+        );
+      const res = c.get_transfer_status(args);
+      retbuf = Protobuf.encode(
+        res,
+        ProtoNamespace.get_transfer_status_result.encode
+      );
+      break;
+    }
+
     default:
       System.exit(1);
       break;

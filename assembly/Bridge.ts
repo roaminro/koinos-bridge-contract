@@ -482,4 +482,12 @@ export class Bridge {
     
     return new bridge.empty_object();
   }
+
+  get_transfer_status(
+    args: bridge.get_transfer_status_arguments
+  ): bridge.get_transfer_status_result {
+    const transfers = new Transfers(this.contractId);
+    
+    return new bridge.get_transfer_status_result(transfers.has(args.transaction_id));
+  }
 }

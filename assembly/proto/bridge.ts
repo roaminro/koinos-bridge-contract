@@ -986,6 +986,80 @@ export namespace bridge {
     }
   }
 
+  export class get_transfer_status_arguments {
+    static encode(
+      message: get_transfer_status_arguments,
+      writer: Writer
+    ): void {
+      if (message.transaction_id.length != 0) {
+        writer.uint32(10);
+        writer.bytes(message.transaction_id);
+      }
+    }
+
+    static decode(reader: Reader, length: i32): get_transfer_status_arguments {
+      const end: usize = length < 0 ? reader.end : reader.ptr + length;
+      const message = new get_transfer_status_arguments();
+
+      while (reader.ptr < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1:
+            message.transaction_id = reader.bytes();
+            break;
+
+          default:
+            reader.skipType(tag & 7);
+            break;
+        }
+      }
+
+      return message;
+    }
+
+    transaction_id: Uint8Array;
+
+    constructor(transaction_id: Uint8Array = new Uint8Array(0)) {
+      this.transaction_id = transaction_id;
+    }
+  }
+
+  @unmanaged
+  export class get_transfer_status_result {
+    static encode(message: get_transfer_status_result, writer: Writer): void {
+      if (message.value != false) {
+        writer.uint32(8);
+        writer.bool(message.value);
+      }
+    }
+
+    static decode(reader: Reader, length: i32): get_transfer_status_result {
+      const end: usize = length < 0 ? reader.end : reader.ptr + length;
+      const message = new get_transfer_status_result();
+
+      while (reader.ptr < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1:
+            message.value = reader.bool();
+            break;
+
+          default:
+            reader.skipType(tag & 7);
+            break;
+        }
+      }
+
+      return message;
+    }
+
+    value: bool;
+
+    constructor(value: bool = false) {
+      this.value = value;
+    }
+  }
+
   export class tokens_locked_event {
     static encode(message: tokens_locked_event, writer: Writer): void {
       if (message.from.length != 0) {

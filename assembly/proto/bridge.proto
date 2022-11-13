@@ -142,6 +142,16 @@ message request_new_signatures_arguments {
   string operation_id = 2;
 }
 
+// @description Get transfer status
+// @read-only true
+message get_transfer_status_arguments {
+  bytes transaction_id = 1 [(koinos.btype) = TRANSACTION_ID];
+}
+
+message get_transfer_status_result{
+  bool value = 1;
+}
+
 // Events
 message tokens_locked_event {
   bytes from = 1 [(koinos.btype) = ADDRESS];
