@@ -168,8 +168,6 @@ export class Bridge {
       // and burn them...
       System.require(tokenContract.burn(this.contractId, bridgedAmount), 'could not burn wrapped tokens');
     } else {
-      System.log('here1');
-
       // query own token balance before transfer
       const balanceBefore = tokenContract.balanceOf(this.contractId);
 
