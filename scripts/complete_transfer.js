@@ -3,38 +3,34 @@ const abi = require('./bridge-abi.json')
 
 abi.koilib_types = abi.types;
 
-// const USER_WIF = '5KgE5Tfm7zuJ6q6tnUJVW93dCDiDDk5mgaffrRJSdwg5hQbDHGK';
-// const BRIDGE_CONTRACT_ADDR = '1JaMS92SPa3rQoZqUifP7GJxp2MEULxrJB';
+const { PRIVATE_KEY, RPC_URL, BRIDGE_ADDR } = process.env;
 
-const USER_WIF = '5Hs4H2Ks2EyFZTMxkQprC5t54Xw5LRDoHRfyjedNNBJC4jcM1nU';
-const BRIDGE_CONTRACT_ADDR = '17XHjr7n2E4auykiHkfJMLGGovvaCadtQS';
 
 const main = async () => {
-  // const provider = new Provider('http://localhost:8080');
-  const provider = new Provider('https://harbinger-api.koinos.io');
+  const provider = new Provider(RPC_URL);
 
-  const signer = Signer.fromWif(USER_WIF);
+  const signer = Signer.fromWif(PRIVATE_KEY);
   signer.provider = provider;
 
   const bridgeContract = new Contract({
-    id: BRIDGE_CONTRACT_ADDR,
+    id: BRIDGE_ADDR,
     abi,
     provider,
     signer,
   });
 
   const signatures = [
-    "H17JrQ0FtuqmzTwPsHtzvS9ovb4uBwcTa9Uki0swt-xRc8zjzkvn_wKnjE94X8La4g_RR3paSoEaryNvCcw-i-c=",
-    "IKGYmCJiCcj56I4C03Bn0JgKizGMqLkQIHx4uI2AxoZ2IM2ifwOEeuT_sIBocyVvVti0x68-o4DoO3U9w6ZyVsg=",
-    "ICgywzuM82ZgKQ1XQQ_DxYNyTwLIwjubdmXJTiZDlQJfBcuxIQlWBQMiHBHVEsKqKY624cZ4iPoGpHWIdmVmu8w="
+    "IL1HmPger6O1erHP12qiQoWo9mFkXiRuCKWfM-BhFXY0bUh_Ex4213UV3ftK4JwEOUMKjT8TZsWKZM_ojJYb4pE=",
+    "IHQGflMBSJVuYU9Im1mWE5r1IMvpfPKxsoAYkiRRAFz1J8Orflqo09PRm1uQ9J_z8G2XjKf5sG89S8yDaw_WQqA=",
+    "H5vmEJi-3n1JSNjrHycDacTWNQusCpuiiwRyEB_SCng5TsKIUn06Qfln8ATroCMAdIFclQZ83lIIaqDTqmcX-BU="
   ];
 
   let result = await bridgeContract.functions.complete_transfer({
-    transactionId: '0x2f458303bf74101568eca556aab36bcc2f1d1a48a0f583ba59c6d496ea2d824a',
+    transactionId: '0xeaf75ff289091a5df0215c47e383106c16439c9b5520de396c1b7c7e93f13ad1',
     token: '1KazZFUnZSLjeXq2QrifdnYqiBvA7RVF3G',
     recipient: '1Bf5W4LZ2FTmzPcA6d8QeLgAYmCKdZp2nN',
     value: '1',
-    expiration: '1668411096000',
+    expiration: '1668465588000',
     signatures
   });
 

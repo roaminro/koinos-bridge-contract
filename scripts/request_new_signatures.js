@@ -1,19 +1,19 @@
 const { Signer, Provider, Contract, utils } = require('koilib');
 const abi = require('./bridge-abi.json')
+require('dotenv').config();
 
 abi.koilib_types = abi.types;
 
-const USER_WIF = '5KgE5Tfm7zuJ6q6tnUJVW93dCDiDDk5mgaffrRJSdwg5hQbDHGK';
-const BRIDGE_CONTRACT_ADDR = '1JaMS92SPa3rQoZqUifP7GJxp2MEULxrJB';
+const { PRIVATE_KEY, RPC_URL, BRIDGE_ADDR } = process.env;
 
 const main = async () => {
-  const provider = new Provider('http://localhost:8080');
+  const provider = new Provider(RPC_URL);
 
-  const signer = Signer.fromWif(USER_WIF);
+  const signer = Signer.fromWif(PRIVATE_KEY);
   signer.provider = provider;
 
   const bridgeContract = new Contract({
-    id: BRIDGE_CONTRACT_ADDR,
+    id: BRIDGE_ADDR,
     abi,
     provider,
     signer,
