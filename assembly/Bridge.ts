@@ -1,4 +1,4 @@
-import { Protobuf, System, Crypto, Token, Base58, Storage } from '@koinos/sdk-as';
+import { Protobuf, System, Crypto, Token, Base58, Storage, authority } from '@koinos/sdk-as';
 import { bridge } from './proto/bridge';
 import { Metadata } from './state/Metadata';
 import { Tokens } from './state/Tokens';
@@ -12,6 +12,9 @@ export class Bridge {
   contractId: Uint8Array = System.getContractId();
 
   initialize(args: bridge.initialize_arguments): bridge.empty_object {
+    // on this contract can initialize itself
+    System.requireAuthority(authority.authorization_type.contract_call, this.contractId);
+
     const initialValidators = args.initial_validators;
     System.require(initialValidators.length > 0, 'Validators required');
 
@@ -32,6 +35,12 @@ export class Bridge {
     metadata.put(meta);
 
     return new bridge.empty_object();
+  }
+
+  checkIfInitialized(): void {
+    const metadata = new Metadata(this.contractId).get()!;
+
+    System.require(metadata.initialized, 'Contract is not initialized');
   }
 
   get_validators(
@@ -109,6 +118,8 @@ export class Bridge {
   }
 
   set_pause(args: bridge.set_pause_arguments): bridge.empty_object {
+    this.checkIfInitialized();
+
     const signatures = args.signatures;
     const pause = args.pause;
 
@@ -140,6 +151,8 @@ export class Bridge {
   transfer_tokens(
     args: bridge.transfer_tokens_arguments
   ): bridge.empty_object {
+    this.checkIfInitialized();
+
     // cannot call when contract is paused
     new Pausable(this.contractId).whenNotPaused();
 
@@ -200,6 +213,8 @@ export class Bridge {
   complete_transfer(
     args: bridge.complete_transfer_arguments
   ): bridge.empty_object {
+    this.checkIfInitialized();
+
     // cannot call when contract is paused
     new Pausable(this.contractId).whenNotPaused();
 
@@ -256,6 +271,8 @@ export class Bridge {
   add_validator(
     args: bridge.add_validator_arguments
   ): bridge.empty_object {
+    this.checkIfInitialized();
+
     const signatures = args.signatures;
     const validator = args.validator;
 
@@ -287,6 +304,8 @@ export class Bridge {
   remove_validator(
     args: bridge.remove_validator_arguments
   ): bridge.empty_object {
+    this.checkIfInitialized();
+
     const signatures = args.signatures;
     const validator = args.validator;
 
@@ -318,6 +337,8 @@ export class Bridge {
   add_supported_token(
     args: bridge.add_supported_token_arguments
   ): bridge.empty_object {
+    this.checkIfInitialized();
+
     const signatures = args.signatures;
     const token = args.token;
 
@@ -347,6 +368,8 @@ export class Bridge {
   remove_supported_token(
     args: bridge.remove_supported_token_arguments
   ): bridge.empty_object {
+    this.checkIfInitialized();
+    
     const signatures = args.signatures;
     const token = args.token;
 
@@ -376,6 +399,8 @@ export class Bridge {
   add_supported_wrapped_token(
     args: bridge.add_supported_wrapped_token_arguments
   ): bridge.empty_object {
+    this.checkIfInitialized();
+    
     const signatures = args.signatures;
     const token = args.token;
 
@@ -407,6 +432,8 @@ export class Bridge {
   remove_supported_wrapped_token(
     args: bridge.remove_supported_wrapped_token_arguments
   ): bridge.empty_object {
+    this.checkIfInitialized();
+    
     const signatures = args.signatures;
     const token = args.token;
 
@@ -475,7 +502,8 @@ export class Bridge {
   request_new_signatures(
     args: bridge.request_new_signatures_arguments
   ): bridge.empty_object {
-
+    this.checkIfInitialized();
+    
     System.event('bridge.request_new_signatures_event', Protobuf.encode(args, bridge.request_new_signatures_arguments.encode), []);
     
     return new bridge.empty_object();

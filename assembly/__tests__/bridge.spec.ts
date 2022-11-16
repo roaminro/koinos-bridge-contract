@@ -1,4 +1,4 @@
-import { MockVM, Base58, Arrays, StringBytes, System, Base64, chain } from "@koinos/sdk-as";
+import { MockVM, Base58, Arrays, StringBytes, System, Base64, chain, authority } from "@koinos/sdk-as";
 import { Bridge } from "../Bridge";
 import { bridge } from "../proto/bridge";
 
@@ -42,6 +42,8 @@ describe('bridge', () => {
 
   it('should initialize bridge', () => {
     const b = new Bridge();
+    MockVM.setAuthorities([new MockVM.MockAuthority(authority.authorization_type.contract_call, CONTRACT_ID, true)]);
+
     let initArgs = new bridge.initialize_arguments(validatorsAddrBytes);
 
     b.initialize(initArgs);
@@ -67,6 +69,7 @@ describe('bridge', () => {
       const b = new Bridge();
       const validators: Uint8Array[] = [];
 
+      MockVM.setAuthorities([new MockVM.MockAuthority(authority.authorization_type.contract_call, CONTRACT_ID, true)]);
       const initArgs = new bridge.initialize_arguments(validators);
 
       b.initialize(initArgs);
@@ -84,7 +87,7 @@ describe('bridge', () => {
       }
 
       validators.push(validatorsAddrBytes[5]);
-
+      MockVM.setAuthorities([new MockVM.MockAuthority(authority.authorization_type.contract_call, CONTRACT_ID, true)]);
       const initArgs = new bridge.initialize_arguments(validators);
 
       b.initialize(initArgs);
@@ -96,6 +99,7 @@ describe('bridge', () => {
     expect(() => {
       MockVM.setContractId(CONTRACT_ID);
       const b = new Bridge();
+      MockVM.setAuthorities([new MockVM.MockAuthority(authority.authorization_type.contract_call, CONTRACT_ID, true)]);
       const initArgs = new bridge.initialize_arguments(validatorsAddrBytes);
 
       b.initialize(initArgs);
@@ -108,6 +112,7 @@ describe('bridge', () => {
   it('should add support for token', () => {
     MockVM.setHeadInfo(new chain.head_info(null, 123456));
     const b = new Bridge();
+    MockVM.setAuthorities([new MockVM.MockAuthority(authority.authorization_type.contract_call, CONTRACT_ID, true)]);
     let initArgs = new bridge.initialize_arguments(validatorsAddrBytes);
 
     b.initialize(initArgs);
@@ -141,6 +146,7 @@ describe('bridge', () => {
 
   it('should not add support for token', () => {
     const b = new Bridge();
+    MockVM.setAuthorities([new MockVM.MockAuthority(authority.authorization_type.contract_call, CONTRACT_ID, true)]);
     let initArgs = new bridge.initialize_arguments(validatorsAddrBytes);
 
     b.initialize(initArgs);
@@ -274,6 +280,7 @@ describe('bridge', () => {
 
   it('should add support for wrapped token', () => {
     const b = new Bridge();
+    MockVM.setAuthorities([new MockVM.MockAuthority(authority.authorization_type.contract_call, CONTRACT_ID, true)]);
     let initArgs = new bridge.initialize_arguments(validatorsAddrBytes);
 
     b.initialize(initArgs);
@@ -307,6 +314,7 @@ describe('bridge', () => {
 
   it('should not add support for wrapped token', () => {
     const b = new Bridge();
+    MockVM.setAuthorities([new MockVM.MockAuthority(authority.authorization_type.contract_call, CONTRACT_ID, true)]);
     let initArgs = new bridge.initialize_arguments(validatorsAddrBytes);
 
     b.initialize(initArgs);
@@ -417,6 +425,7 @@ describe('bridge', () => {
 
   it('should add a validator', () => {
     const b = new Bridge();
+    MockVM.setAuthorities([new MockVM.MockAuthority(authority.authorization_type.contract_call, CONTRACT_ID, true)]);
     let initArgs = new bridge.initialize_arguments(validatorsAddrBytes);
 
     b.initialize(initArgs);
@@ -450,6 +459,7 @@ describe('bridge', () => {
 
   it('should not add a validator', () => {
     const b = new Bridge();
+    MockVM.setAuthorities([new MockVM.MockAuthority(authority.authorization_type.contract_call, CONTRACT_ID, true)]);
     let initArgs = new bridge.initialize_arguments(validatorsAddrBytes);
 
     b.initialize(initArgs);
