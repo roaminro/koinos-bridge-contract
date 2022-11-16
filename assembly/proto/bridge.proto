@@ -19,7 +19,7 @@ message initialize_arguments {
 message get_validators_arguments {
   bytes start = 1 [(koinos.btype) = ADDRESS];
   int32 limit = 2;
-  int32 direction = 3;
+  bool descending = 3;
 }
 
 // @description Get supported tokens
@@ -28,7 +28,7 @@ message get_validators_arguments {
 message get_supported_tokens_arguments {
   bytes start = 1 [(koinos.btype) = ADDRESS];
   int32 limit = 2;
-  uint32 direction = 3;
+  bool descending = 3;
 }
 
 // @description Get supported wrapped tokens
@@ -37,7 +37,7 @@ message get_supported_tokens_arguments {
 message get_supported_wrapped_tokens_arguments {
   bytes start = 1 [(koinos.btype) = ADDRESS];
   int32 limit = 2;
-  uint32 direction = 3;
+  bool descending = 3;
 }
 
 message repeated_addresses {

@@ -37,18 +37,11 @@ export class Bridge {
     return new bridge.empty_object();
   }
 
-  checkIfInitialized(): void {
-    const metadata = new Metadata(this.contractId).get()!;
-
-    System.require(metadata.initialized, 'Contract is not initialized');
-  }
-
   get_validators(
     args: bridge.get_validators_arguments
   ): bridge.repeated_addresses {
     const start = args.start;
     let limit = args.limit;
-    let direction = args.direction;
 
     if (limit == 0) {
       limit = 100;
@@ -58,7 +51,7 @@ export class Bridge {
     let res: Uint8Array[] = [];
 
     if (validators.has(start)) {
-      const d = direction == 0 ? Storage.Direction.Ascending : Storage.Direction.Descending;
+      const d = args.descending ? Storage.Direction.Descending : Storage.Direction.Ascending;
       res = validators.getManyKeys(start, limit, d);
       res.unshift(start);
     }
@@ -71,7 +64,6 @@ export class Bridge {
   ): bridge.repeated_addresses {
     const start = args.start;
     let limit = args.limit;
-    let direction = args.direction;
 
     if (limit == 0) {
       limit = 100;
@@ -81,7 +73,7 @@ export class Bridge {
     let res: Uint8Array[] = [];
 
     if (tokens.has(start)) {
-      const d = direction == 0 ? Storage.Direction.Ascending : Storage.Direction.Descending;
+      const d = args.descending ? Storage.Direction.Descending : Storage.Direction.Ascending;
       res = tokens.getManyKeys(start, limit, d);
       res.unshift(start);
     }
@@ -94,7 +86,6 @@ export class Bridge {
   ): bridge.repeated_addresses {
     const start = args.start;
     let limit = args.limit;
-    let direction = args.direction;
 
     if (limit == 0) {
       limit = 100;
@@ -104,7 +95,7 @@ export class Bridge {
     let res: Uint8Array[] = [];
 
     if (tokens.has(start)) {
-      const d = direction == 0 ? Storage.Direction.Ascending : Storage.Direction.Descending;
+      const d = args.descending ? Storage.Direction.Descending : Storage.Direction.Ascending;
       res = tokens.getManyKeys(start, limit, d);
       res.unshift(start);
     }
@@ -118,8 +109,6 @@ export class Bridge {
   }
 
   set_pause(args: bridge.set_pause_arguments): bridge.empty_object {
-    this.checkIfInitialized();
-
     const signatures = args.signatures;
     const pause = args.pause;
 
@@ -151,8 +140,6 @@ export class Bridge {
   transfer_tokens(
     args: bridge.transfer_tokens_arguments
   ): bridge.empty_object {
-    this.checkIfInitialized();
-
     // cannot call when contract is paused
     new Pausable(this.contractId).whenNotPaused();
 
@@ -213,8 +200,6 @@ export class Bridge {
   complete_transfer(
     args: bridge.complete_transfer_arguments
   ): bridge.empty_object {
-    this.checkIfInitialized();
-
     // cannot call when contract is paused
     new Pausable(this.contractId).whenNotPaused();
 
@@ -271,8 +256,6 @@ export class Bridge {
   add_validator(
     args: bridge.add_validator_arguments
   ): bridge.empty_object {
-    this.checkIfInitialized();
-
     const signatures = args.signatures;
     const validator = args.validator;
 
@@ -304,8 +287,6 @@ export class Bridge {
   remove_validator(
     args: bridge.remove_validator_arguments
   ): bridge.empty_object {
-    this.checkIfInitialized();
-
     const signatures = args.signatures;
     const validator = args.validator;
 
@@ -337,8 +318,6 @@ export class Bridge {
   add_supported_token(
     args: bridge.add_supported_token_arguments
   ): bridge.empty_object {
-    this.checkIfInitialized();
-
     const signatures = args.signatures;
     const token = args.token;
 
@@ -367,9 +346,7 @@ export class Bridge {
 
   remove_supported_token(
     args: bridge.remove_supported_token_arguments
-  ): bridge.empty_object {
-    this.checkIfInitialized();
-    
+  ): bridge.empty_object {    
     const signatures = args.signatures;
     const token = args.token;
 
@@ -398,9 +375,7 @@ export class Bridge {
 
   add_supported_wrapped_token(
     args: bridge.add_supported_wrapped_token_arguments
-  ): bridge.empty_object {
-    this.checkIfInitialized();
-    
+  ): bridge.empty_object {    
     const signatures = args.signatures;
     const token = args.token;
 
@@ -431,9 +406,7 @@ export class Bridge {
 
   remove_supported_wrapped_token(
     args: bridge.remove_supported_wrapped_token_arguments
-  ): bridge.empty_object {
-    this.checkIfInitialized();
-    
+  ): bridge.empty_object {    
     const signatures = args.signatures;
     const token = args.token;
 
@@ -501,9 +474,7 @@ export class Bridge {
 
   request_new_signatures(
     args: bridge.request_new_signatures_arguments
-  ): bridge.empty_object {
-    this.checkIfInitialized();
-    
+  ): bridge.empty_object {    
     System.event('bridge.request_new_signatures_event', Protobuf.encode(args, bridge.request_new_signatures_arguments.encode), []);
     
     return new bridge.empty_object();

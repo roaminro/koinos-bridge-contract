@@ -51,9 +51,9 @@ export namespace bridge {
         writer.int32(message.limit);
       }
 
-      if (message.direction != 0) {
+      if (message.descending != false) {
         writer.uint32(24);
-        writer.int32(message.direction);
+        writer.bool(message.descending);
       }
     }
 
@@ -73,7 +73,7 @@ export namespace bridge {
             break;
 
           case 3:
-            message.direction = reader.int32();
+            message.descending = reader.bool();
             break;
 
           default:
@@ -87,16 +87,16 @@ export namespace bridge {
 
     start: Uint8Array;
     limit: i32;
-    direction: i32;
+    descending: bool;
 
     constructor(
       start: Uint8Array = new Uint8Array(0),
       limit: i32 = 0,
-      direction: i32 = 0
+      descending: bool = false
     ) {
       this.start = start;
       this.limit = limit;
-      this.direction = direction;
+      this.descending = descending;
     }
   }
 
@@ -115,9 +115,9 @@ export namespace bridge {
         writer.int32(message.limit);
       }
 
-      if (message.direction != 0) {
+      if (message.descending != false) {
         writer.uint32(24);
-        writer.uint32(message.direction);
+        writer.bool(message.descending);
       }
     }
 
@@ -137,7 +137,7 @@ export namespace bridge {
             break;
 
           case 3:
-            message.direction = reader.uint32();
+            message.descending = reader.bool();
             break;
 
           default:
@@ -151,16 +151,16 @@ export namespace bridge {
 
     start: Uint8Array;
     limit: i32;
-    direction: u32;
+    descending: bool;
 
     constructor(
       start: Uint8Array = new Uint8Array(0),
       limit: i32 = 0,
-      direction: u32 = 0
+      descending: bool = false
     ) {
       this.start = start;
       this.limit = limit;
-      this.direction = direction;
+      this.descending = descending;
     }
   }
 
@@ -179,9 +179,9 @@ export namespace bridge {
         writer.int32(message.limit);
       }
 
-      if (message.direction != 0) {
+      if (message.descending != false) {
         writer.uint32(24);
-        writer.uint32(message.direction);
+        writer.bool(message.descending);
       }
     }
 
@@ -204,7 +204,7 @@ export namespace bridge {
             break;
 
           case 3:
-            message.direction = reader.uint32();
+            message.descending = reader.bool();
             break;
 
           default:
@@ -218,16 +218,16 @@ export namespace bridge {
 
     start: Uint8Array;
     limit: i32;
-    direction: u32;
+    descending: bool;
 
     constructor(
       start: Uint8Array = new Uint8Array(0),
       limit: i32 = 0,
-      direction: u32 = 0
+      descending: bool = false
     ) {
       this.start = start;
       this.limit = limit;
-      this.direction = direction;
+      this.descending = descending;
     }
   }
 
