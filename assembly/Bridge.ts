@@ -447,12 +447,17 @@ export class Bridge {
       const signature = signatures[index];
       const pubKey = System.recoverPublicKey(signature, hash)!;
       const address = Crypto.addressFromPublicKey(pubKey);
-      const b58Addr = Base58.encode(address);
+      const addressString = address.toString();
  
-      System.require(validators.has(address), `${b58Addr} is not a validator`);
-      System.require(!validatorAlreadySigned.has(b58Addr), `validator ${b58Addr} already signed`);
+      if (!validators.has(address)) {
+        System.revert(`${Base58.encode(address)} is not a validator`);
+      }
 
-      validatorAlreadySigned.set(b58Addr, true);
+      if (validatorAlreadySigned.has(addressString)) {
+        System.revert(`validator ${Base58.encode(address)} already signed`);
+      }
+
+      validatorAlreadySigned.set(addressString, true);
     }
   }
 
