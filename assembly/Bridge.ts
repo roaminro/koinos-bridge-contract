@@ -435,7 +435,7 @@ export class Bridge {
 
   verifySignatures(hash: Uint8Array, signatures: Uint8Array[], nbValidators: u32): void {
     System.require(
-      signatures.length as u32 >= (((nbValidators * 10) / 3) * 2) / 10 + 1,
+      signatures.length as u32 >= (nbValidators * 2 + 2) / 3,
       'quorum not met'
     );
 

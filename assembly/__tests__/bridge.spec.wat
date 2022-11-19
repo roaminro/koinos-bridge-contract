@@ -31035,16 +31035,12 @@
    local.get $2
    i32.load offset=12
    local.get $3
-   i32.const 10
-   i32.mul
-   i32.const 3
-   i32.div_u
    i32.const 1
    i32.shl
-   i32.const 10
-   i32.div_u
-   i32.const 1
+   i32.const 2
    i32.add
+   i32.const 3
+   i32.div_u
    i32.ge_u
    global.get $~lib/memory/__stack_pointer
    i32.const 0
