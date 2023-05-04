@@ -155,6 +155,16 @@ export function main(): i32 {
       break;
     }
 
+    case 0x23c5073c: {
+      const args = Protobuf.decode<ProtoNamespace.set_fee_wallet_arguments>(
+        contractArgs.args,
+        ProtoNamespace.set_fee_wallet_arguments.decode
+      );
+      const res = c.set_fee_wallet(args);
+      retbuf = Protobuf.encode(res, ProtoNamespace.empty_object.encode);
+      break;
+    }
+
     case 0x97bbe8a6: {
       const args =
         Protobuf.decode<ProtoNamespace.request_new_signatures_arguments>(

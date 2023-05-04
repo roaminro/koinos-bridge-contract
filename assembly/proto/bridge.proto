@@ -134,6 +134,16 @@ message remove_supported_wrapped_token_arguments {
   uint64 expiration = 3 [jstype = JS_STRING];
 }
 
+// @description Remove an existing supported token
+// @read-only false
+// @result empty_object
+message set_fee_wallet_arguments {
+  repeated bytes signatures = 1;
+  bytes fee_to = 2 [(koinos.btype) = ADDRESS];
+  uint64 fee_amount = 3 [jstype = JS_STRING];
+  uint64 expiration = 4 [jstype = JS_STRING];
+}
+
 // @description Request new signatures when old ones expired
 // @read-only false
 // @result empty_object
@@ -174,6 +184,7 @@ enum action_id {
   remove_supported_wrapped_token = 6;
   set_pause = 7;
   complete_transfer = 8;
+  set_fee_wallet = 9;
 }
 
 // Objects
@@ -203,10 +214,19 @@ message complete_transfer_hash {
   uint64 expiration = 7;
 }
 
+message set_fee_wallet_hash {
+  action_id action = 1;
+  uint64 fee_amount = 2;
+  bytes fee_to = 3 [(koinos.btype) = ADDRESS];
+  uint64 expiration = 4;
+}
+
 message metadata_object {
   bool initialized = 1; 
   uint64 nonce = 2 [jstype = JS_STRING];
   uint32 nb_validators = 3;
+  uint64 fee_amount = 4;
+  bytes fee_to = 5 [(koinos.btype) = ADDRESS];
 }
 
 message empty_object {

@@ -934,6 +934,82 @@ export namespace bridge {
     }
   }
 
+  export class set_fee_wallet_arguments {
+    static encode(message: set_fee_wallet_arguments, writer: Writer): void {
+      const unique_name_signatures = message.signatures;
+      if (unique_name_signatures.length !== 0) {
+        for (let i = 0; i < unique_name_signatures.length; ++i) {
+          writer.uint32(10);
+          writer.bytes(unique_name_signatures[i]);
+        }
+      }
+
+      if (message.fee_to.length != 0) {
+        writer.uint32(18);
+        writer.bytes(message.fee_to);
+      }
+
+      if (message.fee_amount != 0) {
+        writer.uint32(24);
+        writer.uint64(message.fee_amount);
+      }
+
+      if (message.expiration != 0) {
+        writer.uint32(32);
+        writer.uint64(message.expiration);
+      }
+    }
+
+    static decode(reader: Reader, length: i32): set_fee_wallet_arguments {
+      const end: usize = length < 0 ? reader.end : reader.ptr + length;
+      const message = new set_fee_wallet_arguments();
+
+      while (reader.ptr < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1:
+            message.signatures.push(reader.bytes());
+            break;
+
+          case 2:
+            message.fee_to = reader.bytes();
+            break;
+
+          case 3:
+            message.fee_amount = reader.uint64();
+            break;
+
+          case 4:
+            message.expiration = reader.uint64();
+            break;
+
+          default:
+            reader.skipType(tag & 7);
+            break;
+        }
+      }
+
+      return message;
+    }
+
+    signatures: Array<Uint8Array>;
+    fee_to: Uint8Array;
+    fee_amount: u64;
+    expiration: u64;
+
+    constructor(
+      signatures: Array<Uint8Array> = [],
+      fee_to: Uint8Array = new Uint8Array(0),
+      fee_amount: u64 = 0,
+      expiration: u64 = 0
+    ) {
+      this.signatures = signatures;
+      this.fee_to = fee_to;
+      this.fee_amount = fee_amount;
+      this.expiration = expiration;
+    }
+  }
+
   export class request_new_signatures_arguments {
     static encode(
       message: request_new_signatures_arguments,
@@ -1447,7 +1523,79 @@ export namespace bridge {
     }
   }
 
-  @unmanaged
+  export class set_fee_wallet_hash {
+    static encode(message: set_fee_wallet_hash, writer: Writer): void {
+      if (message.action != 0) {
+        writer.uint32(8);
+        writer.int32(message.action);
+      }
+
+      if (message.fee_amount != 0) {
+        writer.uint32(16);
+        writer.uint64(message.fee_amount);
+      }
+
+      if (message.fee_to.length != 0) {
+        writer.uint32(26);
+        writer.bytes(message.fee_to);
+      }
+
+      if (message.expiration != 0) {
+        writer.uint32(32);
+        writer.uint64(message.expiration);
+      }
+    }
+
+    static decode(reader: Reader, length: i32): set_fee_wallet_hash {
+      const end: usize = length < 0 ? reader.end : reader.ptr + length;
+      const message = new set_fee_wallet_hash();
+
+      while (reader.ptr < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1:
+            message.action = reader.int32();
+            break;
+
+          case 2:
+            message.fee_amount = reader.uint64();
+            break;
+
+          case 3:
+            message.fee_to = reader.bytes();
+            break;
+
+          case 4:
+            message.expiration = reader.uint64();
+            break;
+
+          default:
+            reader.skipType(tag & 7);
+            break;
+        }
+      }
+
+      return message;
+    }
+
+    action: action_id;
+    fee_amount: u64;
+    fee_to: Uint8Array;
+    expiration: u64;
+
+    constructor(
+      action: action_id = 0,
+      fee_amount: u64 = 0,
+      fee_to: Uint8Array = new Uint8Array(0),
+      expiration: u64 = 0
+    ) {
+      this.action = action;
+      this.fee_amount = fee_amount;
+      this.fee_to = fee_to;
+      this.expiration = expiration;
+    }
+  }
+
   export class metadata_object {
     static encode(message: metadata_object, writer: Writer): void {
       if (message.initialized != false) {
@@ -1463,6 +1611,16 @@ export namespace bridge {
       if (message.nb_validators != 0) {
         writer.uint32(24);
         writer.uint32(message.nb_validators);
+      }
+
+      if (message.fee_amount != 0) {
+        writer.uint32(32);
+        writer.uint64(message.fee_amount);
+      }
+
+      if (message.fee_to.length != 0) {
+        writer.uint32(42);
+        writer.bytes(message.fee_to);
       }
     }
 
@@ -1485,6 +1643,14 @@ export namespace bridge {
             message.nb_validators = reader.uint32();
             break;
 
+          case 4:
+            message.fee_amount = reader.uint64();
+            break;
+
+          case 5:
+            message.fee_to = reader.bytes();
+            break;
+
           default:
             reader.skipType(tag & 7);
             break;
@@ -1497,15 +1663,21 @@ export namespace bridge {
     initialized: bool;
     nonce: u64;
     nb_validators: u32;
+    fee_amount: u64;
+    fee_to: Uint8Array;
 
     constructor(
       initialized: bool = false,
       nonce: u64 = 0,
-      nb_validators: u32 = 0
+      nb_validators: u32 = 0,
+      fee_amount: u64 = 0,
+      fee_to: Uint8Array = new Uint8Array(0)
     ) {
       this.initialized = initialized;
       this.nonce = nonce;
       this.nb_validators = nb_validators;
+      this.fee_amount = fee_amount;
+      this.fee_to = fee_to;
     }
   }
 
@@ -1542,5 +1714,6 @@ export namespace bridge {
     remove_supported_wrapped_token = 6,
     set_pause = 7,
     complete_transfer = 8,
+    set_fee_wallet = 9,
   }
 }
