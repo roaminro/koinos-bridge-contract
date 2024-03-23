@@ -3,14 +3,13 @@
   "version": "0.1.0",
   "main": "assembly/index.ts",
   "license": "MIT",
-  "author": "Roamin",
+  "author": "Roamin Ro",
   "repository": "https://github.com/roaminroe/koinos-bridge-contract",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "@roamin/local-koinos": "^0.4.1",
     "commander": "^9.0.0",
-    "dotenv": "^16.0.3"
-  },
-  "devDependencies": {
+    "dotenv": "^16.0.3",
     "@as-covers/core": "^0.2.1",
     "@as-pect/cli": "^6.2.4",
     "@koinos/abi-proto-gen": "^0.4.0",
