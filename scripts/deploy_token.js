@@ -1,22 +1,19 @@
 const { Signer, Provider, Contract } = require('koilib');
 const path = require('path');
 const fs = require('fs');
-const abi = require('./bridge-abi.json')
+const abi = require('./token-abi.json')
 require('dotenv').config();
 
-const { VALIDATORS_ADDR, PRIVATE_KEY, RPC_URL } = process.env;
-
-const validators = VALIDATORS_ADDR.split('|');
+const { TOKEN_PK, RPC_URL } = process.env;
 
 abi.koilib_types = abi.types;
 
 async function main() {
   // deploy bridge contract
   const provider = new Provider(RPC_URL);
-  const signer = Signer.fromWif(PRIVATE_KEY);
+  const signer = Signer.fromWif(TOKEN_PK);
   signer.provider = provider;
 
-  console.log(signer.address)
   const bytecode = fs.readFileSync(path.resolve(__dirname, '../build/release/contract.wasm'));
   const bridgeContract = new Contract({
     id: signer.address,
@@ -27,20 +24,12 @@ async function main() {
   });
 
   const { transaction } = await bridgeContract.deploy({
-    abi: fs.readFileSync(path.resolve(__dirname, '../abi/bridge.abi')).toString(),
+    abi: fs.readFileSync(path.resolve(__dirname, '../abi/token.abi')).toString(),
   });
 
   await transaction.wait();
 
-  console.log('bridge contract deployed at', bridgeContract.getId());
-
-  const result = await bridgeContract.functions.initialize({
-    initialValidators: validators
-  });
-
-  await result.transaction.wait();
-
-  console.log('initialized bridge contract');
+  console.log('token contract deployed at', bridgeContract.getId());
 
 }
 

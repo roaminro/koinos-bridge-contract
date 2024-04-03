@@ -68,6 +68,7 @@ async function main() {
     expiration
   });
 
+  console.log(result.transaction)
   await result.transaction.wait();
 
   console.log('added support for token ', TOKEN_ADDR);
