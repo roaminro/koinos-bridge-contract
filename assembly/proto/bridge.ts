@@ -1296,14 +1296,14 @@ export namespace bridge {
         writer.string(message.amount);
       }
 
-      if (message.chain_id != 0) {
-        writer.uint32(32);
-        writer.uint32(message.chain_id);
+      if (message.recipient.length != 0) {
+        writer.uint32(34);
+        writer.string(message.recipient);
       }
 
-      if (message.recipient.length != 0) {
-        writer.uint32(42);
-        writer.string(message.recipient);
+      if (message.chain_id != 0) {
+        writer.uint32(40);
+        writer.uint32(message.chain_id);
       }
     }
 
@@ -1327,11 +1327,11 @@ export namespace bridge {
             break;
 
           case 4:
-            message.chain_id = reader.uint32();
+            message.recipient = reader.string();
             break;
 
           case 5:
-            message.recipient = reader.string();
+            message.chain_id = reader.uint32();
             break;
 
           default:
@@ -1346,21 +1346,21 @@ export namespace bridge {
     from: Uint8Array;
     token: Uint8Array;
     amount: string;
-    chain_id: u32;
     recipient: string;
+    chain_id: u32;
 
     constructor(
       from: Uint8Array = new Uint8Array(0),
       token: Uint8Array = new Uint8Array(0),
       amount: string = "",
-      chain_id: u32 = 0,
-      recipient: string = ""
+      recipient: string = "",
+      chain_id: u32 = 0
     ) {
       this.from = from;
       this.token = token;
       this.amount = amount;
-      this.chain_id = chain_id;
       this.recipient = recipient;
+      this.chain_id = chain_id;
     }
   }
 

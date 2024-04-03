@@ -142,6 +142,7 @@ export class Bridge {
     const toChain = args.to_chain;
     const recipient = args.recipient;
 
+    // 
     const isSupportedToken = new Tokens(this.contractId).has(token);
     const isSupportedWrappedToken = new WrappedTokens(this.contractId).has(token);
     System.require(isSupportedToken || isSupportedWrappedToken, 'token is not supported');
@@ -196,7 +197,7 @@ export class Bridge {
       'normalizedAmount amount must be greater than 0'
     );
 
-    const event = new bridge.tokens_locked_event(from, token, normalizedAmount.toString(), toChain, recipient);
+    const event = new bridge.tokens_locked_event(from, token, normalizedAmount.toString(), recipient, toChain);
     System.event('bridge.tokens_locked_event', Protobuf.encode(event, bridge.tokens_locked_event.encode), [from]);
 
     reentrancyGuard.reset();

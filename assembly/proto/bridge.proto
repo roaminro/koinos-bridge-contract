@@ -180,14 +180,15 @@ message tokens_locked_event {
   bytes from = 1 [(koinos.btype) = ADDRESS];
   bytes token = 2 [(koinos.btype) = CONTRACT_ID];
   string amount = 3;
-  uint32 chain_id = 4;
-  string recipient = 5;
+  string recipient = 4;
+  uint32 chain_id = 5;
 }
 
 message transfer_completed_event {
   bytes tx_id = 1 [(koinos.btype) = TRANSACTION_ID];
 }
 
+// Hash
 enum action_id {
   reserved_action = 0;
   add_validator = 1;
@@ -201,7 +202,7 @@ enum action_id {
   set_fee_wallet = 9;
 }
 
-// Hash
+
 message add_remove_action_hash {
   action_id action = 1;
   bytes address = 2;
