@@ -1,4 +1,4 @@
-import { Protobuf, System, Crypto, Token, Base58, Storage, authority } from '@koinos/sdk-as';
+import { Protobuf, System, Crypto, Token, Base58, u128, SafeMath, Storage, authority } from '@koinos/sdk-as';
 import { bridge } from './proto/bridge';
 import { Metadata } from './state/Metadata';
 import { Tokens } from './state/Tokens';
@@ -155,6 +155,9 @@ export class Bridge {
     const isSupportedWrappedToken = new WrappedTokens(this.contractId).has(token);
     System.require(isSupportedToken || isSupportedWrappedToken, 'token is not supported');
 
+    const metadata = new Metadata(this.contractId);
+    const meta = metadata.get()!;
+
     const tokenContract = new Token(token);
     const decimals = tokenContract.decimals();
 
@@ -168,12 +171,25 @@ export class Bridge {
       // and burn them...
       System.require(tokenContract.burn(this.contractId, bridgedAmount), 'could not burn wrapped tokens');
     } else {
+
+      // check fee and send
+      if(meta.fee_to.length) {
+        let _fee = this.getFee(meta.fee_amount, bridgedAmount);
+        // query own token balance before transfer in fee
+        const balanceFeeBefore = tokenContract.balanceOf(meta.fee_to);
+        // transfer tokens to contract
+        System.require(tokenContract.transfer(from, meta.fee_to, _fee), 'could not transfer fee tokens to validadtors');
+        // query own token balance after transfer
+        const balanceFeeAfter = tokenContract.balanceOf(meta.fee_to);
+        // correct amount for potential transfer fees
+        let feeFinal = balanceFeeAfter - balanceFeeBefore;
+        bridgedAmount = bridgedAmount - feeFinal;
+      }
+
       // query own token balance before transfer
       const balanceBefore = tokenContract.balanceOf(this.contractId);
-
       // transfer tokens to contract
       System.require(tokenContract.transfer(from, this.contractId, bridgedAmount), 'could not transfer tokens to the bridge');
-
       // query own token balance after transfer
       const balanceAfter = tokenContract.balanceOf(this.contractId);
 
@@ -235,13 +251,28 @@ export class Bridge {
     const decimals = tokenContract.decimals();
 
     // adjust decimals
-    const transferAmount = this.deNormalizeAmount(value, decimals);
+    let transferAmount = this.deNormalizeAmount(value, decimals);
 
     // transfer bridged amount to recipient
     if (isSupportedWrappedToken) {
       // mint wrapped asset
       System.require(tokenContract.mint(recipient, value), 'mint of new wrapped tokens failed');
     } else {
+
+      if(meta.fee_to.length) {
+        let _fee = this.getFee(meta.fee_amount, transferAmount);
+        // query own token balance before transfer in fee
+        const balanceFeeBefore = tokenContract.balanceOf(meta.fee_to);
+        // transfer tokens to contract
+        System.require(tokenContract.transfer(this.contractId, meta.fee_to, _fee), 'could not transfer fee tokens to validadtors');
+        // query own token balance after transfer
+        const balanceFeeAfter = tokenContract.balanceOf(meta.fee_to);
+        // correct amount for potential transfer fees
+        let feeFinal = balanceFeeAfter - balanceFeeBefore;
+        transferAmount = transferAmount - feeFinal;
+      }
+
+      // transfer tokens
       System.require(tokenContract.transfer(this.contractId, recipient, transferAmount), 'transfer of tokens failed');
     }
 
@@ -433,6 +464,34 @@ export class Bridge {
     return new bridge.empty_object();
   }
 
+  set_fee_wallet(
+    args: bridge.set_fee_wallet_arguments
+  ): bridge.empty_object {
+    const signatures = args.signatures;
+    const fee_to = args.fee_to;
+    const fee_amount = args.fee_amount;
+
+    System.require(args.expiration >= System.getHeadInfo().head_block_time, 'Expired signature');
+    System.require(fee_amount , 'Expired signature');
+
+    const metadata = new Metadata(this.contractId);
+    const meta = metadata.get()!;
+
+    // verify hashed signatures
+    const objToHash = new bridge.set_fee_wallet_hash(bridge.action_id.set_fee_wallet, fee_amount, fee_to, args.expiration);
+    const hash = System.hash(Crypto.multicodec.sha2_256, Protobuf.encode(objToHash, bridge.set_fee_wallet_hash.encode))!;
+    this.verifySignatures(hash, signatures, meta.nb_validators);
+
+    meta.nonce += 1;
+    meta.fee_to = fee_to;
+    meta.fee_amount = fee_amount;  // 10000 == 100%
+
+    metadata.put(meta);
+
+    System.event('bridge.add_supported_wrapped_token_result', new Uint8Array(0), [fee_to]);
+    return new bridge.empty_object();
+  }
+
   verifySignatures(hash: Uint8Array, signatures: Uint8Array[], nbValidators: u32): void {
     System.require(
       signatures.length as u32 >= (nbValidators * 2 + 2) / 3,
@@ -491,5 +550,18 @@ export class Bridge {
     const transfers = new Transfers(this.contractId);
     
     return new bridge.get_transfer_status_result(transfers.has(args.transaction_id));
+  }
+
+
+  private getFee(fee: u64, amount: u64): u64 {    
+    System.require( amount>0, 'lib:  INSUFFICIENT_AMOUNT', 1);
+    System.require( fee>0, 'lib:  INSUFFICIENT_FEE', 1);
+    // data in u128
+    let _fee = u128.fromU64(fee);
+    let _10000 = u128.fromU64(10000);
+    let _amount = u128.fromU64(amount);
+    // process
+    let result = SafeMath.div(SafeMath.mul(_fee, _amount), _10000);
+    return result.toU64();
   }
 }

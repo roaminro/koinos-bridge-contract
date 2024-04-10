@@ -33,6 +33,7 @@
     "yaml": "^2.0.0-11"
   },
   "scripts": {
+    "proto": "koinos-sdk-as-cli generate-contract-proto",
     "lint": "eslint --max-warnings 0 --ext ts \"assembly/**/*.ts\"",
     "build:debug": "koinos-sdk-as-cli build-all debug 0 bridge.proto",
     "build:release": "koinos-sdk-as-cli build-all release 0 bridge.proto",

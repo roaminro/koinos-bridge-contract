@@ -98,6 +98,13 @@
             "entryPoint": 2457629973,
             "readOnly": false
         },
+        "set_fee_wallet": {
+            "input": "bridge.set_fee_wallet_arguments",
+            "output": "bridge.empty_object",
+            "description": "Remove an existing supported token",
+            "entryPoint": 600115004,
+            "readOnly": false
+        },
         "request_new_signatures": {
             "input": "bridge.request_new_signatures_arguments",
             "output": "bridge.empty_object",
@@ -432,6 +439,36 @@
                             }
                         }
                     },
+                    "set_fee_wallet_arguments": {
+                        "fields": {
+                            "signatures": {
+                                "rule": "repeated",
+                                "type": "bytes",
+                                "id": 1
+                            },
+                            "feeTo": {
+                                "type": "bytes",
+                                "id": 2,
+                                "options": {
+                                    "(koinos.btype)": "ADDRESS"
+                                }
+                            },
+                            "feeAmount": {
+                                "type": "uint64",
+                                "id": 3,
+                                "options": {
+                                    "jstype": "JS_STRING"
+                                }
+                            },
+                            "expiration": {
+                                "type": "uint64",
+                                "id": 4,
+                                "options": {
+                                    "jstype": "JS_STRING"
+                                }
+                            }
+                        }
+                    },
                     "request_new_signatures_arguments": {
                         "fields": {
                             "transactionId": {
@@ -510,7 +547,8 @@
                             "add_supported_wrapped_token": 5,
                             "remove_supported_wrapped_token": 6,
                             "set_pause": 7,
-                            "complete_transfer": 8
+                            "complete_transfer": 8,
+                            "set_fee_wallet": 9
                         }
                     },
                     "add_remove_action_hash": {
@@ -593,6 +631,29 @@
                             }
                         }
                     },
+                    "set_fee_wallet_hash": {
+                        "fields": {
+                            "action": {
+                                "type": "action_id",
+                                "id": 1
+                            },
+                            "feeAmount": {
+                                "type": "uint64",
+                                "id": 2
+                            },
+                            "feeTo": {
+                                "type": "bytes",
+                                "id": 3,
+                                "options": {
+                                    "(koinos.btype)": "ADDRESS"
+                                }
+                            },
+                            "expiration": {
+                                "type": "uint64",
+                                "id": 4
+                            }
+                        }
+                    },
                     "metadata_object": {
                         "fields": {
                             "initialized": {
@@ -609,6 +670,17 @@
                             "nbValidators": {
                                 "type": "uint32",
                                 "id": 3
+                            },
+                            "feeAmount": {
+                                "type": "uint64",
+                                "id": 4
+                            },
+                            "feeTo": {
+                                "type": "bytes",
+                                "id": 5,
+                                "options": {
+                                    "(koinos.btype)": "ADDRESS"
+                                }
                             }
                         }
                     },
