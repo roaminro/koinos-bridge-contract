@@ -183,10 +183,7 @@ export function main(): i32 {
           ProtoNamespace.get_transfer_status_arguments.decode
         );
       const res = c.get_transfer_status(args);
-      retbuf = Protobuf.encode(
-        res,
-        ProtoNamespace.get_transfer_status_result.encode
-      );
+      retbuf = Protobuf.encode(res, ProtoNamespace.boole.encode);
       break;
     }
 

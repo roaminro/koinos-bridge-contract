@@ -1,0 +1,116 @@
+syntax = "proto3";
+
+package token;
+option go_package = "github.com/koinos/koinos-proto-golang/koinos/contracts/token";
+
+import "koinos/options.proto";
+
+// Entrypoints
+
+// @description Get name of the token
+// @read-only true
+// @result str
+message name_arguments {}
+
+// @description Get the symbol of the token
+// @read-only true
+// @result str
+message symbol_arguments {}
+
+// @description Get the decimals of the token
+// @read-only true
+// @result uint32
+message decimals_arguments {}
+
+// @description Get name, symbol and decimals
+// @read-only true
+// @result info
+message get_info_arguments {}
+
+// @description Get total supply
+// @read-only true
+// @result uint64
+message total_supply_arguments {}
+
+// @description Get balance of an account 7
+// @read-only true
+// @result uint64
+message balance_of_arguments {
+   bytes owner = 1 [(koinos.btype) = ADDRESS];
+}
+
+// @description Get balance of an account 6
+// @read-only false
+// @result empty_object
+message transfer_arguments {
+   bytes from = 1 [(koinos.btype) = ADDRESS];
+   bytes to = 2 [(koinos.btype) = ADDRESS];
+   uint64 value = 3 [jstype = JS_STRING];
+}
+
+// @description Get balance of an account 5
+// @read-only false
+// @result empty_object
+message mint_arguments {
+   bytes to = 1 [(koinos.btype) = ADDRESS];
+   uint64 value = 2 [jstype = JS_STRING];
+}
+
+// @description Get balance of an account 4
+// @read-only false
+// @result empty_object
+message burn_arguments {
+   bytes from = 1 [(koinos.btype) = ADDRESS];
+   uint64 value = 2 [jstype = JS_STRING];
+}
+
+// @description Get balance of an account 3
+// @read-only false
+// @result empty_object
+message approve_arguments {
+   bytes owner = 1 [(koinos.btype) = ADDRESS];
+   bytes spender = 2 [(koinos.btype) = ADDRESS];
+   uint64 value = 3 [jstype = JS_STRING];
+}
+
+// @description Get balance of an account2 
+// @read-only false
+// @result uint64
+message allowance_arguments {
+   bytes owner = 1 [(koinos.btype) = ADDRESS];
+   bytes spender = 2 [(koinos.btype) = ADDRESS];
+}
+
+// @description Get balance of an account 1 
+// @read-only false
+// @result empty_object
+message set_authority_contract_arguments {
+   bytes account = 1 [(koinos.btype) = ADDRESS];
+   bool enabled = 2;
+}
+
+
+message str {
+   string value = 1;
+}
+
+message uint32 {
+   uint32 value = 1;
+}
+
+message uint64 {
+   uint64 value = 1 [jstype = JS_STRING];
+}
+
+message boole {
+   bool value = 1;
+}
+
+message empty_object {
+}
+
+message info {
+   string name = 1;
+   string symbol = 2;
+   uint32 decimals = 3;
+}

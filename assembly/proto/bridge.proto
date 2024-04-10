@@ -1,8 +1,26 @@
 syntax = "proto3";
-
 package bridge;
+import "koinos/options.proto";
 
-import "koinos/options.proto"; 
+// Objects
+message repeated_addresses {
+  repeated bytes addresses = 1 [(koinos.btype) = ADDRESS];
+}
+
+message metadata_object {
+  bool initialized = 1; 
+  uint64 nonce = 2 [jstype = JS_STRING];
+  uint32 chain_id = 3;
+  uint32 nb_validators = 4;
+  uint64 fee_amount = 5;
+  bytes fee_to = 6 [(koinos.btype) = ADDRESS];
+}
+
+message empty_object {}
+
+message boole {
+  bool value = 1;
+}
 
 // Entrypoints
 
@@ -10,7 +28,8 @@ import "koinos/options.proto";
 // @read-only false
 // @result empty_object
 message initialize_arguments {
-  repeated bytes initial_validators = 1 [(koinos.btype) = ADDRESS];
+  uint32 chain_id = 1;
+  repeated bytes initial_validators = 2 [(koinos.btype) = ADDRESS];
 }
 
 // @description Get validators
@@ -40,10 +59,6 @@ message get_supported_wrapped_tokens_arguments {
   bool descending = 3;
 }
 
-message repeated_addresses {
-  repeated bytes addresses = 1 [(koinos.btype) = ADDRESS];
-}
-
 // @description Get metadata
 // @read-only true
 // @result metadata_object
@@ -66,7 +81,8 @@ message transfer_tokens_arguments {
   bytes from = 1 [(koinos.btype) = ADDRESS];
   bytes token = 2 [(koinos.btype) = CONTRACT_ID];
   uint64 amount = 3 [jstype = JS_STRING];
-  string recipient = 4;
+  uint32 to_chain = 4;
+  string recipient = 5;
 }
 
 // @description Complete a bridge transfer
@@ -154,12 +170,9 @@ message request_new_signatures_arguments {
 
 // @description Get transfer status
 // @read-only true
+// @result boole
 message get_transfer_status_arguments {
   bytes transaction_id = 1 [(koinos.btype) = TRANSACTION_ID];
-}
-
-message get_transfer_status_result{
-  bool value = 1;
 }
 
 // Events
@@ -168,12 +181,14 @@ message tokens_locked_event {
   bytes token = 2 [(koinos.btype) = CONTRACT_ID];
   string amount = 3;
   string recipient = 4;
+  uint32 chain_id = 5;
 }
 
 message transfer_completed_event {
   bytes tx_id = 1 [(koinos.btype) = TRANSACTION_ID];
 }
 
+// Hash
 enum action_id {
   reserved_action = 0;
   add_validator = 1;
@@ -187,13 +202,14 @@ enum action_id {
   set_fee_wallet = 9;
 }
 
-// Objects
+
 message add_remove_action_hash {
   action_id action = 1;
   bytes address = 2;
   uint64 nonce = 3;
   bytes contract_id = 4;
   uint64 expiration = 5;
+  uint32 chain = 6;
 }
 
 message set_pause_action_hash {
@@ -202,6 +218,7 @@ message set_pause_action_hash {
   uint64 nonce = 3;
   bytes contract_id = 4;
   uint64 expiration = 5;
+  uint32 chain = 6;
 }
 
 message complete_transfer_hash {
@@ -212,6 +229,7 @@ message complete_transfer_hash {
   uint64 amount = 5;
   bytes contract_id = 6;
   uint64 expiration = 7;
+  uint32 chain = 8;
 }
 
 message set_fee_wallet_hash {
@@ -219,16 +237,5 @@ message set_fee_wallet_hash {
   uint64 fee_amount = 2;
   bytes fee_to = 3 [(koinos.btype) = ADDRESS];
   uint64 expiration = 4;
-}
-
-message metadata_object {
-  bool initialized = 1; 
-  uint64 nonce = 2 [jstype = JS_STRING];
-  uint32 nb_validators = 3;
-  uint64 fee_amount = 4;
-  bytes fee_to = 5 [(koinos.btype) = ADDRESS];
-}
-
-message empty_object {
-
+  uint32 chain = 5;
 }

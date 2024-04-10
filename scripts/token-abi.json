@@ -1,0 +1,298 @@
+{
+    "methods": {
+        "name": {
+            "input": "token.name_arguments",
+            "output": "token.str",
+            "description": "Get name of the token",
+            "entryPoint": 2191741823,
+            "readOnly": true
+        },
+        "symbol": {
+            "input": "token.symbol_arguments",
+            "output": "token.str",
+            "description": "Get the symbol of the token",
+            "entryPoint": 3077209249,
+            "readOnly": true
+        },
+        "decimals": {
+            "input": "token.decimals_arguments",
+            "output": "token.uint32",
+            "description": "Get the decimals of the token",
+            "entryPoint": 4001430831,
+            "readOnly": true
+        },
+        "get_info": {
+            "input": "token.get_info_arguments",
+            "output": "token.info",
+            "description": "Get name, symbol and decimals",
+            "entryPoint": 3179243600,
+            "readOnly": true
+        },
+        "total_supply": {
+            "input": "token.total_supply_arguments",
+            "output": "token.uint64",
+            "description": "Get total supply",
+            "entryPoint": 2967091508,
+            "readOnly": true
+        },
+        "balance_of": {
+            "input": "token.balance_of_arguments",
+            "output": "token.uint64",
+            "description": "Get balance of an account 7",
+            "entryPoint": 1550980247,
+            "readOnly": true
+        },
+        "transfer": {
+            "input": "token.transfer_arguments",
+            "output": "token.empty_object",
+            "description": "Get balance of an account 6",
+            "entryPoint": 670398154,
+            "readOnly": false
+        },
+        "mint": {
+            "input": "token.mint_arguments",
+            "output": "token.empty_object",
+            "description": "Get balance of an account 5",
+            "entryPoint": 3698268091,
+            "readOnly": false
+        },
+        "burn": {
+            "input": "token.burn_arguments",
+            "output": "token.empty_object",
+            "description": "Get balance of an account 4",
+            "entryPoint": 2241834181,
+            "readOnly": false
+        },
+        "approve": {
+            "input": "token.approve_arguments",
+            "output": "token.empty_object",
+            "description": "Get balance of an account 3",
+            "entryPoint": 1960973952,
+            "readOnly": false
+        },
+        "allowance": {
+            "input": "token.allowance_arguments",
+            "output": "token.uint64",
+            "description": "Get balance of an account2",
+            "entryPoint": 854630305,
+            "readOnly": false
+        },
+        "set_authority_contract": {
+            "input": "token.set_authority_contract_arguments",
+            "output": "token.empty_object",
+            "description": "Get balance of an account 1",
+            "entryPoint": 86658495,
+            "readOnly": false
+        }
+    },
+    "types": {
+        "nested": {
+            "token": {
+                "options": {
+                    "go_package": "github.com/koinos/koinos-proto-golang/koinos/contracts/token"
+                },
+                "nested": {
+                    "name_arguments": {
+                        "fields": {}
+                    },
+                    "symbol_arguments": {
+                        "fields": {}
+                    },
+                    "decimals_arguments": {
+                        "fields": {}
+                    },
+                    "get_info_arguments": {
+                        "fields": {}
+                    },
+                    "total_supply_arguments": {
+                        "fields": {}
+                    },
+                    "balance_of_arguments": {
+                        "fields": {
+                            "owner": {
+                                "type": "bytes",
+                                "id": 1,
+                                "options": {
+                                    "(koinos.btype)": "ADDRESS"
+                                }
+                            }
+                        }
+                    },
+                    "transfer_arguments": {
+                        "fields": {
+                            "from": {
+                                "type": "bytes",
+                                "id": 1,
+                                "options": {
+                                    "(koinos.btype)": "ADDRESS"
+                                }
+                            },
+                            "to": {
+                                "type": "bytes",
+                                "id": 2,
+                                "options": {
+                                    "(koinos.btype)": "ADDRESS"
+                                }
+                            },
+                            "value": {
+                                "type": "uint64",
+                                "id": 3,
+                                "options": {
+                                    "jstype": "JS_STRING"
+                                }
+                            }
+                        }
+                    },
+                    "mint_arguments": {
+                        "fields": {
+                            "to": {
+                                "type": "bytes",
+                                "id": 1,
+                                "options": {
+                                    "(koinos.btype)": "ADDRESS"
+                                }
+                            },
+                            "value": {
+                                "type": "uint64",
+                                "id": 2,
+                                "options": {
+                                    "jstype": "JS_STRING"
+                                }
+                            }
+                        }
+                    },
+                    "burn_arguments": {
+                        "fields": {
+                            "from": {
+                                "type": "bytes",
+                                "id": 1,
+                                "options": {
+                                    "(koinos.btype)": "ADDRESS"
+                                }
+                            },
+                            "value": {
+                                "type": "uint64",
+                                "id": 2,
+                                "options": {
+                                    "jstype": "JS_STRING"
+                                }
+                            }
+                        }
+                    },
+                    "approve_arguments": {
+                        "fields": {
+                            "owner": {
+                                "type": "bytes",
+                                "id": 1,
+                                "options": {
+                                    "(koinos.btype)": "ADDRESS"
+                                }
+                            },
+                            "spender": {
+                                "type": "bytes",
+                                "id": 2,
+                                "options": {
+                                    "(koinos.btype)": "ADDRESS"
+                                }
+                            },
+                            "value": {
+                                "type": "uint64",
+                                "id": 3,
+                                "options": {
+                                    "jstype": "JS_STRING"
+                                }
+                            }
+                        }
+                    },
+                    "allowance_arguments": {
+                        "fields": {
+                            "owner": {
+                                "type": "bytes",
+                                "id": 1,
+                                "options": {
+                                    "(koinos.btype)": "ADDRESS"
+                                }
+                            },
+                            "spender": {
+                                "type": "bytes",
+                                "id": 2,
+                                "options": {
+                                    "(koinos.btype)": "ADDRESS"
+                                }
+                            }
+                        }
+                    },
+                    "set_authority_contract_arguments": {
+                        "fields": {
+                            "account": {
+                                "type": "bytes",
+                                "id": 1,
+                                "options": {
+                                    "(koinos.btype)": "ADDRESS"
+                                }
+                            },
+                            "enabled": {
+                                "type": "bool",
+                                "id": 2
+                            }
+                        }
+                    },
+                    "str": {
+                        "fields": {
+                            "value": {
+                                "type": "string",
+                                "id": 1
+                            }
+                        }
+                    },
+                    "uint32": {
+                        "fields": {
+                            "value": {
+                                "type": "uint32",
+                                "id": 1
+                            }
+                        }
+                    },
+                    "uint64": {
+                        "fields": {
+                            "value": {
+                                "type": "uint64",
+                                "id": 1,
+                                "options": {
+                                    "jstype": "JS_STRING"
+                                }
+                            }
+                        }
+                    },
+                    "boole": {
+                        "fields": {
+                            "value": {
+                                "type": "bool",
+                                "id": 1
+                            }
+                        }
+                    },
+                    "empty_object": {
+                        "fields": {}
+                    },
+                    "info": {
+                        "fields": {
+                            "name": {
+                                "type": "string",
+                                "id": 1
+                            },
+                            "symbol": {
+                                "type": "string",
+                                "id": 2
+                            },
+                            "decimals": {
+                                "type": "uint32",
+                                "id": 3
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

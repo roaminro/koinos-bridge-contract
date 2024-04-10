@@ -8,7 +8,7 @@ require('dotenv').config();
 
 const { VALIDATORS_PK, PRIVATE_KEY, RPC_URL, BRIDGE_ADDR } = process.env;
 
-const WRAPPED_TOKEN_ADDR = '1KazZFUnZSLjeXq2QrifdnYqiBvA7RVF3G';
+const WRAPPED_TOKEN_ADDR = '13bNUFNYBwPSWxZaq8JVZf2ZCLTjWphyQo';
 
 const pks = VALIDATORS_PK.split('|');
 
