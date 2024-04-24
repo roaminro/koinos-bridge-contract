@@ -136,13 +136,13 @@ export class Bridge {
     const reentrancyGuard = new ReentrancyGuard(this.contractId);
 
     // args
-    const from = args.from;
-    const token = args.token;
-    const amount = args.amount;
-    const toChain = args.to_chain;
-    const recipient = args.recipient;
+    let from = args.from;
+    let token = args.token;
+    let amount = args.amount;
+    let toChain = args.to_chain;
+    let recipient = args.recipient;
 
-    // 
+    // check tokens suport
     const isSupportedToken = new Tokens(this.contractId).has(token);
     const isSupportedWrappedToken = new WrappedTokens(this.contractId).has(token);
     System.require(isSupportedToken || isSupportedWrappedToken, 'token is not supported');
@@ -150,23 +150,20 @@ export class Bridge {
     const metadata = new Metadata(this.contractId);
     const meta = metadata.get()!;
 
+    // tokens instance
     const tokenContract = new Token(token);
-    const decimals = tokenContract.decimals();
-
-    // don't deposit dust that can not be bridged due to the decimal shift
-    let bridgedAmount = this.deNormalizeAmount(this.normalizeAmount(amount, decimals), decimals);
 
     if (isSupportedWrappedToken) {
       // transfer tokens to contract
-      System.require(tokenContract.transfer(from, this.contractId, bridgedAmount), 'could not transfer wrapped tokens to the bridge');
+      System.require(tokenContract.transfer(from, this.contractId, amount), 'could not transfer wrapped tokens to the bridge');
 
       // and burn them...
-      System.require(tokenContract.burn(this.contractId, bridgedAmount), 'could not burn wrapped tokens');
+      System.require(tokenContract.burn(this.contractId, amount), 'could not burn wrapped tokens');
     } else {
 
       // check fee and send
       if(meta.fee_to.length) {
-        let _fee = this.getFee(meta.fee_amount, bridgedAmount);
+        let _fee = this.getFee(meta.fee_amount, amount);
         // query own token balance before transfer in fee
         const balanceFeeBefore = tokenContract.balanceOf(meta.fee_to);
         // transfer tokens to contract
@@ -175,22 +172,23 @@ export class Bridge {
         const balanceFeeAfter = tokenContract.balanceOf(meta.fee_to);
         // correct amount for potential transfer fees
         let feeFinal = balanceFeeAfter - balanceFeeBefore;
-        bridgedAmount = bridgedAmount - feeFinal;
+        amount = amount - feeFinal;
       }
 
       // query own token balance before transfer
       const balanceBefore = tokenContract.balanceOf(this.contractId);
       // transfer tokens to contract
-      System.require(tokenContract.transfer(from, this.contractId, bridgedAmount), 'could not transfer tokens to the bridge');
+      System.require(tokenContract.transfer(from, this.contractId, amount), 'could not transfer tokens to the bridge');
       // query own token balance after transfer
       const balanceAfter = tokenContract.balanceOf(this.contractId);
 
-      // correct amount for potential transfer fees
-      bridgedAmount = balanceAfter - balanceBefore;
+      // correct amount for potential transfer
+      amount = balanceAfter - balanceBefore;
     }
-
+    
     // normalize amount, we only want to handle 8 decimals maximum on Koinos
-    const normalizedAmount = this.normalizeAmount(bridgedAmount, decimals);
+    const decimals = tokenContract.decimals();
+    const normalizedAmount = this.normalizeAmount(amount, decimals);
 
     System.require(
       normalizedAmount > 0,
@@ -219,12 +217,12 @@ export class Bridge {
     const meta = metadata.get()!;
 
     // args
-    const transaction_id = args.transaction_id;
-    const token = args.token;
-    const recipient = args.recipient;
-    const value = args.value;
-    const signatures = args.signatures;
-    const chainId = meta.chain_id;
+    let transaction_id = args.transaction_id;
+    let token = args.token;
+    let recipient = args.recipient;
+    let value = args.value;
+    let signatures = args.signatures;
+    let chainId = meta.chain_id;
     
     // check expiration
     System.require(args.expiration >= System.getHeadInfo().head_block_time, 'Expired signatures');
@@ -244,11 +242,11 @@ export class Bridge {
     const hash = System.hash(Crypto.multicodec.sha2_256, Protobuf.encode(objToHash, bridge.complete_transfer_hash.encode))!;
     this.verifySignatures(hash, signatures, meta.nb_validators);
 
+    // tokens instance
     const tokenContract = new Token(token);
-    // query decimals
+    
+    // normalize amount, we only want to handle 8 decimals maximum on Koinos
     const decimals = tokenContract.decimals();
-
-    // adjust decimals
     let transferAmount = this.deNormalizeAmount(value, decimals);
 
     // transfer bridged amount to recipient
@@ -530,12 +528,18 @@ export class Bridge {
     if (decimals > 8) {
       amount /= 10 ** (decimals - 8);
     }
+    if (decimals < 8) {
+      amount *= 10 ** (8 - decimals);
+    }
     return amount;
   }
 
   private deNormalizeAmount(amount: u64, decimals: u32): u64 {
     if (decimals > 8) {
       amount *= 10 ** (decimals - 8);
+    }
+    if (decimals < 8) {
+      amount /= 10 ** (8 - decimals);
     }
     return amount;
   }
