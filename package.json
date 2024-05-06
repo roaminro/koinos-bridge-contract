@@ -47,6 +47,7 @@
     "addSupportWrappedToken": "yarn build-bridge:release && node scripts/add_supported_wrapped_token.js",
 
     "build-token:release": "koinos-sdk-as-cli build-all release 0 token.proto",
-    "deployToken": "yarn build-token:release && node scripts/deploy_token.js"
+    "deployToken": "yarn build-token:release && node scripts/deploy_token.js",
+    "transferToken": "yarn build-bridge:release && node scripts/transfer_tokens.js"
   }
 }

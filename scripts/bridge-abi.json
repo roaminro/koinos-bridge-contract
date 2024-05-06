@@ -98,24 +98,99 @@
             "entry_point": 2457629973,
             "read_only": false
         },
+        "set_fee_wallet": {
+            "argument": "bridge.set_fee_wallet_arguments",
+            "return": "bridge.empty_object",
+            "description": "Remove an existing supported token",
+            "entry_point": 600115004,
+            "read_only": false
+        },
         "request_new_signatures": {
             "argument": "bridge.request_new_signatures_arguments",
             "return": "bridge.empty_object",
             "description": "Request new signatures when old ones expired",
             "entry_point": 2545674406,
             "read_only": false
+        },
+        "get_transfer_status": {
+            "argument": "bridge.get_transfer_status_arguments",
+            "return": "bridge.boole",
+            "description": "Get transfer status",
+            "entry_point": 671042517,
+            "read_only": true
         }
     },
     "types": {
         "nested": {
             "bridge": {
                 "nested": {
-                    "initialize_arguments": {
+                    "repeated_addresses": {
                         "fields": {
-                            "initialValidators": {
+                            "addresses": {
                                 "rule": "repeated",
                                 "type": "bytes",
                                 "id": 1,
+                                "options": {
+                                    "(koinos.btype)": "ADDRESS"
+                                }
+                            }
+                        }
+                    },
+                    "metadata_object": {
+                        "fields": {
+                            "initialized": {
+                                "type": "bool",
+                                "id": 1
+                            },
+                            "nonce": {
+                                "type": "uint64",
+                                "id": 2,
+                                "options": {
+                                    "jstype": "JS_STRING"
+                                }
+                            },
+                            "chainId": {
+                                "type": "uint32",
+                                "id": 3
+                            },
+                            "nbValidators": {
+                                "type": "uint32",
+                                "id": 4
+                            },
+                            "feeAmount": {
+                                "type": "uint64",
+                                "id": 5
+                            },
+                            "feeTo": {
+                                "type": "bytes",
+                                "id": 6,
+                                "options": {
+                                    "(koinos.btype)": "ADDRESS"
+                                }
+                            }
+                        }
+                    },
+                    "empty_object": {
+                        "fields": {}
+                    },
+                    "boole": {
+                        "fields": {
+                            "value": {
+                                "type": "bool",
+                                "id": 1
+                            }
+                        }
+                    },
+                    "initialize_arguments": {
+                        "fields": {
+                            "chainId": {
+                                "type": "uint32",
+                                "id": 1
+                            },
+                            "initialValidators": {
+                                "rule": "repeated",
+                                "type": "bytes",
+                                "id": 2,
                                 "options": {
                                     "(koinos.btype)": "ADDRESS"
                                 }
@@ -135,8 +210,8 @@
                                 "type": "int32",
                                 "id": 2
                             },
-                            "direction": {
-                                "type": "int32",
+                            "descending": {
+                                "type": "bool",
                                 "id": 3
                             }
                         }
@@ -154,8 +229,8 @@
                                 "type": "int32",
                                 "id": 2
                             },
-                            "direction": {
-                                "type": "uint32",
+                            "descending": {
+                                "type": "bool",
                                 "id": 3
                             }
                         }
@@ -173,21 +248,9 @@
                                 "type": "int32",
                                 "id": 2
                             },
-                            "direction": {
-                                "type": "uint32",
+                            "descending": {
+                                "type": "bool",
                                 "id": 3
-                            }
-                        }
-                    },
-                    "repeated_addresses": {
-                        "fields": {
-                            "addresses": {
-                                "rule": "repeated",
-                                "type": "bytes",
-                                "id": 1,
-                                "options": {
-                                    "(koinos.btype)": "ADDRESS"
-                                }
                             }
                         }
                     },
@@ -237,9 +300,13 @@
                                     "jstype": "JS_STRING"
                                 }
                             },
+                            "toChain": {
+                                "type": "uint32",
+                                "id": 4
+                            },
                             "recipient": {
                                 "type": "string",
-                                "id": 4
+                                "id": 5
                             }
                         }
                     },
@@ -425,6 +492,36 @@
                             }
                         }
                     },
+                    "set_fee_wallet_arguments": {
+                        "fields": {
+                            "signatures": {
+                                "rule": "repeated",
+                                "type": "bytes",
+                                "id": 1
+                            },
+                            "feeTo": {
+                                "type": "bytes",
+                                "id": 2,
+                                "options": {
+                                    "(koinos.btype)": "ADDRESS"
+                                }
+                            },
+                            "feeAmount": {
+                                "type": "uint64",
+                                "id": 3,
+                                "options": {
+                                    "jstype": "JS_STRING"
+                                }
+                            },
+                            "expiration": {
+                                "type": "uint64",
+                                "id": 4,
+                                "options": {
+                                    "jstype": "JS_STRING"
+                                }
+                            }
+                        }
+                    },
                     "request_new_signatures_arguments": {
                         "fields": {
                             "transactionId": {
@@ -434,6 +531,17 @@
                             "operationId": {
                                 "type": "string",
                                 "id": 2
+                            }
+                        }
+                    },
+                    "get_transfer_status_arguments": {
+                        "fields": {
+                            "transactionId": {
+                                "type": "bytes",
+                                "id": 1,
+                                "options": {
+                                    "(koinos.btype)": "TRANSACTION_ID"
+                                }
                             }
                         }
                     },
@@ -460,6 +568,10 @@
                             "recipient": {
                                 "type": "string",
                                 "id": 4
+                            },
+                            "chainId": {
+                                "type": "uint32",
+                                "id": 5
                             }
                         }
                     },
@@ -484,7 +596,8 @@
                             "add_supported_wrapped_token": 5,
                             "remove_supported_wrapped_token": 6,
                             "set_pause": 7,
-                            "complete_transfer": 8
+                            "complete_transfer": 8,
+                            "set_fee_wallet": 9
                         }
                     },
                     "add_remove_action_hash": {
@@ -508,6 +621,10 @@
                             "expiration": {
                                 "type": "uint64",
                                 "id": 5
+                            },
+                            "chain": {
+                                "type": "uint32",
+                                "id": 6
                             }
                         }
                     },
@@ -532,6 +649,10 @@
                             "expiration": {
                                 "type": "uint64",
                                 "id": 5
+                            },
+                            "chain": {
+                                "type": "uint32",
+                                "id": 6
                             }
                         }
                     },
@@ -564,30 +685,39 @@
                             "expiration": {
                                 "type": "uint64",
                                 "id": 7
+                            },
+                            "chain": {
+                                "type": "uint32",
+                                "id": 8
                             }
                         }
                     },
-                    "metadata_object": {
+                    "set_fee_wallet_hash": {
                         "fields": {
-                            "initialized": {
-                                "type": "bool",
+                            "action": {
+                                "type": "action_id",
                                 "id": 1
                             },
-                            "nonce": {
+                            "feeAmount": {
                                 "type": "uint64",
-                                "id": 2,
+                                "id": 2
+                            },
+                            "feeTo": {
+                                "type": "bytes",
+                                "id": 3,
                                 "options": {
-                                    "jstype": "JS_STRING"
+                                    "(koinos.btype)": "ADDRESS"
                                 }
                             },
-                            "nbValidators": {
+                            "expiration": {
+                                "type": "uint64",
+                                "id": 4
+                            },
+                            "chain": {
                                 "type": "uint32",
-                                "id": 3
+                                "id": 5
                             }
                         }
-                    },
-                    "empty_object": {
-                        "fields": {}
                     }
                 }
             }

@@ -6,9 +6,10 @@ abi.koilib_types = abi.types;
 
 const { PRIVATE_KEY, RPC_URL, BRIDGE_ADDR } = process.env;
 
-const TOKEN_ADDR = '19JntSm8pSNETT9aHTwAUHC5RMoaSmgZPJ';
-const AMOUNT = '1';
-const RECIPIENT = '0x3D7D98070a3B5762fF4ed30Afc58F8f0000bE3b3';
+const TOKEN_ADDR = '1FaSvLjQJsCJKq5ybmGsMMQs8RQYyVv8ju';
+const AMOUNT = '200000000';
+const RECIPIENT = '0x7EB00942c7387da2Be7d5a65B50d9B82c0Db4cfc';
+const CHAIN_ID = 0;
 
 async function main() {
   const provider = new Provider(RPC_URL);
@@ -26,7 +27,11 @@ async function main() {
     from: signer.address,
     token: TOKEN_ADDR,
     amount: AMOUNT,
+    toChain: CHAIN_ID,
     recipient: RECIPIENT
+  },{    
+    rcLimit: 1000000000,
+    sendTransaction: true
   });
 
   await result.transaction.wait();

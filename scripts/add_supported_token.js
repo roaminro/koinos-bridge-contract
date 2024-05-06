@@ -8,7 +8,7 @@ require('dotenv').config();
 
 const { VALIDATORS_PK, PRIVATE_KEY, RPC_URL, BRIDGE_ADDR } = process.env;
 
-const TOKEN_ADDR = '19JntSm8pSNETT9aHTwAUHC5RMoaSmgZPJ';
+const TOKEN_ADDR = '1FaSvLjQJsCJKq5ybmGsMMQs8RQYyVv8ju';
 
 const pks = VALIDATORS_PK.split('|');
 
@@ -49,7 +49,7 @@ async function main() {
     signer,
   });
 
-  let { result: { nonce } } = await bridgeContract.functions.get_metadata();
+  let { result: { nonce, chainId } } = await bridgeContract.functions.get_metadata();
 
   let expiration = `${new Date().getTime()+3600*1000}`;
   let buffer = addRemoveActionHashProto.encode({
@@ -57,8 +57,9 @@ async function main() {
     address: utils.decodeBase58(TOKEN_ADDR),
     nonce,
     contract_id: utils.decodeBase58(BRIDGE_ADDR),
-    expiration
-  }).finish();
+    expiration,
+    chain: chainId
+  }).finish();  
 
   let signatures = await sign(buffer);
 
@@ -66,6 +67,9 @@ async function main() {
     signatures,
     token: TOKEN_ADDR,
     expiration
+  },{    
+    rcLimit: 1000000000,
+    sendTransaction: true
   });
 
   console.log(result.transaction)

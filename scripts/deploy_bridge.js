@@ -1,4 +1,4 @@
-const { Signer, Provider, Contract } = require('koilib');
+const { Signer, Provider, Contract, utils } = require('koilib');
 const path = require('path');
 const fs = require('fs');
 const abi = require('./bridge-abi.json')
@@ -24,22 +24,17 @@ async function main() {
     provider,
     signer,
     bytecode
+
   });
+
+  
 
   const { transaction } = await bridgeContract.deploy({
     abi: fs.readFileSync(path.resolve(__dirname, '../abi/bridge.abi')).toString(),
+    rcLimit: 1100000000
   });
 
   await transaction.wait();
-
-  console.log('bridge contract deployed at', bridgeContract.getId());
-
-  const result = await bridgeContract.functions.initialize({
-    initialValidators: validators
-  });
-
-  await result.transaction.wait();
-
   console.log('initialized bridge contract');
 
 }
