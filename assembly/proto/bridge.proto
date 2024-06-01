@@ -83,6 +83,7 @@ message transfer_tokens_arguments {
   uint64 amount = 3 [jstype = JS_STRING];
   uint32 to_chain = 4;
   string recipient = 5;
+  bool set_claim = 6;
 }
 
 // @description Complete a bridge transfer
@@ -182,6 +183,7 @@ message tokens_locked_event {
   string amount = 3;
   string recipient = 4;
   uint32 chain_id = 5;
+  bool set_claim = 6;
 }
 
 message transfer_completed_event {

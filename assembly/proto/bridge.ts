@@ -549,6 +549,11 @@ export namespace bridge {
         writer.uint32(42);
         writer.string(message.recipient);
       }
+
+      if (message.set_claim != false) {
+        writer.uint32(48);
+        writer.bool(message.set_claim);
+      }
     }
 
     static decode(reader: Reader, length: i32): transfer_tokens_arguments {
@@ -578,6 +583,10 @@ export namespace bridge {
             message.recipient = reader.string();
             break;
 
+          case 6:
+            message.set_claim = reader.bool();
+            break;
+
           default:
             reader.skipType(tag & 7);
             break;
@@ -592,19 +601,22 @@ export namespace bridge {
     amount: u64;
     to_chain: u32;
     recipient: string;
+    set_claim: bool;
 
     constructor(
       from: Uint8Array = new Uint8Array(0),
       token: Uint8Array = new Uint8Array(0),
       amount: u64 = 0,
       to_chain: u32 = 0,
-      recipient: string = ""
+      recipient: string = "",
+      set_claim: bool = false
     ) {
       this.from = from;
       this.token = token;
       this.amount = amount;
       this.to_chain = to_chain;
       this.recipient = recipient;
+      this.set_claim = set_claim;
     }
   }
 
@@ -1305,6 +1317,11 @@ export namespace bridge {
         writer.uint32(40);
         writer.uint32(message.chain_id);
       }
+
+      if (message.set_claim != false) {
+        writer.uint32(48);
+        writer.bool(message.set_claim);
+      }
     }
 
     static decode(reader: Reader, length: i32): tokens_locked_event {
@@ -1334,6 +1351,10 @@ export namespace bridge {
             message.chain_id = reader.uint32();
             break;
 
+          case 6:
+            message.set_claim = reader.bool();
+            break;
+
           default:
             reader.skipType(tag & 7);
             break;
@@ -1348,19 +1369,22 @@ export namespace bridge {
     amount: string;
     recipient: string;
     chain_id: u32;
+    set_claim: bool;
 
     constructor(
       from: Uint8Array = new Uint8Array(0),
       token: Uint8Array = new Uint8Array(0),
       amount: string = "",
       recipient: string = "",
-      chain_id: u32 = 0
+      chain_id: u32 = 0,
+      set_claim: bool = false
     ) {
       this.from = from;
       this.token = token;
       this.amount = amount;
       this.recipient = recipient;
       this.chain_id = chain_id;
+      this.set_claim = set_claim;
     }
   }
 

@@ -141,6 +141,7 @@ export class Bridge {
     let amount = args.amount;
     let toChain = args.to_chain;
     let recipient = args.recipient;
+    let setClaim = args.set_claim;
 
     // check tokens suport
     const isSupportedToken = new Tokens(this.contractId).has(token);
@@ -195,7 +196,7 @@ export class Bridge {
       'normalizedAmount amount must be greater than 0'
     );
 
-    const event = new bridge.tokens_locked_event(from, token, normalizedAmount.toString(), recipient, toChain);
+    const event = new bridge.tokens_locked_event(from, token, normalizedAmount.toString(), recipient, toChain, setClaim);
     System.event('bridge.tokens_locked_event', Protobuf.encode(event, bridge.tokens_locked_event.encode), [from]);
 
     reentrancyGuard.reset();

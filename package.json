@@ -42,7 +42,7 @@
     "ci": "yarn lint && yarn build:debug && yarn build:release && yarn test",
 
     "build-bridge:release": "koinos-sdk-as-cli build-all release 0 bridge.proto",
-    "deployBridge": "yarn build-bridge:release && node scripts/deploy_token.js",
+    "deployBridge": "yarn build-bridge:release && node scripts/deploy_bridge.js",
     "addSupportToken": "yarn build-bridge:release && node scripts/add_supported_token.js",
     "addSupportWrappedToken": "yarn build-bridge:release && node scripts/add_supported_wrapped_token.js",
 
